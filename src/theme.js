@@ -1,0 +1,8 @@
+
+
+const PRIMARY = '#CC6666';
+const ACCENT = '#444444'
+const BACKGROUND = '#F9F4ED';
+
+
+export { PRIMARY, ACCENT, BACKGROUND };

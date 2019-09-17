@@ -13,7 +13,7 @@ function App() {
       min-height: 100vh;
       display: grid;
       grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-      grid-template-rows: 1fr 6fr;
+      grid-template-rows: .5fr 6fr;
       grid-template-areas: ". . Header Header Header . ." ". . Content Content Content . .";
     `}>
       <div css={`grid-area: Header; display: flex; align-items: center;`}>

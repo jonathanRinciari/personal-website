@@ -1,4 +1,5 @@
 import React from "react";
+import { ACCENT, BACKGROUND } from "../theme";
 
 const Logo = ({ handleOnClick }) => {
   return (
@@ -20,8 +21,8 @@ const Logo = ({ handleOnClick }) => {
         height="100%"
         viewBox="0 0 50 50"
       >
-        <path fill="#F9F4ED" d="M-1 -1H51V51H-1z" />
-        <g stroke="#444444">
+        <path fill={BACKGROUND} d="M-1 -1H51V51H-1z" />
+        <g stroke={ACCENT}>
           <path
             fill="none"
             strokeWidth="8"
@@ -32,7 +33,7 @@ const Logo = ({ handleOnClick }) => {
             style={{ userSelect: "none" }}
             x="12.6"
             y="31.119"
-            fill="#444444"
+            fill={ACCENT}
             fillOpacity="null"
             strokeOpacity="null"
             strokeWidth="0"

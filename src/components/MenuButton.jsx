@@ -1,4 +1,5 @@
 import React from "react";
+import { PRIMARY, ACCENT } from "../theme";
 
 const MenuButton = ({ handleOnClick }) => {
   return (
@@ -16,10 +17,10 @@ const MenuButton = ({ handleOnClick }) => {
         align-items: center;
         justify-content: center;
         transition: all 200ms ease-in-out;
-        fill: #444444;
+        fill: ${ACCENT};
         &:hover {
             background: white;
-            fill: #CC6666;
+            fill: ${PRIMARY};
         }
       `}
     >

@@ -1,11 +1,17 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import Hero from '../../components/Hero';
+import HomeBanner from './HomeBanner';
+import HomeAbout from './HomeAbout';
 
 
 function Home() {
   return (
-    <div>
-      <span>This is a fillter Area</span>
+    <div css={`
+      display: grid;
+    `}>
+      <Hero />
+      <HomeBanner />
+      <HomeAbout />
     </div>
   );
 }
