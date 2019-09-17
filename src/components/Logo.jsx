@@ -10,8 +10,8 @@ const Logo = ({ handleOnClick }) => {
         width: 10%;
         min-height: 35px;
         min-width: 35px;
-        max-height: 50px;
-        max-width: 50px;
+        max-height: 60px;
+        max-width: 60px;
       `}
     >
       <svg
