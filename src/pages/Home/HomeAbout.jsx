@@ -22,7 +22,7 @@ const HomeAbout = ({}) => {
       <BodyText sizer={1.6} tag="p" style={{textAlign: 'center', margin: '1rem 0rem 2rem 0px'}} color={ACCENT}>
         Software Engineer from USA with a keen interest in the frontend world.
         Currently working in Seattle, Washington as a Frontend Engineer II at
-        Amazon Webservies.
+        Amazon Webservices.
       </BodyText>
       <div
         css={`
