@@ -1,10 +1,17 @@
 import React from 'react';
+import FooterNavBar from './FooterNavBar';
+import BodyText from './BodyText';
 
 const Footer = ({}) => {
     return (
+        <>
+        <FooterNavBar />
         <div css={`display: flex; align-items: center; justify-content: center; margin: 1rem 0;`}>
-            <span css={`font-size: 12px;`}>© 2019 Jonathan Rinciari</span>
+            <BodyText hover={null}>
+                © 2019 Jonathan Rinciari
+            </BodyText>
         </div>
+        </>
     )
 }
 

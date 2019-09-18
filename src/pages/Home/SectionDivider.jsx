@@ -6,7 +6,7 @@ const SectionDivider = ({}) => {
     <div
       css={`
         background: ${PRIMARY};
-        height: 1vw;
+        height: .75em;
         border-radius: 10px;
         margin-bottom: 1rem;
       `}

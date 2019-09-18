@@ -1,7 +1,8 @@
 import React from "react";
-import { PRIMARY } from "../../theme";
+import { PRIMARY, ACCENT } from "../theme";
+import BodyText from "./BodyText";
 
-const HomeNavBar = ({}) => {
+const FooterNavBar = ({}) => {
   const Items = [
     {
       title: "Writing",
@@ -59,40 +60,54 @@ const HomeNavBar = ({}) => {
     }
   ];
   return (
-    <div css={`margin: 1rem 0;`}>
+    <div
+      css={`
+        margin: 1rem 0;
+      `}
+    >
       {Items.map(item => {
         return (
-          <div css={`
-          padding: 1rem 0;
-          padding-left: 1.5rem;
-          display: flex;
-          align-items: center;
-          border-bottom: 1px solid rgba(0,0,0,0.1);
-          transition: all 200ms ease-in-out;
-          &:first-child {
-            border-top: 1px solid rgba(0,0,0,0.1);
-          }
-          &:hover {
-            fill: ${PRIMARY};
-            background: white;
-            color: ${PRIMARY};
-            cursor: pointer;
-          }
-          `}>
+          <div
+            css={`
+              padding: 1rem 0;
+              padding-left: 1.5rem;
+              display: flex;
+              align-items: center;
+              border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+              transition: all 200ms ease-in-out;
+              fill: ${ACCENT};
+              &:first-child {
+                border-top: 1px solid rgba(0, 0, 0, 0.1);
+              }
+              &:hover {
+                fill: ${PRIMARY};
+                background: white;
+                color: ${PRIMARY};
+                cursor: pointer;
+              }
+            `}
+          >
             <div
               css={`
-                width: 20px;
-                min-width: 20px;
-                height: 20px;
+                width: 25px;
+                height: 25px;
                 display: flex;
+                @media(max-width: 767px) {
+                  height: 20px;
+                  width: 20px;
+                }
               `}
             >
               {item.icon()}
             </div>
-            <span css={`
-                font-size: 20px;
-                padding-left: 1rem;
-            `}>{item.title}</span>
+            <BodyText
+              sizer={1.7}
+              style={{ 
+                paddingLeft: "1rem",
+              }}
+            >
+              {item.title}
+            </BodyText>
           </div>
         );
       })}
@@ -100,4 +115,4 @@ const HomeNavBar = ({}) => {
   );
 };
 
-export default HomeNavBar;
+export default FooterNavBar;

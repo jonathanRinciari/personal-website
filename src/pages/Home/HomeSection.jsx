@@ -1,11 +1,13 @@
 import React from "react";
 import { ACCENT, PRIMARY } from "../../theme";
+import BodyText from "../../components/BodyText";
 
 const HomeSection = ({ items, category }) => {
   const icon = () => {
     if (category === "Featured Articles") {
       return (
         <svg
+          fill={ACCENT}
           xmlns="http://www.w3.org/2000/svg"
           width="100%"
           height="100%"
@@ -22,6 +24,7 @@ const HomeSection = ({ items, category }) => {
     } else if (category === "Recent Projects") {
       return (
         <svg
+          fill={ACCENT}
           xmlns="http://www.w3.org/2000/svg"
           width="100%"
           height="100%"
@@ -48,24 +51,19 @@ const HomeSection = ({ items, category }) => {
       >
         <div
           css={`
-            width: 20px;
-            min-width: 20px;
+          width: 25px;
+          height: 25px;
+          @media(max-width: 767px) {
             height: 20px;
+            width: 20px;
+          }
           `}
         >
           {icon()}
         </div>
-        <h2
-          css={`
-            font-family: dosis, "HelveticaNeue-CondensedBold", "trebuchet ms",
-              sans-serif;
-            font-size: 2em;
-            margin: 0;
-            margin-left: 1rem;
-          `}
-        >
+        <BodyText sizer={1.7} tag='h2' altText={true} style={{textTransform: 'uppercase', margin: 0, marginLeft: '1rem'}}>
           {category}
-        </h2>
+        </BodyText>
       </div>
       {items && items.map(item => SectionItem(item))}
     </div>

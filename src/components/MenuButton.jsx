@@ -5,14 +5,10 @@ const MenuButton = ({ handleOnClick }) => {
   return (
     <div
       css={`
-        width: 10%;
-        height: 10%;
-        min-height: 20px;
-        min-width: 20px;
-        max-height: 30px;
+        height: 30px;
+        width: 30px;
         padding: 1rem;
         border-radius: 8px;
-        max-width: 30px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -21,6 +17,10 @@ const MenuButton = ({ handleOnClick }) => {
         &:hover {
             background: white;
             fill: ${PRIMARY};
+        }
+        @media(max-width: 767px) {
+          height: 20px;
+          width: 20px;
         }
       `}
     >

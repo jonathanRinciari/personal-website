@@ -1,5 +1,6 @@
 import React from 'react';
 import { BACKGROUND, PRIMARY } from '../../theme';
+import BodyText from '../../components/BodyText';
 
 
 const HomeBanner = ({}) => {
@@ -9,9 +10,9 @@ const HomeBanner = ({}) => {
         border-radius: 10px;
         margin-bottom: 2rem;
       `}>
-        <h3 css={`text-align: center; color: ${BACKGROUND}; font-size: 2.25vw; `}>
-          Software Engineer // Lego Architect
-        </h3>
+         <BodyText sizer={1.25} tag={'h3'} color={BACKGROUND} style={{textAlign: 'center', textTransform: 'uppercase'}} altText={true}>
+            Software Engineer // Lego Architect
+        </BodyText>
       </div> 
     )
 }
