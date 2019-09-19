@@ -1,7 +1,7 @@
 import React from "react";
 import NavButton from "./NavButton";
 
-const HeaderNav = ({ show, handleOnClose}) => {
+const HeaderNav = ({ show, handleOnClose, currentRoute}) => {
   return (
     <div
       css={`
@@ -34,12 +34,12 @@ const HeaderNav = ({ show, handleOnClose}) => {
         }
       `}
     >
-        <NavButton show={show} type="about" css={`grid-area: Profile;`} handleOnClick={handleOnClose}/>
+        <NavButton active={currentRoute === '/about'} show={show} type="about" css={`grid-area: Profile`} handleOnClick={handleOnClose}/>
         <NavButton show={show} type="close" css={`grid-area: Close;`} handleOnClick={handleOnClose}/>
         <NavButton show={show} type="home" css={`grid-area: Home; `} handleOnClick={handleOnClose}/>
-        <NavButton show={show} type="writing" css={`grid-area: Writing; `} handleOnClick={handleOnClose}/>
-        <NavButton show={show} type="resume" css={`grid-area: Resume;`} handleOnClick={handleOnClose}/>
-        <NavButton show={show} type="projects" css={`grid-area: Projects; `} handleOnClick={handleOnClose}/>
+        <NavButton active={currentRoute === '/writing'} show={show} type="writing" css={`grid-area: Writing; `} handleOnClick={handleOnClose}/>
+        <NavButton active={currentRoute === '/resume'} show={show} type="resume" css={`grid-area: Resume;`} handleOnClick={handleOnClose}/>
+        <NavButton active={currentRoute === '/projects'} show={show} type="projects" css={`grid-area: Projects; `} handleOnClick={handleOnClose}/>
     </div>
   );
 };

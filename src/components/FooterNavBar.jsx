@@ -2,10 +2,12 @@ import React from "react";
 import { PRIMARY, ACCENT } from "../theme";
 import BodyText from "./BodyText";
 
-const FooterNavBar = ({}) => {
+const FooterNavBar = ({activeItem, handleNavigation}) => {
+
   const Items = [
     {
       title: "Writing",
+      url: '/writing',
       icon: () => (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -24,6 +26,7 @@ const FooterNavBar = ({}) => {
     },
     {
       title: "About",
+      url: '/about',
       icon: () => (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -42,6 +45,7 @@ const FooterNavBar = ({}) => {
     },
     {
       title: "Projects",
+      url: '/projects',
       icon: () => (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -60,6 +64,7 @@ const FooterNavBar = ({}) => {
     },
     {
       title: 'Resume',
+      url: '/resume',
       icon: () => (
         <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -88,6 +93,7 @@ const FooterNavBar = ({}) => {
         return (
           <div
             key={i}
+            onClick={() => handleNavigation(item.url)}
             css={`
               padding: 1rem 0;
               padding-left: 1.5rem;
@@ -95,13 +101,14 @@ const FooterNavBar = ({}) => {
               align-items: center;
               border-bottom: 1px solid rgba(0, 0, 0, 0.1);
               transition: all 200ms ease-in-out;
-              fill: ${ACCENT};
+              background: ${item.title === activeItem ? '#FCFAF7' : 'transparent'};
+              fill: ${item.title === activeItem ? PRIMARY : ACCENT};
               &:first-child {
                 border-top: 1px solid rgba(0, 0, 0, 0.1);
               }
               &:hover {
                 fill: ${PRIMARY};
-                background: white;
+                background: #FCFAF7;
                 color: ${PRIMARY};
                 cursor: pointer;
               }
@@ -125,6 +132,7 @@ const FooterNavBar = ({}) => {
               style={{ 
                 paddingLeft: "1rem",
               }}
+              color={item.title === activeItem ? PRIMARY : null}
             >
               {item.title}
             </BodyText>

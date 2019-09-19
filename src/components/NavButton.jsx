@@ -6,6 +6,17 @@ import BodyText from "./BodyText";
 class NavButton extends Component {
  constructor(props) {
     super(props);
+    this.state = {
+      isHover: false
+    }
+ }
+
+ setHover = () => {
+   this.setState((prevState) => {
+     return {
+      isHover: !prevState.isHover
+     }
+   })
  }
 
   
@@ -120,37 +131,44 @@ class NavButton extends Component {
     this.props.handleOnClick();
   }
   render() {
+    const { active } = this.props
   return (
+    
     <div
       onClick={this.props.type === 'close' ? this.props.handleOnClick : () => this.navigate()}
+      onMouseEnter={this.setHover}
+      onMouseLeave={this.setHover}
       {...this.props}
       css={`
-        background: ${PRIMARY};
+        background: ${active ? '#AE5657' : PRIMARY};
         border: 1px solid rgba(0, 0, 0, 0.1);
         cursor: pointer;
         transition: all 200ms ease-in-out;
-        color: ${BACKGROUND};
+        color: ${active ? PRIMARY : BACKGROUND};
         display: flex;
         justify-content: center;
         align-items: ${this.props.type === "home" ? "flex-start" : "center"};
         flex-direction: column;
         &:hover {
           background: #d27676;
+          color: ${BACKGROUND};
         }
       `}
     >
       {this.props.type && this.icons[this.props.type].icon && (
         <div
+
           css={`
             width: ${this.props.show ? this.iconSize : '0px'};
             height: ${this.props.show ? this.iconSize : '0px'};
             transition: all 150ms ease-in-out;
             display: flex;
-            fill: ${BACKGROUND};
+            fill: ${active && !this.state.isHover ? PRIMARY : BACKGROUND};
             @media (max-width: 767px) {
               height: ${this.props.show ? this.iconSizeSm : '0px'};
               width: ${this.props.show ? this.iconSizeSm : '0px'};
             }
+
           `}
         >
           {this.icons[this.props.type].icon()}{" "}
