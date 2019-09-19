@@ -65,14 +65,15 @@ const HomeSection = ({ items, category }) => {
           {category}
         </BodyText>
       </div>
-      {items && items.map(item => SectionItem(item))}
+      {items && items.map((item, i) => SectionItem(item, i))}
     </div>
   );
 };
 
-const SectionItem = item => {
+const SectionItem = (item, i) => {
   return (
     <div
+      key={i}
       css={`
         border-top: 1px solid rgba(0, 0, 0, 0.1);
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);

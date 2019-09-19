@@ -4,6 +4,7 @@ import { PRIMARY, ACCENT } from "../theme";
 const MenuButton = ({ handleOnClick }) => {
   return (
     <div
+      onClick={handleOnClick}
       css={`
         height: 30px;
         width: 30px;
@@ -13,6 +14,7 @@ const MenuButton = ({ handleOnClick }) => {
         align-items: center;
         justify-content: center;
         transition: all 200ms ease-in-out;
+        cursor: pointer;
         fill: ${ACCENT};
         &:hover {
             background: white;

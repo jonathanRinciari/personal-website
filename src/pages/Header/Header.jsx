@@ -2,7 +2,7 @@ import React from 'react';
 import MenuButton from '../../components/MenuButton';
 import Logo from '../../components/Logo';
 
-function Header() {
+const Header = ({handleOnClick}) => {
   return (
     <div css={`
       width: 100%;
@@ -11,7 +11,7 @@ function Header() {
       align-items: center;
     `}>
       <Logo />
-      <MenuButton />
+      <MenuButton handleOnClick={handleOnClick} />
     </div>
   );
 }
