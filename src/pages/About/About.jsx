@@ -3,11 +3,12 @@ import AboutHero from "./AboutHero";
 import BodyText from "../../components/BodyText";
 import { ACCENT } from "../../theme";
 import SectionDivider from "../Home/SectionDivider";
-import FooterNavBar from "../../components/FooterNavBar";
 import { withRouter } from 'react-router-dom';
 import Footer from "../../components/Footer";
+import FollowBanner from "./FollowBanner";
 
 class About extends Component {
+
   render() {
     return (
       <div>
@@ -88,7 +89,14 @@ class About extends Component {
          Web & Mobile development started as a hobby and grew into a career that I truly love.
          I am proud of my work, because I created it!
         </BodyText>
+        <FollowBanner />
         </div>
+        <SectionDivider />
+        <span> Some More Info About Me</span>
+        <span> Likes </span>
+        <span> Dislikes </span>
+        <span> Goals </span>
+        <span> Motivations </span>
         <SectionDivider />
         <div css={`margin-top: 4rem;`}>
             <Footer activeItem={'About'} handleNavigation={url => this.props.history.push(url)}/>

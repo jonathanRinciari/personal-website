@@ -4,10 +4,13 @@ import BodyText from "../../components/BodyText";
 
 const TwitterButton = ({ handleOnClick }) => {
   return (
-    <div
+    <a
+      href={'https://twitter.com/jonrinciari'}
+      target="_target"
       onClick={handleOnClick}
       css={`
         background: ${ACCENT};
+        text-decoration: none;
         padding: 0 0.75rem;
         width: 10vw;
         min-width: 60px;
@@ -63,7 +66,7 @@ const TwitterButton = ({ handleOnClick }) => {
       <BodyText sizer={1.25} style={{ marginLeft: "0.5rem" }} altText={true}>
       Follow
       </BodyText>
-    </div>
+    </a>
   );
 };
 

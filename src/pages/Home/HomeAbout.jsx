@@ -36,7 +36,7 @@ class HomeAbout extends React.Component {
           `}
         >
           <TwitterButton />
-          <ProfileButton />
+          <ProfileButton handleOnClick={() => this.props.history.push('/about')} />
         </div>
         <SectionDivider />
         <HomeSection category={"Featured Articles"} />
