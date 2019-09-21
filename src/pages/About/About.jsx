@@ -133,14 +133,25 @@ class About extends Component {
         <div
           css={`
             display: flex;
-            justify-content: space-between;
+
+            @media (max-width: 767px) {
+              justify-content: space-between;
+            }
+            @media (min-width: 768px) {
+              justify-content: space-between;
+            }
+            @media (min-width: 992px) {
+              justify-content: space-around;
+            }
+            @media (min-width: 1200px) {
+              justify-content: space-around;
+            }
           `}
         >
           <div
             css={`
               display: flex;
               flex-direction: column;
-              margin-left: 1rem;
             `}
           >
             <AboutDetail type={"like"} title="Likes..." items={this.likes}/>
@@ -158,11 +169,6 @@ class About extends Component {
             
           </div>
         </div>
-        {/* <span> Some More Info About Me</span>
-        <span> Likes </span>
-        <span> Dislikes </span>
-        <span> Goals </span>
-        <span> Motivations </span> */}
         <SectionDivider />
         <div
           css={`

@@ -8,8 +8,9 @@
   SEATTLE, WA
   </span>
 </center>
+<div style='margin-top: 2rem;'>
 <span style='font-family:bitter,georgia,serif; font-size:2em; color: #444;'>Summary</span>
-
+</div>
 > 5+ years of software engineering experience with a strong drive to continually learn and
 > share my knowledge. I strive in a team setting because sometimes a different perspective
 > can help you overcome a blocker. I hope to be faced with multiple challenges that will help
@@ -47,7 +48,7 @@ internal coding guidelines were met
 <br />
 <div style='display: flex; flex-direction: column;'>
  <span style='font-family:bitter,georgia,serif; font-size:1.25em; color: #444;'>
-  Freelance Web Developer / New Haven, Connecticut
+  Freelance Web Developer / New Haven, CT
  </span>
  <span style='font-family:dosis, "HelveticaNeue-CondensedBold", "trebuchet ms"; font-size:1em; color: #444;'>
   Jan. 2015 – Apr. 2019
@@ -79,7 +80,7 @@ NodeJS/ExpressJS backend
 
 <div style='display: flex; flex-direction: column;'>
  <span style='font-family:bitter,georgia,serif; font-size:1.25em; color: #444;'>
-  Senior Software Engineer / LevcoTech / Wilton, Connecticut
+  Sr. Software Engineer / LevcoTech / Wilton, CT
  </span>
  <span style='font-family:dosis, "HelveticaNeue-CondensedBold", "trebuchet ms"; font-size:1em; color: #444;'>
   Mar. 2017 – May. 2018
@@ -115,7 +116,7 @@ client deadlines
 
 <div style='display: flex; flex-direction: column;'>
  <span style='font-family:bitter,georgia,serif; font-size:1.25em; color: #444;'>
-  Quality Assurance Engineer / Twin Oaks / New Britain, Connecticut
+  Quality Assurance Engineer / Twin Oaks / New Britain, CT
  </span>
  <span style='font-family:dosis, "HelveticaNeue-CondensedBold", "trebuchet ms"; font-size:1em; color: #444;'>
   Nov. 2015 – Mar. 2017
@@ -139,7 +140,7 @@ and is compatible with browsers, devices, or operating systems   </li>
 <br />
 <div style='display: flex; flex-direction: column; margin-top: .75rem;'>
  <span style='font-family:bitter,georgia,serif; font-size:1.25em; color: #444;'>
-  Central Connecticut State University / New Britain, Ct
+  Central Connecticut State University / New Britain, CT
  </span>
  <span style='font-family:dosis, "HelveticaNeue-CondensedBold", "trebuchet ms"; font-size:1em; color: #444;'>
 Bachelor of Science, Physiology, May. 2014 </span>
