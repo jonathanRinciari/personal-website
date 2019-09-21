@@ -4,7 +4,7 @@ import { ACCENT, BACKGROUND } from "../theme";
 const Logo = ({ handleOnClick }) => {
   return (
     <div
-      onClick={handleOnClick}
+      onClick={ () => handleOnClick('/')}
       css={`
         display: flex;
         height: 10%;
@@ -13,6 +13,7 @@ const Logo = ({ handleOnClick }) => {
         min-width: 35px;
         max-height: 60px;
         max-width: 60px;
+        cursor: pointer;
       `}
     >
       <svg

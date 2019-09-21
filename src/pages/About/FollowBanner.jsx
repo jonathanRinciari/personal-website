@@ -4,7 +4,7 @@ import { ACCENT } from "../../theme";
 import SocialButton from "./SocialButton";
 
 const FollowBanner = ({}) => {
-  const defaultBanner = "Follow me at...";
+  const defaultBanner = "Follow me...";
   const [banner, setBanner] = useState(defaultBanner);
 
   const resetBanner = () => {

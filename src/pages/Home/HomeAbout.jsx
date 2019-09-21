@@ -9,9 +9,7 @@ import BodyText from "../../components/BodyText";
 import { withRouter } from 'react-router-dom';
 
 class HomeAbout extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+
   render() {
     return (
       <>
@@ -40,7 +38,7 @@ class HomeAbout extends React.Component {
         </div>
         <SectionDivider />
         <HomeSection category={"Featured Articles"} />
-        <HomeSection category={"Recent Projects"} />
+        <HomeSection style={{marginBottom: '2rem'}}category={"Recent Projects"} />
         <SectionDivider />
         <Footer handleNavigation={url => this.props.history.push(url)}/>
       </>

@@ -6,6 +6,7 @@ import Header from "./pages/Header/Header";
 import Home from "./pages/Home/Home";
 import HeaderNav from "./components/HeaderNav";
 import About from "./pages/About/About";
+import ErrorPage from "./pages/404/404";
 
 class App extends React.Component {
   constructor(props) {
@@ -21,7 +22,6 @@ class App extends React.Component {
         showMenu: !prevState.showMenu
       }
     })
-    console.log(this.props.history.location.pathname)
   }
 
   render() {
@@ -63,7 +63,7 @@ class App extends React.Component {
             }
           `}
         >
-          <Header handleOnClick={this.toggleMenu} />
+          <Header handleOnClick={this.toggleMenu} handleNavigateHome={(url) => this.props.history.push(url)} />
         </div>
         <HeaderNav
           show={this.state.showMenu}
@@ -78,6 +78,7 @@ class App extends React.Component {
           <Switch>
             <Route exact path="/" component={Home}></Route>
             <Route path="/about" component={About}></Route>
+            <Route path="/*" component={ErrorPage}></Route>
           </Switch>
         </div>
       </div>

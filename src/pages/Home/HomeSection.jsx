@@ -2,7 +2,7 @@ import React from "react";
 import { ACCENT, PRIMARY } from "../../theme";
 import BodyText from "../../components/BodyText";
 
-const HomeSection = ({ items, category }) => {
+const HomeSection = ({ items, category, ...props}) => {
   const icon = () => {
     if (category === "Featured Articles") {
       return (
@@ -41,7 +41,7 @@ const HomeSection = ({ items, category }) => {
     }
   };
   return (
-    <div>
+    <div {...props}>
       <div
         css={`
           display: flex;
@@ -65,7 +65,22 @@ const HomeSection = ({ items, category }) => {
           {category}
         </BodyText>
       </div>
-      {items && items.map((item, i) => SectionItem(item, i))}
+      {items && items.length > 0 ? items.map((item, i) => SectionItem(item, i)) : (
+        <BodyText
+        sizer={1}
+        tag="span"
+        altText={true}
+        color={ACCENT}
+        style={{
+          fontWeight: 700,
+          textAlign: "center",
+          textTransform: "uppercase",
+          margin: 0
+        }}
+      >
+        No {category} to show...
+      </BodyText>
+      )}
     </div>
   );
 };
