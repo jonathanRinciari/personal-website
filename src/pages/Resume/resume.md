@@ -137,7 +137,7 @@ and is compatible with browsers, devices, or operating systems   </li>
 <br/>
 <span style='font-family:bitter,georgia,serif; font-size:2em; color: #444;'>Education</span>
 <br />
-<div style='display: flex; flex-direction: column; '>
+<div style='display: flex; flex-direction: column; margin-top: .75rem;'>
  <span style='font-family:bitter,georgia,serif; font-size:1.25em; color: #444;'>
   Central Connecticut State University / New Britain, Ct
  </span>
