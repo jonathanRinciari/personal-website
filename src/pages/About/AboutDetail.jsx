@@ -104,8 +104,9 @@ const AboutDetail = ({ title, type, items }) => {
           padding-left: 1.7rem;
         `}
       >
-        {items.map(item => (
+        {items.map((item, i) => (
           <li
+            key={i}
             css={`
               padding-left: 0.5rem;
               margin-top: 0.25rem;

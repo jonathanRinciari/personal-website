@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route, withRouter } from "react-router-dom";
+import { Switch, Route, withRouter, Redirect } from "react-router-dom";
 import "./App.css";
 
 import Header from "./pages/Header/Header";
@@ -7,6 +7,7 @@ import Home from "./pages/Home/Home";
 import HeaderNav from "./components/HeaderNav";
 import About from "./pages/About/About";
 import ErrorPage from "./pages/404/404";
+import Resume from "./pages/Resume/Resume";
 
 class App extends React.Component {
   constructor(props) {
@@ -32,7 +33,7 @@ class App extends React.Component {
           height: 100%;
           min-height: 100vh;
           display: grid;
-          grid-template-rows: 0.5fr 6fr;
+          grid-template-rows: 0.5fr ${this.props.history.location.pathname === '/404' ? '6fr' : 'auto'};
           @media (max-width: 767px) {
             grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
             grid-template-areas: ". Header Header Header Header Header ." ". Content Content Content Content Content .";
@@ -78,7 +79,10 @@ class App extends React.Component {
           <Switch>
             <Route exact path="/" component={Home}></Route>
             <Route path="/about" component={About}></Route>
-            <Route path="/*" component={ErrorPage}></Route>
+            <Route path="/resume" component={Resume}></Route>
+            <Redirect from="/writing" to="/404"/>
+            <Redirect from="/projects" to="/404"/>
+            <Route path='/404' component={ErrorPage}></Route>
           </Switch>
         </div>
       </div>

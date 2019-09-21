@@ -15,3 +15,18 @@ code {
 .open-menu {
   height: 500px !important;
 }
+
+
+
+/*  */
+
+pre {
+  border: 1px solid #ccc;
+}
+
+blockquote {
+  color: #444;
+  margin: 0;
+  padding-left: 1em;
+  border-left: 0.5em #CC6666 solid;
+}
