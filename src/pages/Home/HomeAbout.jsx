@@ -44,7 +44,7 @@ class HomeAbout extends React.Component {
         <BodyText sizer={1.6} tag="p" style={{textAlign: 'center', margin: '1rem 0rem 2rem 0px'}} color={ACCENT}>
           Software Engineer from the USA with a keen interest in the frontend world.
           Currently working in Seattle, Washington as a Frontend Engineer II at
-          Amazon Webservices.
+          Amazon Web Services.
         </BodyText>
         <div
           css={`

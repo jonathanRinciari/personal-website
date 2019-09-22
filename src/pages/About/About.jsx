@@ -109,7 +109,7 @@ class About extends Component {
             }}
           >
             I'm Jon, a developer from Connecticut. I am a Frontend Engineer
-            working for Amazon Webservices in Seattle, Washington. I work on the
+            working for Amazon Web Services in Seattle, Washington. I work on the
             IoT platform with an amazing team!
           </BodyText>
           <BodyText
