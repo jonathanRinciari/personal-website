@@ -6,7 +6,7 @@ import SummaryCard from "./SummaryCard";
 import Footer from "./Footer";
 import Item from "./Item";
 
-const ItemsList = ({ title, subtext, items, activeTab, handleNavigation }) => {
+const ItemsList = ({ title, subtext, items, activeTab, handleNavigation, handleItemClick}) => {
   return (
     <div>
       <BodyText
@@ -94,8 +94,8 @@ const ItemsList = ({ title, subtext, items, activeTab, handleNavigation }) => {
           flex-direction: column;
         `}
       >
-        {items.map(item => (
-          <Item title={item.title} subtitle={item.subtext} />
+        {items.map((item, i) => (
+          <Item key={i} title={item.title} subtitle={item.subtext} handleOnClick={() => handleItemClick(item.url)}/>
         ))}
       </div>
       <SectionDivider />

@@ -1,32 +1,20 @@
 import React, { Component } from "react";
 import ItemsList from "../../components/ItemsList";
+import MyProjects from '../../projects';
 
 class Projects extends Component {
-  projects = [
-    {
-      project: "",
-      title: "YelpApi",
-      subtext: "Nativescript Plugin",
-      logo: ""
-    },
-    {
-      project: "",
-      title: "React Native Swipeable Cards",
-      subtext: "Component",
-      logo: ""
-    },
-    {
-      project: "",
-      title: "Angular Grid Directive",
-      subtext: "Angular Utility",
-      logo: ""
-    }
-  ];
+
+  projects = MyProjects;
+
+  navigate = (url) => {
+    this.props.history.push(url)
+  }
 
   render() {
     return (
       <ItemsList
         activeTab="Projects"
+        handleItemClick={this.navigate}
         items={this.projects}
         title="Projects"
         subtext={`
@@ -35,7 +23,7 @@ class Projects extends Component {
             on many open source projects, but also create my own libraries and
             utilities! 
         `}
-        handleNavigation={url => this.props.history.push(url)}
+        handleNavigation={this.navigate}
       />
     );
   }

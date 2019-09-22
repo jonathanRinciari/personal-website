@@ -7,28 +7,10 @@ import HomeSection from "./HomeSection";
 import Footer from "../../components/Footer";
 import BodyText from "../../components/BodyText";
 import { withRouter } from 'react-router-dom';
+import MyProjects from '../../projects';
 
 class HomeAbout extends React.Component {
-  projects = [
-    {
-      project: "",
-      title: "YelpApi",
-      subtext: "Nativescript Plugin",
-      logo: ""
-    },
-    {
-      project: "",
-      title: "React Native Swipeable Cards",
-      subtext: "Component",
-      logo: ""
-    },
-    {
-      project: "",
-      title: "Angular Grid Directive",
-      subtext: "Angular Utility",
-      logo: ""
-    }
-  ];
+  projects = MyProjects;
   render() {
     return (
       <>
