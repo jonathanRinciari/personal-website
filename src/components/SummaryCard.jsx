@@ -75,7 +75,7 @@ const SummaryCard = ({}) => {
             margin: "2rem 0"
           }}
         >
-          I have been working at a software engineer for ~ 5 years. I am
+          I have been working at a software engineer for ~5 years. I am
           currently working for AWS in Seattle, Washington as a Frontend
           Engineer II.
         </BodyText>

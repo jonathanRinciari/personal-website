@@ -1,10 +1,4 @@
 import React, { Component } from "react";
-import BodyText from "../../components/BodyText";
-import { ACCENT, PRIMARY } from "../../theme";
-import Footer from "../../components/Footer";
-import SectionDivider from "../Home/SectionDivider";
-import SummaryCard from "../../components/SummaryCard";
-import Item from "../../components/Item";
 import ItemsList from "../../components/ItemsList";
 
 class Projects extends Component {
