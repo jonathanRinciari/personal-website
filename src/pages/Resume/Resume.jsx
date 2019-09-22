@@ -14,18 +14,13 @@ class Resume extends Component {
     fetch(resumePath)
       .then(response => response.text())
       .then(text => {
-        console.log(text);
         this.setState({ md: text });
       });
   }
 
   render() {
     return (
-      <div
-        css={`
-
-        `}
-      >
+      <div>
         {this.state.md && <ReactMarkdown 
         source={this.state.md}
         escapeHtml={false}

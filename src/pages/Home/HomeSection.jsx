@@ -1,8 +1,9 @@
 import React from "react";
 import { ACCENT, PRIMARY } from "../../theme";
 import BodyText from "../../components/BodyText";
+import Item from "../../components/Item";
 
-const HomeSection = ({ items, category, ...props}) => {
+const HomeSection = ({ items, category, ...props }) => {
   const icon = () => {
     if (category === "Featured Articles") {
       return (
@@ -41,91 +42,53 @@ const HomeSection = ({ items, category, ...props}) => {
     }
   };
   return (
-    <div {...props}>
-      <div
-        css={`
-          display: flex;
-          align-items: center;
-          padding: 1.5rem 0;
-        `}
-      >
-        <div
-          css={`
-          width: 25px;
-          height: 25px;
-          @media(max-width: 767px) {
-            height: 20px;
-            width: 20px;
-          }
-          `}
-        >
-          {icon()}
+    <>
+      {items && items.length > 0 ? (
+        <div {...props}>
+          <div
+            css={`
+              display: flex;
+              align-items: center;
+              padding: 1.5rem 0;
+              padding-left: 1rem;
+            `}
+          >
+            <div
+              css={`
+                width: 25px;
+                height: 25px;
+                @media (max-width: 767px) {
+                  height: 20px;
+                  width: 20px;
+                }
+              `}
+            >
+              {icon()}
+            </div>
+            <BodyText
+              sizer={1.7}
+              tag="h2"
+              altText={true}
+              style={{
+                textTransform: "uppercase",
+                margin: 0,
+                marginLeft: "1rem"
+              }}
+            >
+              {category}
+            </BodyText>
+          </div>
+          {items && items.length > 0
+            ? items.map((item, i) => SectionItem(item, i))
+            : null}
         </div>
-        <BodyText sizer={1.7} tag='h2' altText={true} style={{textTransform: 'uppercase', margin: 0, marginLeft: '1rem'}}>
-          {category}
-        </BodyText>
-      </div>
-      {items && items.length > 0 ? items.map((item, i) => SectionItem(item, i)) : (
-        <BodyText
-        sizer={1}
-        tag="span"
-        altText={true}
-        color={ACCENT}
-        style={{
-          fontWeight: 700,
-          textAlign: "center",
-          textTransform: "uppercase",
-          margin: 0
-        }}
-      >
-        No {category} to show...
-      </BodyText>
-      )}
-    </div>
+      ) : null}
+    </>
   );
 };
 
 const SectionItem = (item, i) => {
-  return (
-    <div
-      key={i}
-      css={`
-        border-top: 1px solid rgba(0, 0, 0, 0.1);
-        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        padding: 0.5rem 0;
-        transition: all 200ms ease-in-out;
-        &:hover {
-          background: white;
-          color: ${PRIMARY};
-          cursor: pointer;
-        }
-      `}
-    >
-      <div
-        css={`
-          padding-left: 20px;
-          display: flex;
-          flex-direction: column;
-        `}
-      >
-        <span
-          css={`
-            font-size: 24px;
-          `}
-        >
-          {item.name}
-        </span>
-        <span
-          css={`
-            font-size: 12px;
-            color: rgba(0, 0, 0, 0.35);
-          `}
-        >
-          {item.subtext}
-        </span>
-      </div>
-    </div>
-  );
+  return <Item key={i} title={item.title} subtitle={item.subtext} />;
 };
 
 export default HomeSection;

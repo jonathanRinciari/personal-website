@@ -8,6 +8,7 @@ import HeaderNav from "./components/HeaderNav";
 import About from "./pages/About/About";
 import ErrorPage from "./pages/404/404";
 import Resume from "./pages/Resume/Resume";
+import Projects from "./pages/Projects/Projects";
 
 class App extends React.Component {
   constructor(props) {
@@ -80,8 +81,8 @@ class App extends React.Component {
             <Route exact path="/" component={Home}></Route>
             <Route path="/about" component={About}></Route>
             <Route path="/resume" component={Resume}></Route>
+            <Route path="/projects" component={Projects}></Route>
             <Redirect from="/writing" to="/404"/>
-            <Redirect from="/projects" to="/404"/>
             <Route path='/404' component={ErrorPage}></Route>
           </Switch>
         </div>

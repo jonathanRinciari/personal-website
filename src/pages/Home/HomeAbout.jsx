@@ -9,7 +9,26 @@ import BodyText from "../../components/BodyText";
 import { withRouter } from 'react-router-dom';
 
 class HomeAbout extends React.Component {
-
+  projects = [
+    {
+      project: "",
+      title: "YelpApi",
+      subtext: "Nativescript Plugin",
+      logo: ""
+    },
+    {
+      project: "",
+      title: "React Native Swipeable Cards",
+      subtext: "Component",
+      logo: ""
+    },
+    {
+      project: "",
+      title: "Angular Grid Directive",
+      subtext: "Angular Utility",
+      logo: ""
+    }
+  ];
   render() {
     return (
       <>
@@ -38,7 +57,7 @@ class HomeAbout extends React.Component {
         </div>
         <SectionDivider />
         <HomeSection category={"Featured Articles"} />
-        <HomeSection style={{marginBottom: '2rem'}}category={"Recent Projects"} />
+        <HomeSection style={{marginBottom: '2rem'}}category={"Recent Projects"} items={this.projects} />
         <SectionDivider />
         <Footer handleNavigation={url => this.props.history.push(url)}/>
       </>
