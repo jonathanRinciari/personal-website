@@ -10,11 +10,15 @@ class Projects extends Component {
     this.props.history.push(url)
   }
 
+  navigateItem = item => {
+    this.props.history.push(`/projects/${item.url}`)
+  }
+
   render() {
     return (
       <ItemsList
         activeTab="Projects"
-        handleItemClick={this.navigate}
+        handleItemClick={this.navigateItem}
         items={this.projects}
         title="Projects"
         subtext={`
