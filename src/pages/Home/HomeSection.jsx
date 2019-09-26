@@ -3,7 +3,7 @@ import { ACCENT, PRIMARY } from "../../theme";
 import BodyText from "../../components/BodyText";
 import Item from "../../components/Item";
 
-const HomeSection = ({ items, category, ...props }) => {
+const HomeSection = ({ items, category, handleOnClick, ...props }) => {
   const icon = () => {
     if (category === "Featured Articles") {
       return (
@@ -79,7 +79,7 @@ const HomeSection = ({ items, category, ...props }) => {
             </BodyText>
           </div>
           {items && items.length > 0
-            ? items.map((item, i) => SectionItem(item, i))
+            ? items.map((item, i) => SectionItem(item, i, handleOnClick))
             : null}
         </div>
       ) : null}
@@ -87,8 +87,8 @@ const HomeSection = ({ items, category, ...props }) => {
   );
 };
 
-const SectionItem = (item, i) => {
-  return <Item key={i} title={item.title} subtitle={item.subtext} />;
+const SectionItem = (item, i, onClick) => {
+  return <Item  handleOnClick={() => onClick(item)} key={i} title={item.title} subtitle={item.subtext} />;
 };
 
 export default HomeSection;

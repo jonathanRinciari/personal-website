@@ -9,6 +9,9 @@ import About from "./pages/About/About";
 import ErrorPage from "./pages/404/404";
 import Resume from "./pages/Resume/Resume";
 import Projects from "./pages/Projects/Projects";
+import Writings from "./pages/Writings/Writings";
+import Project from "./pages/Project/Project";
+import Writing from "./pages/Writing/Writing";
 
 class App extends React.Component {
   constructor(props) {
@@ -81,9 +84,12 @@ class App extends React.Component {
             <Route exact path="/" component={Home}></Route>
             <Route path="/about" component={About}></Route>
             <Route path="/resume" component={Resume}></Route>
+            <Route path='/projects/:title' component={Project}></Route>
             <Route path="/projects" component={Projects}></Route>
-            <Redirect from="/writing" to="/404"/>
+            <Route path="/writing/:title" component={Writing}></Route>
+            <Route path="/writing" component={Writings}></Route>
             <Route path='/404' component={ErrorPage}></Route>
+            <Redirect from="*" to="/404"/>
           </Switch>
         </div>
       </div>

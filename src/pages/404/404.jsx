@@ -3,6 +3,7 @@ import BodyText from "../../components/BodyText";
 import { ACCENT } from "../../theme";
 
 const ErrorPage = ({}) => {
+  console.log('test')
   return (
     <div>
       <BodyText
@@ -31,9 +32,7 @@ const ErrorPage = ({}) => {
           margin: 0
         }}
       >
-        This page is still a work in progress. 
-        It will be up soon, but until then check out 
-        the other pages!
+        This page doesn't exist! Click on the navigation menu to check out some of the other great pages!
       </BodyText>
     </div>
   );

@@ -8,9 +8,16 @@ import Footer from "../../components/Footer";
 import BodyText from "../../components/BodyText";
 import { withRouter } from 'react-router-dom';
 import MyProjects from '../../projects';
+import MyWritings from '../../writings';
 
 class HomeAbout extends React.Component {
   projects = MyProjects;
+  writing = MyWritings;
+
+  handleItemNavigation = (item, type) => {
+    this.props.history.push(`/${type}/${item.url}`)
+  }
+
   render() {
     return (
       <>
@@ -38,8 +45,8 @@ class HomeAbout extends React.Component {
           <ProfileButton handleOnClick={() => this.props.history.push('/about')} />
         </div>
         <SectionDivider />
-        <HomeSection category={"Featured Articles"} />
-        <HomeSection style={{marginBottom: '2rem'}}category={"Recent Projects"} items={this.projects} />
+        <HomeSection category={"Featured Articles"} items={this.writing} handleOnClick={e => this.handleItemNavigation(e, 'writing')} />
+        <HomeSection style={{marginBottom: '2rem'}} category={"Recent Projects"} handleOnClick={e => this.handleItemNavigation(e, 'projects')} items={this.projects} />
         <SectionDivider />
         <Footer handleNavigation={url => this.props.history.push(url)}/>
       </>

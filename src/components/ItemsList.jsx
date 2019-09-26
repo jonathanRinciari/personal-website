@@ -95,7 +95,7 @@ const ItemsList = ({ title, subtext, items, activeTab, handleNavigation, handleI
         `}
       >
         {items.map((item, i) => (
-          <Item key={i} title={item.title} subtitle={item.subtext} handleOnClick={() => handleItemClick(item.url)}/>
+          <Item key={i} title={item.title} subtitle={item.subtext} handleOnClick={() => handleItemClick(item)}/>
         ))}
       </div>
       <SectionDivider />
