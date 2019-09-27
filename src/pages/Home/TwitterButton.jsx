@@ -7,6 +7,7 @@ const TwitterButton = ({ handleOnClick }) => {
     <a
       href={'https://twitter.com/jonrinciari'}
       target="_target"
+      rel="noopener noreferrer"
       onClick={handleOnClick}
       css={`
         background: ${ACCENT};

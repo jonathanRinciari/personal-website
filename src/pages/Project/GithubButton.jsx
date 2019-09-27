@@ -7,6 +7,7 @@ const GithubButton = ({ handleOnClick }) => {
     <a
       href={'https://github.com/jonathanrinciari'}
       target="_target"
+      rel="noopener noreferrer"
       onClick={handleOnClick}
       css={`
         background: ${ACCENT};
