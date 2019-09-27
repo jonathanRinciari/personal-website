@@ -2,9 +2,7 @@ import React from "react";
 import HeadShot from "../assets/images/profile.jpg";
 import BodyText from "./BodyText";
 import { ACCENT } from "../theme";
-import SocialButton from "../pages/About/SocialButton";
 import FollowBanner from "../pages/About/FollowBanner";
-import SectionDivider from "../pages/Home/SectionDivider";
 
 const SummaryCard = ({}) => {
   return (
