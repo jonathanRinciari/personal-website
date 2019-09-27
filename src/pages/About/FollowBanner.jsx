@@ -3,7 +3,7 @@ import BodyText from "../../components/BodyText";
 import { ACCENT } from "../../theme";
 import SocialButton from "./SocialButton";
 
-const FollowBanner = ({size = 1.5}) => {
+const FollowBanner = ({size = 1.4}) => {
   const defaultBanner = "Follow me...";
   const [banner, setBanner] = useState(defaultBanner);
 
@@ -27,7 +27,7 @@ const FollowBanner = ({size = 1.5}) => {
         style={{
           fontWeight: "bolder",
           textAlign: "left",
-          flex: 1
+          flex: 1,
         }}
       >
         {banner}
