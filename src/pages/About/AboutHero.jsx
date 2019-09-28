@@ -2,7 +2,7 @@ import React from "react";
 import Commit from "../../assets/images/commit.jpeg";
 import { ACCENT } from "../../theme";
 
-const AboutHero = ({}) => {
+const AboutHero = () => {
   return (
     <div
       css={`
