@@ -1,5 +1,5 @@
 import React from "react";
-import { ACCENT, PRIMARY } from "../../theme";
+import { ACCENT } from "../../theme";
 import BodyText from "../../components/BodyText";
 import Item from "../../components/Item";
 
