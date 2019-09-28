@@ -1,5 +1,5 @@
-const MyProjects = [
-  {
+const MyProjects = {
+  'yelp-api': {
     url: "yelp-api",
     title: "YelpApi",
     subtext: "Nativescript Plugin",
@@ -13,7 +13,7 @@ const MyProjects = [
     demo: null,
     repo: 'https://www.github.com/jonathanRinciari/nativescript-plugin-yelpapi'
   },
-  {
+  "react-native-swipeable-cards": {
     url: "react-native-swipeable-cards",
     title: "React Native Swipeable Cards",
     subtext: "Component",
@@ -24,7 +24,7 @@ const MyProjects = [
     demo: '',
     repo: ''
   },
-  {
+  "angular-grid-directive": {
     url: "angular-grid-directive",
     title: "Angular Grid Directive",
     subtext: "Angular Utility",
@@ -35,6 +35,6 @@ const MyProjects = [
     demo: '',
     repo: ''
   }
-];
+};
 
 export default MyProjects

@@ -11,7 +11,7 @@ import MyProjects from '../../projects';
 import MyWritings from '../../writings';
 
 class HomeAbout extends React.Component {
-  projects = MyProjects;
+  projects = Object.values(MyProjects);
   writing = MyWritings;
 
   handleItemNavigation = (item, type) => {

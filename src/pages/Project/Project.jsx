@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+
 import BodyText from "../../components/BodyText";
 import { ACCENT } from "../../theme";
 import SectionDivider from "../Home/SectionDivider";
@@ -7,12 +8,25 @@ import SummaryCard from "../../components/SummaryCard";
 import Footer from "../../components/Footer";
 import SupportBlock from "./SupportBlock";
 import AnchorButton from "./AnchorButton";
+import MyProjects from "../../projects";
 
 class Project extends Component {
+  projects = MyProjects;
+  project = {};
+
+  constructor(props) {
+    super(props);
+    const { title } = this.props.match.params;
+      
+    const project = this.projects[title];
+    if (!project) {
+      this.props.history.push("/404");
+    } else {
+      this.project = project;
+    }
+  }
+
   render() {
-    const project = this.props.location.state.project
-      ? this.props.location.state.project
-      : {};
     return (
       <div>
         <div>
@@ -28,7 +42,7 @@ class Project extends Component {
               margin: 0
             }}
           >
-            {project.title}
+            {this.project.title}
           </BodyText>
           <BodyText
             sizer={1.75}
@@ -42,7 +56,7 @@ class Project extends Component {
               marginBottom: "2rem"
             }}
           >
-            {project.subtext}
+            {this.project.subtext}
           </BodyText>
         </div>
         <SectionDivider />
@@ -57,7 +71,7 @@ class Project extends Component {
             margin: "2rem 0"
           }}
         >
-          {project.headline}
+          {this.project.headline}
         </BodyText>
         <CategoryDivider />
         <BodyText
@@ -84,7 +98,7 @@ class Project extends Component {
             margin: "2rem 0"
           }}
         >
-          {project.info}
+          {this.project.info}
         </BodyText>
         <div
           css={`
@@ -96,10 +110,21 @@ class Project extends Component {
             }
           `}
         >
-          {project.demo ? (
-            <AnchorButton url={project.demo} text="Demo" minWidth="60" maxWidth="75" />
+          {this.project.demo ? (
+            <AnchorButton
+              url={this.project.demo}
+              text="Demo"
+              minWidth="60"
+              maxWidth="75"
+            />
           ) : null}
-          <AnchorButton url={project.repo} marginLeft={project.demo ? true : false} text="Source Code" minWidth="120" maxWidth="135"/>
+          <AnchorButton
+            url={this.project.repo}
+            marginLeft={this.project.demo ? true : false}
+            text="Source Code"
+            minWidth="120"
+            maxWidth="135"
+          />
         </div>
         <CategoryDivider />
         <BodyText
@@ -126,14 +151,17 @@ class Project extends Component {
             margin: "2rem 0"
           }}
         >
-          {project.use}
+          {this.project.use}
         </BodyText>
         <CategoryDivider />
         <SupportBlock
           handleNavigation={() => this.props.history.push("/projects")}
         />
         <SummaryCard />
-        <Footer activeItem={"Projects"} handleNavigation={() => {}} />
+        <Footer
+          activeItem={"Projects"}
+          handleNavigation={url => this.props.history.push(url)}
+        />
       </div>
     );
   }

@@ -4,7 +4,7 @@ import MyProjects from '../../projects';
 
 class Projects extends Component {
 
-  projects = MyProjects;
+  projects = Object.values(MyProjects);
 
   navigate = (url) => {
     this.props.history.push(url)

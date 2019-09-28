@@ -3,7 +3,7 @@ import { ACCENT, PRIMARY } from "../../theme";
 import BodyText from "../../components/BodyText";
 
 const AnchorButton = ({ url, text, minWidth, maxWidth, marginLeft }) => {
-    console.log(url)
+    
   return (
     <a
       href={url}
