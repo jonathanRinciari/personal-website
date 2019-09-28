@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-const CategoryDivider = ({}) => {
+const CategoryDivider = () => {
     return (
         <div css={`
         background: rgba(0,0,0,0.1);
