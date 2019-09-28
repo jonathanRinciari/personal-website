@@ -1,7 +1,7 @@
 import React from "react";
 import { PRIMARY } from "../../theme";
 
-const SectionDivider = ({}) => {
+const SectionDivider = () => {
   return (
     <div
       css={`
