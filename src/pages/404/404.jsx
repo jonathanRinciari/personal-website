@@ -2,7 +2,7 @@ import React from "react";
 import BodyText from "../../components/BodyText";
 import { ACCENT } from "../../theme";
 
-const ErrorPage = ({}) => {
+const ErrorPage = () => {
   console.log('test')
   return (
     <div>
