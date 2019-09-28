@@ -11,10 +11,10 @@
 <div style='margin-top: 2rem;'>
 <span style='font-family:bitter,georgia,serif; font-size:2em; color: #444;'>Summary</span>
 </div>
-> 5+ years of software engineering experience with a strong drive to continually learn and
-> share my knowledge. I strive in a team setting because sometimes a different perspective
-> can help you overcome a blocker. I hope to be faced with multiple challenges that will help
-> me to improve my technical abilities.
+  5+ years of software engineering experience with a strong drive to continually learn and
+  share my knowledge. I strive in a team setting because sometimes a different perspective
+  can help you overcome a blocker. I hope to be faced with multiple challenges that will help
+  me to improve my technical abilities.
 
 <br/>
 <span style='font-family:bitter,georgia,serif; font-size:2em; color: #444;'>Employment History</span>
