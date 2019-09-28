@@ -55,6 +55,7 @@ const SocialButton = ({ type, onSocialIn, onSocialOut, url}) => {
     <a
       href={url}
       target="_blank"
+      rel="noopener noreferrer"
       onMouseEnter={onSocialIn}
       onMouseLeave={onSocialOut}
       css={`
