@@ -3,7 +3,7 @@ import { BACKGROUND, PRIMARY } from '../../theme';
 import BodyText from '../../components/BodyText';
 
 
-const HomeBanner = ({}) => {
+const HomeBanner = () => {
     return (
         <div css={`
         background: ${PRIMARY};
