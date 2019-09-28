@@ -3,7 +3,7 @@ import BodyText from "../../components/BodyText";
 import { ACCENT, PRIMARY } from "../../theme";
 import GithubButton from "./GithubButton";
 import SectionDivider from "../Home/SectionDivider";
-import MoreProjectsButton from "./MoreProjectsButton";
+import Button from "./Button";
 
 /**
  *   githubLink
@@ -88,6 +88,7 @@ const SupportBlock = ({ githubLink, demoLink, handleNavigation }) => {
             `}
             href={`https://www.github.com/jonathanRinciari${githubLink}`}
             target="_blank"
+            rel="noopener noreferrer"
           >
             open an issue
           </a>{" "}
@@ -162,6 +163,7 @@ const SupportBlock = ({ githubLink, demoLink, handleNavigation }) => {
                   }
                 `}
                 href={`${demoLink}`}
+                rel="noopener noreferrer"
                 target="_blank"
               >
                 View Demo
@@ -210,6 +212,7 @@ const SupportBlock = ({ githubLink, demoLink, handleNavigation }) => {
             `}
             href={`https://www.github.com/jonathanRinciari${githubLink}`}
             target="_blank"
+            rel="noopener noreferrer"
           >
             View Source on Github
           </a>
@@ -226,7 +229,7 @@ const SupportBlock = ({ githubLink, demoLink, handleNavigation }) => {
         `}
       >
         <GithubButton />
-        <MoreProjectsButton handleOnClick={handleNavigation} />
+        <Button marginLeft={true} text={'More Projects...'} minWidth="120" maxWidth="170" handleOnClick={handleNavigation} />
       </div>
       <SectionDivider />
     </div>
