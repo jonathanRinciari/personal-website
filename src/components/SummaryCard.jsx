@@ -4,7 +4,7 @@ import BodyText from "./BodyText";
 import { ACCENT } from "../theme";
 import FollowBanner from "../pages/About/FollowBanner";
 
-const SummaryCard = ({}) => {
+const SummaryCard = () => {
   return (
     <div>
       <div
