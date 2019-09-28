@@ -11,7 +11,7 @@ class Projects extends Component {
   }
 
   navigateItem = item => {
-    this.props.history.push(`/projects/${item.url}`)
+    this.props.history.push(`/projects/${item.url}`, {project: item})
   }
 
   render() {
