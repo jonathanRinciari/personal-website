@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { PRIMARY, ACCENT } from "../theme";
 
 const BodyText = ({
   tag: Tag = "span",
