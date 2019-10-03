@@ -1,18 +1,11 @@
 import React from "react";
-import { Switch, Route, withRouter, Redirect } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import "./App.css";
-import ReactGA from 'react-ga';
+
 
 import Header from "./pages/Header/Header";
-import Home from "./pages/Home/Home";
 import HeaderNav from "./components/HeaderNav";
-import About from "./pages/About/About";
-import ErrorPage from "./pages/404/404";
-import Resume from "./pages/Resume/Resume";
-import Projects from "./pages/Projects/Projects";
-import Writings from "./pages/Writings/Writings";
-import Project from "./pages/Project/Project";
-import Writing from "./pages/Writing/Writing";
+import AppRouter from "./Router";
 
 class App extends React.Component {
   constructor(props) {
@@ -28,15 +21,6 @@ class App extends React.Component {
         showMenu: !prevState.showMenu
       }
     })
-  }
-
-  initializeReactGA = () => {
-    ReactGA.initialize('UA-149353833-1');
-    ReactGA.pageview('/');
-  }
-
-  componentDidMount() {
-    this.initializeReactGA();
   }
 
   render() {
@@ -90,17 +74,7 @@ class App extends React.Component {
             grid-area: Content;
           `}
         >
-          <Switch>
-            <Route exact path="/" component={Home}></Route>
-            <Route path="/about" component={About}></Route>
-            <Route path="/resume" component={Resume}></Route>
-            <Route path='/projects/:title' component={Project}></Route>
-            <Route path="/projects" component={Projects}></Route>
-            <Route path="/writing/:title" component={Writing}></Route>
-            <Route path="/writing" component={Writings}></Route>
-            <Route path='/404' component={ErrorPage}></Route>
-            <Redirect from="*" to="/404"/>
-          </Switch>
+         <AppRouter />
         </div>
       </div>
     );

@@ -2,7 +2,6 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 
 const SEO = ({children, title, description, keywords}) => {
-  console.log('test');
     return (
       <>
         <Helmet>
