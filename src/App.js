@@ -1,6 +1,7 @@
 import React from "react";
 import { Switch, Route, withRouter, Redirect } from "react-router-dom";
 import "./App.css";
+import ReactGA from 'react-ga';
 
 import Header from "./pages/Header/Header";
 import Home from "./pages/Home/Home";
@@ -27,6 +28,15 @@ class App extends React.Component {
         showMenu: !prevState.showMenu
       }
     })
+  }
+
+  initializeReactGA = () => {
+    ReactGA.initialize('UA-149353833-1');
+    ReactGA.pageview('/');
+  }
+
+  componentDidMount() {
+    this.initializeReactGA();
   }
 
   render() {
