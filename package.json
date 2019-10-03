@@ -72,7 +72,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "start-sw": "http-server ./build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -141,5 +142,8 @@
     "presets": [
       "react-app"
     ]
+  },
+  "devDependencies": {
+    "http-server": "^0.11.1"
   }
 }

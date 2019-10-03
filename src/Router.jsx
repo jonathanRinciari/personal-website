@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Switch, Route, Redirect, Router } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import About from "./pages/About/About";
 import Resume from "./pages/Resume/Resume";
