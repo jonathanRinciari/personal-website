@@ -70,5 +70,4 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 
 ### TODO
 
-1. SEO For Blog & root
-2. GA
+1. GA

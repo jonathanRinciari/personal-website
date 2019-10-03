@@ -3,7 +3,6 @@ import BodyText from "../../components/BodyText";
 import { ACCENT } from "../../theme";
 
 const ErrorPage = () => {
-  console.log('test')
   return (
     <div>
       <BodyText

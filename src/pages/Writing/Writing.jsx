@@ -5,10 +5,9 @@ import SummaryCard from "../../components/SummaryCard";
 import SectionDivider from "../Home/SectionDivider";
 import BodyText from "../../components/BodyText";
 import { ACCENT } from "../../theme";
-import CodeBlock from './SyntaxHighlighter';
-
+import CodeBlock from "./SyntaxHighlighter";
+import SEO from "../../components/Seo";
 class Writing extends Component {
-  
   constructor(props) {
     super(props);
     this.state = {
@@ -22,73 +21,83 @@ class Writing extends Component {
     try {
       const resumePath = require(`./posts/${article}/index.md`);
       const { default: meta } = require(`./posts/${article}/meta.js`);
-      const Image = require(`./posts/${article}/${meta.cover}`)
+      const Image = require(`./posts/${article}/${meta.cover}`);
       fetch(resumePath)
-      .then(response => response.text())
-      .then(text => {
-        this.setState({ md: text, meta, article, cover: Image});
-      })
-      .catch((err) => console.error(err))
+        .then(response => response.text())
+        .then(text => {
+          this.setState({ md: text, meta, article, cover: Image });
+        })
+        .catch(err => console.error(err));
     } catch (err) {
       this.props.history.push("/404");
     }
-    
-    
   }
 
   render() {
     return (
       <>
-        <div>
-          <BodyText
-            sizer={3}
-            tag="h1"
-            altText={true}
-            color={ACCENT}
-            style={{
-              fontWeight: 700,
-              textAlign: "left",
-              textTransform: "uppercase",
-              margin: 0
-            }}
-          >
-            {this.state.meta && this.state.meta.title}
-          </BodyText>
-          <BodyText
-            sizer={1}
-            tag="h1"
-            altText={true}
-            color={ACCENT}
-            style={{
-              fontWeight: 700,
-              textAlign: "left",
-              textTransform: "uppercase",
-              margin: 0,
-              marginBottom: '1rem'
-            }}
-          >
-            Published {this.state.meta && this.state.meta.date}
-          </BodyText>
-        </div>
-        {this.state.meta ? (
+        <SEO
+          title={this.state.meta && this.state.meta.title}
+          description={this.state.md && this.state.md.slice(0, 30)}
+          keywords={this.state.meta && this.state.meta.keywords}
+        >
+          <div>
+            <BodyText
+              sizer={3}
+              tag="h1"
+              altText={true}
+              color={ACCENT}
+              style={{
+                fontWeight: 700,
+                textAlign: "left",
+                textTransform: "uppercase",
+                margin: 0
+              }}
+            >
+              {this.state.meta && this.state.meta.title}
+            </BodyText>
+            <BodyText
+              sizer={1}
+              tag="h1"
+              altText={true}
+              color={ACCENT}
+              style={{
+                fontWeight: 700,
+                textAlign: "left",
+                textTransform: "uppercase",
+                margin: 0,
+                marginBottom: "1rem"
+              }}
+            >
+              Published {this.state.meta && this.state.meta.date}
+            </BodyText>
+          </div>
+          {this.state.meta ? (
             <div>
-            <img css={`width: 100%;`} src={this.state.cover} alt={this.state.meta ? this.state.meta.cover : ''}/>
-        </div>
-        ) : null}
-        {this.state.md && (
-          <ReactMarkdown
-            source={this.state.md}
-            escapeHtml={false}
-            className="blog-post"
-            renderers={{code: CodeBlock}}
+              <img
+                css={`
+                  width: 100%;
+                `}
+                src={this.state.cover}
+                alt={this.state.meta ? this.state.meta.cover : ""}
+              />
+            </div>
+          ) : null}
+          {this.state.md && (
+            <ReactMarkdown
+              source={this.state.md}
+              escapeHtml={false}
+              className="blog-post"
+              renderers={{ code: CodeBlock }}
+            />
+          )}
+          <SectionDivider />
+          <SummaryCard />
+          <Footer
+            activeItem={"Writings"}
+            handleNavigation={url => this.props.history.push(url)}
           />
-        )}
-        <SectionDivider />
-        <SummaryCard />
-        <Footer
-          activeItem={"Writings"}
-          handleNavigation={url => this.props.history.push(url)}
-        />
+        </SEO>
       </>
     );
   }

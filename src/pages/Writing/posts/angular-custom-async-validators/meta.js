@@ -4,12 +4,11 @@ export default {
   date: "2019-05-12",
   title: "Angular: Custom Async Validators",
   published: false,
-  tags: [
-    "angular",
-    "typescript",
-    "forms",
-    "validators",
-    "async validators",
-    "javascript"
-  ]
+  tags:
+    `angular,
+    typescript,
+    forms,
+    validators,
+    async validators,
+    javascript`
 };

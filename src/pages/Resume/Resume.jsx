@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ReactMarkdown from "react-markdown";
 import Footer from "../../components/Footer";
+import SEO from "../../components/Seo";
 
 class Resume extends Component {
   constructor(props) {
@@ -20,16 +21,21 @@ class Resume extends Component {
 
   render() {
     return (
-      <div>
-        {this.state.md && <ReactMarkdown 
-        source={this.state.md}
-        escapeHtml={false}
-        />}
-        <Footer
+      <SEO
+        title="Jon Rinciari Resume"
+        description="The resume of Jon Rinciari, Amazon Software Engineer"
+        keywords="Jon, Rinciari, Jon Rinciari, Software Engineer, software development, Amazon, AWS Engineer, Frontend Developer, React Developer"
+      >
+        <div>
+          {this.state.md && (
+            <ReactMarkdown source={this.state.md} escapeHtml={false} />
+          )}
+          <Footer
             activeItem={"Resume"}
             handleNavigation={url => this.props.history.push(url)}
-        />
-      </div>
+          />
+        </div>
+      </SEO>
     );
   }
 }
