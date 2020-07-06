@@ -120,7 +120,7 @@ class NavButton extends Component {
       )
     },
     home: {
-      title: "jonrinciari.com",
+      title: "jonrinciari.dev",
       url: '/',
       icon: null
     }
