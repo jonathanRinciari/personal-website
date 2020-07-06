@@ -19,17 +19,17 @@ class Writing extends Component {
   componentDidMount() {
     const { title: article } = this.props.match.params;
     try {
-      const resumePath = require(`./posts/${article}/index.md`);
+      const articlePath = require(`./posts/${article}/index.md`);
       const { default: meta } = require(`./posts/${article}/meta.js`);
       const Image = require(`./posts/${article}/${meta.cover}`);
-      fetch(resumePath)
+      fetch(articlePath)
         .then(response => response.text())
         .then(text => {
           this.setState({ md: text, meta, article, cover: Image });
         })
         .catch(err => console.error(err));
     } catch (err) {
-      this.props.history.push("/404");
+      // this.props.history.push("/404");
     }
   }
 

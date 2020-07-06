@@ -4,7 +4,7 @@ const MyWritings = [
     title: "A brief introduction to meta-tags",
     subtext: "600 words",
     logo: "",
-    published: false
+    published: true
   },
   {
     url: "angular-custom-async-validators",

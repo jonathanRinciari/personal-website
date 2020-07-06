@@ -1,9 +1,9 @@
 export default {
-  path: "/brief-introduction-to-meta-tags",
+  path: "/a-brief-introduction-to-meta-tags",
   cover: "html.jpeg",
   date: "2020-06-28",
   title: "A brief introduction to meta tags",
-  published: true,
+  published: false,
   tags: 
     `html5,
      meta-tags,
