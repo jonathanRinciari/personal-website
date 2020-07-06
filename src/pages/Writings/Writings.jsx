@@ -4,7 +4,7 @@ import ItemsList from "../../components/ItemsList";
 import SEO from "../../components/Seo";
 
 class Writings extends Component {
-  writings = MyWritings;
+  writings = MyWritings.filter(writing => writing.published);
 
   navigate = url => {
     this.props.history.push(url);

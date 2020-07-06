@@ -1,5 +1,12 @@
 const MyWritings = [
   {
+    url: "beginner-meta-tags",
+    title: "A brief introduction to meta-tags",
+    subtext: "600 words",
+    logo: "",
+    published: false
+  },
+  {
     url: "angular-custom-async-validators",
     title: "Angular: Custom Async Validators",
     subtext: "778 words",

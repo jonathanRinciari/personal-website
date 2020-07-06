@@ -12,7 +12,7 @@ import MyWritings from '../../writings';
 
 class HomeAbout extends React.Component {
   projects = Object.values(MyProjects);
-  writing = MyWritings;
+  writing = MyWritings.filter(writing => writing.published).slice(0, 3);
 
   handleItemNavigation = (item, type) => {
     this.props.history.push(`/${type}/${item.url}`)
