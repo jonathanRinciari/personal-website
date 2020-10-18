@@ -29,7 +29,7 @@ class Writing extends Component {
         })
         .catch(err => console.error(err));
     } catch (err) {
-      // this.props.history.push("/404");
+      this.props.history.push("/404");
     }
   }
 
