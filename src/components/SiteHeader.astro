@@ -1,0 +1,35 @@
+---
+import NavLink from './NavLink.astro';
+import ThemeToggle from './ThemeToggle.astro';
+import { primaryNav } from '../data/navigation';
+---
+<header
+  id="site-header"
+  class="sticky top-0 z-40 w-full transition-all duration-200"
+>
+  <div class="mx-auto flex max-w-[var(--max-width)] items-center justify-between px-4 py-4 md:px-6 lg:px-8">
+    <!-- Wordmark -->
+    <a href="/" class="text-lg font-semibold text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors duration-150">
+      Jonathan Rinciari
+    </a>
+
+    <!-- Desktop nav -->
+    <nav class="hidden md:flex items-center gap-6" aria-label="Main navigation">
+      {primaryNav.map(item => (
+        <NavLink href={item.href} label={item.label} />
+      ))}
+      <ThemeToggle />
+    </nav>
+
+    <!-- Mobile hamburger -->
+    <button
+      id="mobile-menu-open"
+      class="md:hidden cursor-pointer rounded-lg p-2 text-[var(--color-text-secondary)] hover:text-[var(--color-text)]"
+      aria-label="Open menu"
+    >
+      <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+</header>

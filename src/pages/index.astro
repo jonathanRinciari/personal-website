@@ -1,8 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
 ---
 <BaseLayout>
-  <main id="main">
-    <h1 class="text-4xl font-bold p-8">BaseLayout works</h1>
+  <SiteHeader />
+  <main id="main" class="mx-auto max-w-[var(--max-width)] px-4 py-16 md:px-6 lg:px-8">
+    <h1 class="text-4xl font-bold">Header works</h1>
   </main>
 </BaseLayout>
