@@ -1,0 +1,62 @@
+---
+import PageLayout from './PageLayout.astro';
+import MetricRow from '../components/MetricRow.astro';
+import ProofChip from '../components/ProofChip.astro';
+
+interface Props {
+  entry: {
+    data: {
+      title: string;
+      summary: string;
+      role: string;
+      period: string;
+      tags: string[];
+      metrics: string[];
+      seoTitle: string;
+      seoDescription: string;
+      confidentiality: 'public' | 'generalized';
+    };
+  };
+}
+const { entry } = Astro.props;
+const { title, summary, role, period, tags, metrics, seoTitle, seoDescription, confidentiality } = entry.data;
+---
+<PageLayout title={seoTitle} description={seoDescription}>
+  <article class="py-16 md:py-24">
+    <!-- Hero -->
+    <header class="mx-auto max-w-[var(--reading-width)]">
+      <div class="flex flex-wrap gap-2 mb-4">
+        {tags.map(tag => <ProofChip label={tag} />)}
+      </div>
+      <h1 class="text-4xl font-bold md:text-5xl leading-tight">{title}</h1>
+      <p class="mt-4 text-lg text-[var(--color-text-secondary)]">{summary}</p>
+      <div class="mt-4 flex flex-wrap items-center gap-4 text-sm text-[var(--color-text-secondary)] font-[var(--font-mono)]">
+        <span>{role}</span>
+        <span>&middot;</span>
+        <span>{period}</span>
+      </div>
+      <div class="mt-6">
+        <MetricRow metrics={metrics} />
+      </div>
+    </header>
+
+    <!-- MDX content -->
+    <div class="prose-custom mx-auto mt-16 max-w-[var(--reading-width)]">
+      <slot />
+    </div>
+
+    <!-- Confidentiality note -->
+    {confidentiality === 'generalized' && (
+      <aside class="mx-auto mt-16 max-w-[var(--reading-width)] rounded-xl border border-[var(--color-border)] p-6 text-sm text-[var(--color-text-secondary)]">
+        <strong>Confidentiality note:</strong> Specific internal service names, architectural diagrams, and workflow details have been generalized to protect confidential information while preserving the technical decisions, constraints, and outcomes.
+      </aside>
+    )}
+
+    <!-- Related links -->
+    <nav class="mx-auto mt-12 max-w-[var(--reading-width)] flex gap-4">
+      <a href="/work" class="text-sm text-[var(--color-accent)] hover:underline">&larr; All work</a>
+      <a href="/resume" class="text-sm text-[var(--color-accent)] hover:underline">Resume</a>
+      <a href="/contact" class="text-sm text-[var(--color-accent)] hover:underline">Contact</a>
+    </nav>
+  </article>
+</PageLayout>
