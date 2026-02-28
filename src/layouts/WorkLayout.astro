@@ -2,21 +2,10 @@
 import PageLayout from './PageLayout.astro';
 import MetricRow from '../components/MetricRow.astro';
 import ProofChip from '../components/ProofChip.astro';
+import type { CollectionEntry } from 'astro:content';
 
 interface Props {
-  entry: {
-    data: {
-      title: string;
-      summary: string;
-      role: string;
-      period: string;
-      tags: string[];
-      metrics: string[];
-      seoTitle: string;
-      seoDescription: string;
-      confidentiality: 'public' | 'generalized';
-    };
-  };
+  entry: CollectionEntry<'work'>;
 }
 const { entry } = Astro.props;
 const { title, summary, role, period, tags, metrics, seoTitle, seoDescription, confidentiality } = entry.data;
