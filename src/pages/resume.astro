@@ -10,7 +10,7 @@ import { resume } from '../data/resume';
 >
   <article class="mx-auto max-w-[var(--reading-width)] py-16 md:py-24">
     <!-- Hero -->
-    <div class="flex items-start justify-between gap-4">
+    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
       <div>
         <h1 class="text-4xl font-bold">Resume</h1>
         <p class="mt-2 text-lg text-[var(--color-text-secondary)]">A concise view of my experience, recent impact, and the systems I've led.</p>
@@ -48,8 +48,8 @@ import { resume } from '../data/resume';
                 <span class="text-xs text-[var(--color-text-secondary)] font-[var(--font-mono)]">{role.startDate}&ndash;{role.endDate}</span>
               </div>
               <p class="text-sm text-[var(--color-text-secondary)]">{role.company}</p>
-              <ul class="mt-2 space-y-1 text-sm text-[var(--color-text-secondary)]">
-                {role.bullets.map(bullet => <li>&bull; {bullet}</li>)}
+              <ul class="mt-2 list-disc pl-5 space-y-1 text-sm text-[var(--color-text-secondary)]">
+                {role.bullets.map(bullet => <li>{bullet}</li>)}
               </ul>
               {role.workLink && (
                 <a href={role.workLink} class="mt-2 inline-block text-sm text-[var(--color-accent)] hover:underline">View case study &rarr;</a>

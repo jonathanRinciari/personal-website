@@ -59,9 +59,10 @@
     U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-/* ---------- Color tokens (light mode — default) ---------- */
+/* ---------- Custom properties (light mode — default) ---------- */
 
 :root {
+  /* Colors */
   --color-bg: #F8FAFC;
   --color-surface: #FFFFFF;
   --color-text: #0F172A;
@@ -70,6 +71,11 @@
   --color-accent: #2563EB;
   --color-accent-soft: #DBEAFE;
   --color-success: #047857;
+
+  /* Layout */
+  --max-width: 1200px;
+  --reading-width: 720px;
+  --wide-width: 960px;
 }
 
 /* ---------- Color tokens (dark mode) ---------- */
@@ -83,19 +89,4 @@
   --color-accent: #3B82F6;
   --color-accent-soft: #1E3A5F;
   --color-success: #10B981;
-}
-
-/* ---------- Typography tokens ---------- */
-
-:root {
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-mono: 'Geist Mono', ui-monospace, monospace;
-}
-
-/* ---------- Layout tokens ---------- */
-
-:root {
-  --max-width: 1200px;
-  --reading-width: 720px;
-  --wide-width: 960px;
 }

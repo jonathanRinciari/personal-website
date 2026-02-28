@@ -1,12 +1,11 @@
 ---
-interface Props { value: string; suffix?: string }
-const { value, suffix = '' } = Astro.props;
+interface Props { value: string }
+const { value } = Astro.props;
 const numericValue = parseFloat(value.replace(/[^0-9.]/g, ''));
 ---
 <span
   class="metric-countup font-[var(--font-mono)] tabular-nums"
   data-target={numericValue}
-  data-suffix={suffix}
   data-display={value}
 >
   {value}
