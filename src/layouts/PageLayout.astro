@@ -1,0 +1,18 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import MobileMenu from '../components/MobileMenu.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import type { SeoProps } from '../lib/seo';
+
+interface Props extends SeoProps {}
+---
+<BaseLayout {...Astro.props}>
+  <div id="header-sentinel" class="h-0" />
+  <SiteHeader />
+  <MobileMenu />
+  <main id="main" class="mx-auto max-w-[var(--max-width)] px-4 md:px-6 lg:px-8">
+    <slot />
+  </main>
+  <SiteFooter />
+</BaseLayout>

@@ -33,3 +33,25 @@ import { primaryNav } from '../data/navigation';
     </button>
   </div>
 </header>
+
+<script>
+  function initHeaderObserver() {
+    const header = document.getElementById('site-header');
+    const sentinel = document.getElementById('header-sentinel');
+    if (header && sentinel) {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          header.classList.toggle('header-scrolled', !entry.isIntersecting);
+        },
+        { threshold: 0 }
+      );
+      observer.observe(sentinel);
+    }
+  }
+
+  // Run on initial load
+  initHeaderObserver();
+
+  // Re-run after Astro client-side navigation (View Transitions)
+  document.addEventListener('astro:after-swap', initHeaderObserver);
+</script>
