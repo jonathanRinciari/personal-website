@@ -3,6 +3,7 @@ import '../styles/globals.css';
 import SkipToContent from '../components/SkipToContent.astro';
 import { buildMeta, type SeoProps } from '../lib/seo';
 import { site } from '../data/site';
+import { websiteSchema } from '../lib/schema';
 
 interface Props extends SeoProps {}
 
@@ -23,6 +24,9 @@ const meta = buildMeta(Astro.props);
     <meta property="og:image" content={meta.ogImage} />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify(websiteSchema())} />
 
     <!-- Fonts -->
     <link rel="preload" href="/fonts/inter-latin-400.woff2" as="font" type="font/woff2" crossorigin />
