@@ -1,0 +1,28 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import CopyEmailButton from '../components/CopyEmailButton.astro';
+import { site } from '../data/site';
+---
+<PageLayout
+  title="Contact — Jonathan Rinciari"
+  description="Get in touch via email or LinkedIn."
+>
+  <section class="mx-auto max-w-lg py-24 text-center">
+    <h1 class="text-4xl font-bold">Contact</h1>
+    <p class="mt-4 text-lg text-[var(--color-text-secondary)]">
+      The easiest way to reach me is by email or LinkedIn.
+    </p>
+
+    <div class="mt-8 flex flex-col items-center gap-4">
+      <a href={`mailto:${site.email}`} class="text-[var(--color-accent)] hover:underline">{site.email}</a>
+      <CopyEmailButton email={site.email} />
+      <a href={site.linkedin} target="_blank" rel="noopener noreferrer" class="text-sm text-[var(--color-accent)] hover:underline">LinkedIn</a>
+      <a href={site.github} target="_blank" rel="noopener noreferrer" class="text-sm text-[var(--color-accent)] hover:underline">GitHub</a>
+      <a href="/resume/jonathan-rinciari-resume.pdf" download class="text-sm text-[var(--color-accent)] hover:underline">Download Resume (PDF)</a>
+    </div>
+
+    <p class="mt-8 text-xs text-[var(--color-text-secondary)]">
+      For roles, include a link to the company or job description if you have one.
+    </p>
+  </section>
+</PageLayout>
