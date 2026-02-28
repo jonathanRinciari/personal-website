@@ -10,7 +10,7 @@ import TimelineItem from '../components/TimelineItem.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
 import { site } from '../data/site';
 
-const proofChips = ['88 countries', '200+ engineers', 'up to 5× faster checkout', '6+ teams enabled', '<2% hallucinations'];
+const proofChips = ['88-country global launch', '200+ engineer performance program', 'Platform for 6+ teams', 'Secure console payments', 'Production AI systems'];
 
 const workEntries = (await getCollection('work'))
   .filter(entry => entry.data.status === 'published')
@@ -157,7 +157,40 @@ const timelineEntries = [
     </section>
   </ScrollReveal>
 
-  {/* ───────── Section 5: Experience snapshot ───────── */}
+  {/* ───────── Section 5: What people say ───────── */}
+  <ScrollReveal>
+    <section class="py-16 md:py-24">
+      <SectionHeader title="What people say" />
+      <div class="grid gap-6 md:grid-cols-2">
+        <div class="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
+          <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed italic">
+            "Jon is the most knowledgeable UI engineer I have ever seen. His design of micro-frontend architecture is thoroughly considerate. When a problem arises, you can trust that Jon can give the best advice."
+          </p>
+          <p class="mt-4 text-xs font-medium text-[var(--color-text)] font-[var(--font-mono)]">Peer, Amazon</p>
+        </div>
+        <div class="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
+          <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed italic">
+            "Jon's exceptional ability to solve complex technical problems while maintaining customer focus sets him apart. He consistently ensures technical solutions meet both immediate needs and long-term customer experience goals."
+          </p>
+          <p class="mt-4 text-xs font-medium text-[var(--color-text)] font-[var(--font-mono)]">Peer, Amazon</p>
+        </div>
+        <div class="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
+          <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed italic">
+            "Jon's super power is his ability to quickly and thoroughly resolve any technical problem that arises in his space. He is highly trusted to solve problems regardless of complexity or ambiguity."
+          </p>
+          <p class="mt-4 text-xs font-medium text-[var(--color-text)] font-[var(--font-mono)]">Peer, Amazon</p>
+        </div>
+        <div class="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
+          <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed italic">
+            "Jon consistently demonstrates a strong ability to solve complex technical problems across all web UI components and architectures. He quickly gets teams aligned on decisions impacting delivery."
+          </p>
+          <p class="mt-4 text-xs font-medium text-[var(--color-text)] font-[var(--font-mono)]">Engineering Manager, Amazon</p>
+        </div>
+      </div>
+    </section>
+  </ScrollReveal>
+
+  {/* ───────── Section 6: Experience snapshot ───────── */}
   <ScrollReveal>
     <section class="py-16 md:py-24">
       <SectionHeader title="Recent focus" />
