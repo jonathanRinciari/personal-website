@@ -10,7 +10,7 @@ import TimelineItem from '../components/TimelineItem.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
 import { site } from '../data/site';
 
-const proofChips = ['88 countries', '23 marketplaces', '200+ engineers', '25+ services', '2.5\u00d7 faster checkout'];
+const proofChips = ['88 countries', '200+ engineers', 'up to 5× faster checkout', '6+ teams enabled', '<2% hallucinations'];
 
 const workEntries = (await getCollection('work'))
   .filter(entry => entry.data.status === 'published')
@@ -18,50 +18,54 @@ const workEntries = (await getCollection('work'))
 
 const signatureCards = [
   {
-    title: 'Global commerce architecture',
-    body: 'Designed the technical strategy for customer-facing Kuiper commerce across web, mobile, and console, including integration with Amazon discovery systems across 23 marketplaces.',
+    title: 'Global customer-facing architecture',
+    body: 'Defined the technical strategy for commerce across web, mobile, and console spanning 88 countries, 23 marketplaces, and 5+ organizations — including secure identity, payments, and internationalization.',
   },
   {
-    title: 'Org-scale performance leverage',
-    body: 'Built a performance program spanning 200+ engineers and 25+ services, driving 2.5\u00d7 checkout improvements and 10.5\u00d7 address-resolution improvements.',
+    title: 'Performance governance at org scale',
+    body: 'Founded a performance program across 200+ engineers and 25+ services with shared measurement, release gates, and delegation mechanisms — driving up to 5× checkout and 10.5× address resolution improvements.',
   },
   {
-    title: 'AI systems for engineering workflows',
-    body: 'Designed an 11-stage multi-agent system that turns natural-language test specs into executable plans, replacing a manual workflow used by 80+ engineers.',
+    title: 'Platform enablement',
+    body: 'Architected a microfrontend platform that let 6+ teams and 11 microfrontends ship independently, reducing onboarding from weeks to days through shared tooling and automated compatibility validation.',
+  },
+  {
+    title: 'Production AI systems',
+    body: 'Built deterministic AI workflows for engineering automation — including a multi-stage pipeline and provenance-tracked knowledge graph — with hallucinations reduced below 2%.',
   },
 ];
 
 const operateBlocks = [
   {
-    title: 'I start with constraints',
-    body: 'The best technical strategy usually comes from understanding organizational, regulatory, product, and operational constraints before picking technology.',
+    title: 'Constraints before technology',
+    body: 'The best architecture comes from understanding organizational, regulatory, and operational constraints first. I designed a global commerce experience around legal-entity boundaries and marketplace-scoped authentication — not around a framework preference.',
   },
   {
-    title: 'I build mechanisms, not heroics',
-    body: 'The goal is not to stay in the critical path forever. It is to create standards, tooling, and architecture that continue working after handoff.',
+    title: 'Mechanisms that survive delegation',
+    body: 'I build standards, tooling, and operating models that continue working without me. The performance program I founded now runs independently 30+ weeks after I transferred ownership.',
   },
   {
-    title: 'I optimize for leverage',
-    body: 'The highest-value work is often the work that improves how teams build, ship, measure, and operate systems\u2014not just the feature itself.',
+    title: 'Platforms over heroics',
+    body: 'The highest-leverage work improves how teams build and ship — not just what they ship. A microfrontend platform that reduced onboarding from weeks to days has more compounding value than any single feature.',
   },
   {
-    title: 'I care about proof',
-    body: 'I prefer measurable improvements, explicit tradeoffs, and systems that can be reasoned about under real production constraints.',
+    title: 'Measurable outcomes',
+    body: 'I ground every technical decision in data: 5× checkout improvement, 10.5× address resolution, 45% build-time reduction, <2% hallucination rate. If it can\'t be measured, it can\'t be governed.',
   },
 ];
 
 const timelineEntries = [
   {
-    company: 'Project Kuiper',
-    description: 'Global commerce architecture, performance programs, microfrontend platform, AI-enabled engineering tooling',
+    company: 'Amazon — Project Kuiper',
+    description: 'Global commerce architecture across 88 countries, org-scale performance governance, microfrontend platform for 6+ teams, secure console payments, production AI systems',
   },
   {
-    company: 'QuickSight',
-    description: 'Embedding performance, customization strategy, test coverage, measurement frameworks',
+    company: 'Amazon — QuickSight',
+    description: 'Embedding SDK performance (28% latency reduction), customization strategy, test coverage improvement (42% → 73%), measurement frameworks',
   },
   {
-    company: 'AWS IoT',
-    description: 'Console launches, microfrontend rearchitecture, operational readiness, deployment acceleration',
+    company: 'Amazon — AWS IoT',
+    description: 'Monolith-to-microfrontend rearchitecture across 9 teams, 45% build reduction, 70% deployment improvement, console feature launches',
   },
 ];
 ---
@@ -71,12 +75,12 @@ const timelineEntries = [
   <section class="py-16 md:py-24">
     <div class="grid md:grid-cols-2 gap-12 items-center">
       <div>
-        <p class="font-[var(--font-mono)] text-sm text-[var(--color-text-secondary)] mb-4">Staff+ Full-Stack Engineer</p>
+        <p class="font-[var(--font-mono)] text-sm text-[var(--color-text-secondary)] mb-4">Staff Software Engineer · Amazon</p>
         <h1 class="text-4xl font-bold leading-tight md:text-5xl">
-          I lead global customer-facing systems, platform strategy, and performance programs that scale through teams.
+          I build the platforms, standards, and architecture that let large engineering organizations ship faster at global scale.
         </h1>
         <p class="mt-6 text-lg text-[var(--color-text-secondary)] leading-relaxed">
-          I'm a Seattle-based technical leader focused on ambiguous, cross-org problems across commerce, platform architecture, and AI-enabled engineering systems. My work spans web, mobile, and console, with an emphasis on durable mechanisms, measurable outcomes, and technical strategies that hold up at scale.
+          Seattle-based staff engineer focused on the ambiguous, cross-org problems that sit between product, platform, and infrastructure. My work spans customer-facing commerce, org-wide performance governance, microfrontend platform enablement, secure identity and payments, and production AI systems — across web, mobile, and console.
         </p>
         <div class="mt-6 flex flex-wrap gap-2">
           {proofChips.map((label, i) => (
@@ -105,7 +109,7 @@ const timelineEntries = [
   {/* ───────── Section 2: Signature proof row ───────── */}
   <ScrollReveal>
     <section class="py-16 md:py-24">
-      <div class="grid gap-6 md:grid-cols-3">
+      <div class="grid gap-6 sm:grid-cols-2">
         {signatureCards.map(card => (
           <div class="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
             <h3 class="text-lg font-semibold">{card.title}</h3>
@@ -175,7 +179,7 @@ const timelineEntries = [
     <section class="py-16 md:py-24">
       <h2 class="text-3xl font-bold md:text-4xl">Interested in talking?</h2>
       <p class="mt-4 text-lg text-[var(--color-text-secondary)] leading-relaxed max-w-2xl">
-        I'm most interested in Staff, Principal, and Senior Staff roles focused on customer-facing systems, platform architecture, performance, and AI-enabled engineering infrastructure.
+        I'm looking for Staff, Principal, and Senior Staff roles where the core challenge is defining how complex software gets built across teams — customer-facing architecture, platform enablement, performance engineering, or applied AI infrastructure.
       </p>
       <div class="mt-8 flex flex-wrap gap-4">
         <a
