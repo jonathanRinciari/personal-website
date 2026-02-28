@@ -1,0 +1,14 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import PrimaryButton from '../components/PrimaryButton.astro';
+---
+<PageLayout title="Page not found — Jonathan Rinciari">
+  <section class="flex flex-col items-center justify-center py-32 text-center">
+    <h1 class="text-6xl font-bold">404</h1>
+    <p class="mt-4 text-lg text-[var(--color-text-secondary)]">Page not found.</p>
+    <div class="mt-8 flex gap-4">
+      <PrimaryButton href="/" label="Home" />
+      <PrimaryButton href="/work" label="Work" />
+    </div>
+  </section>
+</PageLayout>
