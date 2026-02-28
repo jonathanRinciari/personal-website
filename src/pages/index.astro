@@ -1,8 +1,229 @@
 ---
+import { getCollection } from 'astro:content';
 import PageLayout from '../layouts/PageLayout.astro';
+import PrimaryButton from '../components/PrimaryButton.astro';
+import SecondaryButton from '../components/SecondaryButton.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import ProofChip from '../components/ProofChip.astro';
+import WorkCard from '../components/WorkCard.astro';
+import TimelineItem from '../components/TimelineItem.astro';
+import ScrollReveal from '../components/ScrollReveal.astro';
+import { site } from '../data/site';
+
+const proofChips = ['88 countries', '23 marketplaces', '200+ engineers', '25+ services', '2.5\u00d7 faster checkout'];
+
+const workEntries = (await getCollection('work'))
+  .filter(entry => entry.data.status === 'published')
+  .sort((a, b) => a.data.order - b.data.order);
+
+const signatureCards = [
+  {
+    title: 'Global commerce architecture',
+    body: 'Designed the technical strategy for customer-facing Kuiper commerce across web, mobile, and console, including integration with Amazon discovery systems across 23 marketplaces.',
+  },
+  {
+    title: 'Org-scale performance leverage',
+    body: 'Built a performance program spanning 200+ engineers and 25+ services, driving 2.5\u00d7 checkout improvements and 10.5\u00d7 address-resolution improvements.',
+  },
+  {
+    title: 'AI systems for engineering workflows',
+    body: 'Designed an 11-stage multi-agent system that turns natural-language test specs into executable plans, replacing a manual workflow used by 80+ engineers.',
+  },
+];
+
+const operateBlocks = [
+  {
+    title: 'I start with constraints',
+    body: 'The best technical strategy usually comes from understanding organizational, regulatory, product, and operational constraints before picking technology.',
+  },
+  {
+    title: 'I build mechanisms, not heroics',
+    body: 'The goal is not to stay in the critical path forever. It is to create standards, tooling, and architecture that continue working after handoff.',
+  },
+  {
+    title: 'I optimize for leverage',
+    body: 'The highest-value work is often the work that improves how teams build, ship, measure, and operate systems\u2014not just the feature itself.',
+  },
+  {
+    title: 'I care about proof',
+    body: 'I prefer measurable improvements, explicit tradeoffs, and systems that can be reasoned about under real production constraints.',
+  },
+];
+
+const timelineEntries = [
+  {
+    company: 'Project Kuiper',
+    description: 'Global commerce architecture, performance programs, microfrontend platform, AI-enabled engineering tooling',
+  },
+  {
+    company: 'QuickSight',
+    description: 'Embedding performance, customization strategy, test coverage, measurement frameworks',
+  },
+  {
+    company: 'AWS IoT',
+    description: 'Console launches, microfrontend rearchitecture, operational readiness, deployment acceleration',
+  },
+];
 ---
+
 <PageLayout>
-  <div class="py-16">
-    <h1 class="text-4xl font-bold">PageLayout works</h1>
-  </div>
+  {/* ───────── Section 1: Hero ───────── */}
+  <section class="py-16 md:py-24">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+      <div>
+        <p class="font-[var(--font-mono)] text-sm text-[var(--color-text-secondary)] mb-4">Staff+ Full-Stack Engineer</p>
+        <h1 class="text-4xl font-bold leading-tight md:text-5xl">
+          I lead global customer-facing systems, platform strategy, and performance programs that scale through teams.
+        </h1>
+        <p class="mt-6 text-lg text-[var(--color-text-secondary)] leading-relaxed">
+          I'm a Seattle-based technical leader focused on ambiguous, cross-org problems across commerce, platform architecture, and AI-enabled engineering systems. My work spans web, mobile, and console, with an emphasis on durable mechanisms, measurable outcomes, and technical strategies that hold up at scale.
+        </p>
+        <div class="mt-6 flex flex-wrap gap-2">
+          {proofChips.map((label, i) => (
+            <span class="proof-chip-animated" style={`animation-delay: ${i * 50}ms`}>
+              <ProofChip label={label} />
+            </span>
+          ))}
+        </div>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <PrimaryButton href="/work" label="View Selected Work" />
+          <SecondaryButton href="/resume" label="View Resume" />
+        </div>
+      </div>
+      <div class="flex justify-center md:justify-end">
+        <img
+          src="/images/headshot.svg"
+          alt="Jonathan Rinciari"
+          width="400"
+          height="400"
+          class="rounded-2xl aspect-square object-cover"
+        />
+      </div>
+    </div>
+  </section>
+
+  {/* ───────── Section 2: Signature proof row ───────── */}
+  <ScrollReveal>
+    <section class="py-16 md:py-24">
+      <div class="grid gap-6 md:grid-cols-3">
+        {signatureCards.map(card => (
+          <div class="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
+            <h3 class="text-lg font-semibold">{card.title}</h3>
+            <p class="mt-2 text-sm text-[var(--color-text-secondary)] leading-relaxed">{card.body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  </ScrollReveal>
+
+  {/* ───────── Section 3: Selected Work preview ───────── */}
+  <ScrollReveal>
+    <section class="py-16 md:py-24">
+      <SectionHeader
+        title="Selected Work"
+        subtitle="A few examples of how I approach system design, technical direction, and org-level leverage."
+      />
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {workEntries.map((entry, i) => (
+          <ScrollReveal delay={i * 100}>
+            <WorkCard
+              title={entry.data.title}
+              summary={entry.data.summary}
+              metrics={entry.data.metrics}
+              href={`/work/${entry.id}`}
+            />
+          </ScrollReveal>
+        ))}
+      </div>
+    </section>
+  </ScrollReveal>
+
+  {/* ───────── Section 4: How I operate ───────── */}
+  <ScrollReveal>
+    <section class="py-16 md:py-24">
+      <SectionHeader title="How I work" />
+      <div class="grid gap-8 md:grid-cols-2">
+        {operateBlocks.map(block => (
+          <div>
+            <h3 class="text-lg font-semibold">{block.title}</h3>
+            <p class="mt-2 text-sm text-[var(--color-text-secondary)] leading-relaxed">{block.body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  </ScrollReveal>
+
+  {/* ───────── Section 5: Experience snapshot ───────── */}
+  <ScrollReveal>
+    <section class="py-16 md:py-24">
+      <SectionHeader title="Recent focus" />
+      <div>
+        {timelineEntries.map(entry => (
+          <TimelineItem company={entry.company} description={entry.description} />
+        ))}
+      </div>
+      <div class="mt-6 text-right">
+        <a href="/resume" class="text-sm font-medium text-[var(--color-accent)] hover:underline">
+          View full resume &rarr;
+        </a>
+      </div>
+    </section>
+  </ScrollReveal>
+
+  {/* ───────── Section 6: Contact CTA ───────── */}
+  <ScrollReveal>
+    <section class="py-16 md:py-24">
+      <h2 class="text-3xl font-bold md:text-4xl">Interested in talking?</h2>
+      <p class="mt-4 text-lg text-[var(--color-text-secondary)] leading-relaxed max-w-2xl">
+        I'm most interested in Staff, Principal, and Senior Staff roles focused on customer-facing systems, platform architecture, performance, and AI-enabled engineering infrastructure.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-4">
+        <a
+          href={`mailto:${site.email || 'hello@jonrinciari.dev'}`}
+          class="inline-flex items-center justify-center rounded-xl bg-[var(--color-accent)] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition-opacity duration-150 cursor-pointer min-h-[44px]"
+        >
+          Email me
+        </a>
+        <a
+          href={site.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center rounded-xl border border-[var(--color-border)] px-6 py-3 text-sm font-medium text-[var(--color-text)] hover:border-[var(--color-text-secondary)] transition-colors duration-150 cursor-pointer min-h-[44px]"
+        >
+          LinkedIn
+        </a>
+        <a
+          href="/resume"
+          class="inline-flex items-center justify-center rounded-xl border border-[var(--color-border)] px-6 py-3 text-sm font-medium text-[var(--color-text)] hover:border-[var(--color-text-secondary)] transition-colors duration-150 cursor-pointer min-h-[44px]"
+        >
+          Resume
+        </a>
+      </div>
+    </section>
+  </ScrollReveal>
 </PageLayout>
+
+<style>
+  @keyframes chip-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .proof-chip-animated {
+    opacity: 0;
+    animation: chip-fade-in 300ms ease-out forwards;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .proof-chip-animated {
+      opacity: 1;
+      animation: none;
+    }
+  }
+</style>
