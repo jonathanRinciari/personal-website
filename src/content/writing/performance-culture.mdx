@@ -1,0 +1,106 @@
+---
+title: "Building a Performance Culture Across 200+ Engineers"
+summary: "How we transformed performance from a reactive firefighting activity into an organizational capability with measurement, standards, and delegation."
+publishedAt: 2025-06-15
+tags: ["Performance", "Platform"]
+seoTitle: "Building a Performance Culture Across 200+ Engineers — Jonathan Rinciari"
+seoDescription: "How to build a performance program that scales beyond one team: measurement frameworks, optimization playbooks, enforcement mechanisms, and delegation."
+status: "published"
+featured: true
+---
+
+## The Moment I Knew We Had a Problem
+
+We were preparing for a leadership demo of our purchase flow. I ran through the experience myself beforehand, just to make sure everything looked good.
+
+The checkout page took 9.5 seconds to become interactive.
+
+Not on a slow connection. Not on a budget device. On my work machine, on a fast network, under ideal conditions. The page that asks customers to commit their money took nearly ten seconds before they could click anything.
+
+I checked the other critical paths. Service availability checks: 5.3 seconds. The shopping experience: 5.45 seconds. Order confirmation: 3.5 seconds. Every single step in the purchase funnel exceeded the 3-second threshold that research consistently identifies as the point where customers start abandoning.
+
+We didn't have a performance bug. We had a performance culture problem. No monitoring infrastructure. No performance standards. No accountability mechanisms. No organizational capability to even detect regression, let alone prevent it.
+
+## Why Performance Programs Fail
+
+Most performance initiatives follow the same pattern: someone identifies a problem, a tiger team forms, they fix the worst offenders, everyone celebrates, and six months later the numbers are back where they started.
+
+The tiger team approach treats performance as a project with a finish line. But performance isn't a project. It's a property of your system that degrades continuously unless you actively maintain it. Every new feature, every additional API call, every third-party script adds weight. Without countervailing force, applications get slower over time. Always.
+
+The insight that shaped our entire approach: **you don't fix performance, you build the organizational capability to maintain it.** That means three things need to be true simultaneously:
+
+1. Teams can detect performance changes automatically
+2. Teams know how to reduce latency when they find it
+3. The organization enforces standards that prevent regression
+
+Miss any one of these and the program fails.
+
+## The Three-Pillar Framework
+
+### Pillar 1: Detection
+
+Our first problem was fundamental: we couldn't measure performance in a way that reflected customer experience. We had server-side latency metrics, but those don't capture what customers actually feel.
+
+We built a measurement framework around **Perceived Performance Time** — a weighted composite of three signals:
+
+- Load time of critical content
+- Interactivity (time until the customer can click, type, or scroll)
+- Visual stability (layout shift during loading)
+
+The key decision was making this composite metric the **primary** metric. When teams asked "are we fast enough?", the answer came from one number that represented the customer's actual experience.
+
+We instrumented at three levels: **page-level metrics** told us which experiences were slow, **component-level metrics** told us which parts of those pages were slow, and **integration-level metrics** told us which backend calls were contributing. This layered approach meant we could go from "checkout is slow" to "the tax calculation API call in the order summary component is adding 1.2 seconds" in minutes, not days.
+
+### Pillar 2: Reduction
+
+With measurement in place, we could see exactly where the problems were. Instead of diving in, we built a systematic approach.
+
+We established a **Performance Working Group** — representatives from each service team in the critical path. This wasn't a committee. It was an operational group with a specific cadence:
+
+- Bi-weekly working sessions to review metrics, identify opportunities, assign owners
+- Weekly office hours for any engineer with performance questions
+- Monthly leadership reports with quantified progress
+
+The working group's first task was building an **optimization playbook** — a catalog of proven techniques with expected impact ranges from our own codebase. This turned performance optimization from a specialized skill into an accessible practice.
+
+The results:
+
+- Address resolution: 10.5x faster (456ms to 43ms)
+- Address-to-availability: 3.6x faster (1,582ms to 435ms)
+- Checkout flow: 2.5x faster (5,745ms to 2,266ms)
+
+These weren't achieved through heroic individual effort. They came from the working group identifying opportunities and the playbook providing proven approaches.
+
+### Pillar 3: Enforcement
+
+Optimization without enforcement is temporary. We defined performance standards for every page — specific latency thresholds at the TM99 level (trimmed mean 99th percentile).
+
+We chose TM99 over P50 or P90 deliberately. P50 tells you about the median customer, but half your customers have a worse experience. TM99 ensures that 99% of customers meet the standard while trimming the extreme 1% outside our control.
+
+Enforcement operated at three levels:
+
+1. **Automated alarms** — when a metric crossed its threshold, a ticket was automatically created with the degradation data and likely contributing change
+2. **Deployment gates** — canary tests blocked deployments that degraded performance beyond bounds
+3. **Exception process** — formal justification, remediation plan, and leadership sign-off for intentional performance tradeoffs
+
+## The Delegation Model
+
+The hardest part wasn't technical. It was organizational.
+
+For the first 17 weeks, I drove everything: working group meetings, weekly reports, optimization prioritization, escalations. This was necessary to establish momentum and credibility. But it wasn't sustainable.
+
+Starting in week 18, I began systematically transferring ownership. I identified an engineer who had been consistently engaged in the working group and mentored them on the non-technical aspects: running effective working groups, writing reports leadership reads, escalating without creating panic, saying no to exceptions that don't meet the bar.
+
+Today, that engineer drives the program independently. The program is stronger now than when I was running it, because it's embedded in the organization rather than dependent on one person.
+
+**The lesson: a senior engineer's highest-leverage work isn't solving the hardest problem yourself. It's building systems — technical and organizational — that make everyone around you more effective.**
+
+## What I'd Do Differently
+
+**Start with enforcement, not detection.** Establishing performance standards and deployment gates early, even with imperfect measurement, would have prevented regression from accumulating while we built better instrumentation.
+
+**Invest in component-level metrics earlier.** Page-level metrics tell you something is slow. Component-level metrics tell you what to fix. We spent too long at the page level.
+
+**Build the business case from day one.** Having data showing "every 100ms improvement correlates with X% conversion improvement" would have made resource conversations with leadership dramatically easier.
+
+**Don't underestimate the cultural shift.** Changing how 200+ engineers think about performance — from "something we fix when it's broken" to "a feature we ship with every release" — required consistent messaging, visible leadership support, and celebrating proactive improvement.

@@ -1,0 +1,41 @@
+---
+import { getCollection, render } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('writing');
+  return posts.map(entry => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const { title, summary, publishedAt, tags, seoTitle, seoDescription } = entry.data;
+---
+<PageLayout title={seoTitle} description={seoDescription}>
+  <article class="py-16 md:py-24">
+    <header class="mx-auto max-w-[var(--reading-width)]">
+      <div class="flex flex-wrap gap-2 mb-4">
+        {tags.map(tag => (
+          <span class="rounded-full bg-[var(--color-accent-soft)] px-3 py-1 text-xs font-medium text-[var(--color-accent)] font-[var(--font-mono)]">{tag}</span>
+        ))}
+      </div>
+      <h1 class="text-4xl font-bold md:text-5xl leading-tight">{title}</h1>
+      <p class="mt-4 text-lg text-[var(--color-text-secondary)]">{summary}</p>
+      <time class="mt-4 block text-sm text-[var(--color-text-secondary)] font-[var(--font-mono)]">
+        {publishedAt.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+      </time>
+    </header>
+
+    <div class="prose-custom mx-auto mt-16 max-w-[var(--reading-width)]">
+      <Content />
+    </div>
+
+    <nav class="mx-auto mt-12 max-w-[var(--reading-width)] flex gap-4">
+      <a href="/writing" class="text-sm text-[var(--color-accent)] hover:underline">&larr; All writing</a>
+      <a href="/work" class="text-sm text-[var(--color-accent)] hover:underline">Work</a>
+    </nav>
+  </article>
+</PageLayout>

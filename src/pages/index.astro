@@ -125,7 +125,7 @@ const timelineEntries = [
       />
       <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {workEntries.map((entry, i) => (
-          <ScrollReveal delay={i * 100}>
+          <ScrollReveal delay={i * 100} class="h-full">
             <WorkCard
               title={entry.data.title}
               summary={entry.data.summary}
