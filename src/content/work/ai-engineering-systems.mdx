@@ -1,0 +1,110 @@
+---
+title: "AI Systems for Engineering Workflows"
+summary: "Designing production-oriented AI systems that translate specifications into executable engineering artifacts with explicit context control, evaluation, and provenance."
+role: "System Architect, AI Engineering"
+period: "2024–Present"
+featured: true
+order: 3
+tags: ["AI Systems", "Distributed Systems", "Operational Excellence"]
+metrics: ["11-stage pipeline", "80+ engineers", "<2% hallucinations", "provenance tracking"]
+seoTitle: "AI Systems for Engineering Workflows — Jonathan Rinciari"
+seoDescription: "Designing production-oriented AI workflow systems with explicit context boundaries, provenance, and measurable accuracy improvements."
+confidentiality: "generalized"
+status: "published"
+---
+
+## Executive Summary
+
+I designed and built a multi-stage AI system that converts natural language engineering specifications into executable plans through an 11-stage compilation pipeline. The system replaced manual work previously performed by over 80 engineers whose capacity was growing faster than hiring could match. The core architectural decision — separating heavy reasoning (compilation) from lightweight execution (orchestration) — allowed us to apply strict context boundaries at each stage, reducing hallucination rates from approximately 23% to under 2%. A parallel knowledge graph extraction system processes heterogeneous source artifacts into a unified dependency model with full provenance tracking, giving downstream consumers traceability from every generated output back to its source evidence.
+
+## Context
+
+The engineering organization operated in a domain where validation work is labor-intensive, domain-specific, and changes frequently. Test logic spans multiple systems with non-deterministic timing. Over 80 engineers were dedicated to manual test execution, and headcount demand was growing faster than the organization could hire. The work required deep domain knowledge, coordination across system boundaries, and careful sequencing — characteristics that resist simple automation.
+
+At the same time, the organization had high standards for trust and traceability. Any AI-assisted output needed to be inspectable, auditable, and explainable to engineers and leadership who would ultimately bear responsibility for quality. The system could not be a black box. Every generated artifact needed a clear lineage showing what sources informed it, what reasoning was applied, and where confidence was high or low.
+
+## Problem
+
+Four constraints shaped the problem.
+
+First, the manual workflow did not scale. The ratio of validation engineers to system complexity was worsening each quarter. Adding engineers linearly while system complexity grew combinatorially meant the gap would only widen.
+
+Second, naive LLM orchestration was too error-prone for production use. Early experiments with single-pass generation — feeding full specifications into a model and asking for complete output — produced plausible-looking results with unacceptable error rates. The models would confuse details from one section of a specification with another, invent API parameters that did not exist, or silently skip steps that required cross-system coordination.
+
+Third, context overload was the primary driver of hallucination. Larger context windows did not solve the problem — they made it worse. The more information a model processed simultaneously, the more likely it was to blend, fabricate, or omit details. The relationship between context size and error rate was not linear; it degraded sharply past certain thresholds.
+
+Fourth, stakeholders required explainability. A system that produced correct output but could not explain why would not earn adoption. Engineers needed to understand what the system did, verify its reasoning, and override specific decisions without discarding the entire output. Leadership needed confidence that the system's accuracy claims were backed by measurable evidence, not anecdotal demonstrations.
+
+## My Role
+
+I served as system architect for the AI engineering workflow. My responsibilities covered five areas.
+
+I designed the 11-stage compilation pipeline, defining the contract between each stage: what context it receives, what output it produces, and what validation it must pass before downstream stages consume its results.
+
+I established the context-boundary strategy that became the single most consequential design decision. Determining what information each stage could and could not see directly controlled accuracy, and I defined these boundaries based on empirical evaluation rather than intuition.
+
+I designed the evaluation framework that measured hallucination rates, completeness, and correctness at each stage independently. This granular measurement allowed us to identify which stages introduced errors and address root causes rather than chasing symptoms in final output.
+
+I defined the knowledge graph data model — how source artifacts (code, API contracts, configuration, documentation) are parsed, normalized, and linked with provenance metadata so that every node in the graph traces back to its origin.
+
+I coordinated with domain engineers, platform teams, and leadership to frame the system as a reliability tool rather than a replacement — a framing that was essential for adoption.
+
+## Strategy and Decisions
+
+The foundational decision was the compilation-versus-orchestration split. Compilation is the heavy-reasoning phase: converting natural language specifications into structured, executable plans. Orchestration is the lightweight phase: executing those compiled plans step by step with minimal model involvement. This separation meant we could invest heavily in compilation accuracy without paying that cost at execution time, and we could optimize orchestration for speed and reliability without worrying about reasoning quality.
+
+Within compilation, context isolation per stage was the strategy that unlocked accuracy. Rather than passing full specifications through a single large-context call, each stage processed one concern in isolation. Stage 1 sees only raw specification text. Stage 2 sees only the output of Stage 1. No stage has access to information it does not need. This constraint is counterintuitive — more context feels like it should help — but empirically, restricting context produced dramatically better results.
+
+Provenance was treated as a first-class system property, not a reporting feature. Every generated artifact carries metadata linking it to the source materials that informed it. This was not added after the fact; the pipeline was designed around provenance from the start. Source artifacts flow forward through the pipeline, and every transformation records what inputs it consumed and what outputs it produced.
+
+The system was optimized for auditability over raw speed. We accepted higher latency in compilation (an offline process) in exchange for the ability to inspect, validate, and replay any stage independently. This tradeoff was deliberate: the cost of a wrong output reaching production was far higher than the cost of slower generation.
+
+## Architecture
+
+The pipeline operates in two phases plus a terminal validation stage.
+
+**Phase 1: Atomic Extraction (Stages 1-5).** Each stage processes one step of the specification in isolation. Stage 1 extracts raw structural elements. Stage 2 normalizes terminology. Stage 3 identifies system-level dependencies. Stage 4 resolves references to concrete entities. Stage 5 produces atomic, self-contained step definitions. The key constraint is that no stage sees the output of any other step's processing — only its own input and the output of the immediately prior stage in its own chain. This atomic approach is what drove hallucination rates from approximately 23% to under 2%.
+
+**Phase 2: Cross-Step Integration (Stages 6-10).** After atomic processing is complete, these stages expand context deliberately. Stage 6 identifies ordering dependencies between steps. Stage 7 resolves shared state and data flow. Stage 8 detects conflicts and ambiguities. Stage 9 generates execution metadata (timing, retry logic, environment requirements). Stage 10 assembles the final compiled plan. Context expansion at this phase is safe because the atomic representations from Phase 1 are already validated and precise — the models are integrating verified facts rather than reasoning over raw ambiguous text.
+
+**Stage 11: Quality Validation.** A dedicated validation stage evaluates the compiled plan against the original specification and the intermediate artifacts from each prior stage. When validation detects issues, a repair loop sends specific stages back through reprocessing with targeted corrections. This avoids full-pipeline reruns for localized errors.
+
+**Specialized System Agents.** Each target system has a dedicated agent that understands its API contracts, configuration model, and behavioral characteristics. These agents handle system-specific extraction and translation. The principle is "agents extract, platform evaluates" — agents are responsible for accurate system-specific knowledge, but the platform owns quality assessment and cross-system consistency.
+
+**Knowledge Architecture.** Three layers support the pipeline. The Registry layer catalogs available systems, their capabilities, and their integration points. The Capability Metadata layer describes what each system can do, its API surface, and its constraints. The Execution Knowledge layer captures runtime behavior: timing characteristics, failure modes, and environmental dependencies.
+
+**Knowledge Graph.** A separate extraction pipeline continuously processes code repositories, API contracts, configuration files, and documentation into a unified dependency graph. Each node carries provenance metadata — which source file, which version, which extraction run. This graph serves as the ground truth for system agents, replacing manually maintained reference documents that were perpetually outdated.
+
+## Execution and Alignment
+
+Adoption required overcoming justified skepticism. Engineers who had spent years building domain expertise were right to question whether an AI system could handle the nuance they dealt with daily. We addressed this by keeping humans in the review loop for every generated plan during the first months of operation. The system's role was to produce a candidate plan with evidence; the engineer's role was to validate, correct, and approve.
+
+We measured and published accuracy at the stage level, not just for final output. This transparency built trust because engineers could see exactly where the system was strong (structural extraction, dependency resolution) and where it still needed human oversight (edge cases in non-deterministic timing, novel system integrations). Honest reporting of limitations was more effective than optimistic claims of capability.
+
+Preventing over-trust was as important as building trust. We designed the system to surface uncertainty explicitly. When a stage had low confidence in its output, that uncertainty propagated forward and was visible in the final plan. Engineers were trained to treat high-confidence outputs differently from low-confidence ones, rather than accepting or rejecting entire plans wholesale.
+
+Human review remains necessary for novel specifications that reference systems not yet in the knowledge graph, for edge cases where domain-specific timing constraints create unusual ordering requirements, and for any output where the validation stage flags unresolved ambiguities. The system is designed to make human review efficient, not to eliminate it.
+
+## Results
+
+The system replaced manual work that previously required over 80 engineers, with those engineers shifting to higher-value activities: defining specifications, reviewing edge cases, and expanding system coverage rather than executing routine validation plans by hand.
+
+Hallucination rates dropped from approximately 23% in early single-pass approaches to under 2% with the 11-stage pipeline. The improvement came almost entirely from context-boundary design, not from model selection or prompt engineering. The same base models that produced 23% error rates with full-context passes produced under 2% with atomic extraction.
+
+Traceability improved from effectively zero — manual plans had no systematic link to source artifacts — to full provenance coverage. Every step in a generated plan links back to the specification sections, API contracts, and system documentation that informed it.
+
+Specification-to-plan cycle time compressed significantly. Work that previously required days of manual analysis and plan construction now completes in the compilation pipeline's processing time, with human review focused on validation rather than creation.
+
+The knowledge graph became the organization's single source of truth for system dependencies. Teams that previously maintained separate, inconsistent documentation now query the graph for up-to-date information with provenance. The graph's extraction pipeline processes heterogeneous sources — code, configuration, API schemas, documentation — into a unified model, eliminating the manual synchronization work that kept reference documents perpetually stale.
+
+## Tradeoffs and What I Would Do Differently
+
+The compilation-versus-orchestration split introduces latency that a single-pass system would avoid. Compilation is an offline process, so this latency does not affect execution, but it does mean plan generation is not instantaneous. For specifications that change frequently, this lag matters. A tighter feedback loop between specification edits and compiled plan updates would improve the experience for iterative workflows.
+
+Explainability and speed are in direct tension. The provenance metadata, stage-level validation, and uncertainty tracking that make the system auditable also add overhead. In domains where auditability matters less, a leaner system could generate output faster. We chose auditability because the cost of undetected errors in this domain exceeds the cost of slower generation, but that tradeoff is context-dependent.
+
+Model flexibility versus operational stability is an ongoing tension. The pipeline is designed to be model-agnostic at each stage, but in practice, switching models requires re-running evaluation suites and recalibrating confidence thresholds. Tighter model abstraction would reduce this switching cost, and I would invest more in model-agnostic evaluation harnesses from the start.
+
+The few-shot examples that drive the highest accuracy are drawn from the system's own validated outputs, not from generic training data. This creates a cold-start problem for new system types where no validated examples exist yet. A more deliberate bootstrapping process for new domains — including synthetic example generation with human validation — would accelerate coverage expansion.
+
+Human judgment remains essential where specifications are ambiguous, where systems exhibit emergent behavior not captured in documentation, and where organizational context (priorities, risk tolerance, release constraints) affects the right plan. The system makes human judgment more efficient by handling routine work, but it does not and should not replace the domain reasoning that experienced engineers bring to edge cases.
