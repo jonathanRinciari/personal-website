@@ -7,6 +7,10 @@ import ProofChip from '../components/ProofChip.astro';
 import MetricRow from '../components/MetricRow.astro';
 import WorkCard from '../components/WorkCard.astro';
 import TimelineItem from '../components/TimelineItem.astro';
+import CopyEmailButton from '../components/CopyEmailButton.astro';
+import ResumeDownloadButton from '../components/ResumeDownloadButton.astro';
+import ScrollReveal from '../components/ScrollReveal.astro';
+import MetricCountUp from '../components/MetricCountUp.astro';
 ---
 <PageLayout title="Component Test Page" description="Visual test for all core UI components">
   <div class="py-16 space-y-16">
@@ -85,6 +89,44 @@ import TimelineItem from '../components/TimelineItem.astro';
           company="Agency XYZ"
           description="Delivered client projects across e-commerce and fintech."
         />
+      </div>
+    </section>
+
+    <!-- CopyEmailButton -->
+    <section>
+      <SectionHeader title="CopyEmailButton" subtitle="Copies email to clipboard with feedback" />
+      <CopyEmailButton email="hello@jonathanrinciari.com" />
+    </section>
+
+    <!-- ResumeDownloadButton -->
+    <section>
+      <SectionHeader title="ResumeDownloadButton" subtitle="Styled download link for resume PDF" />
+      <ResumeDownloadButton />
+      <ResumeDownloadButton class="ml-4" />
+    </section>
+
+    <!-- ScrollReveal -->
+    <section>
+      <SectionHeader title="ScrollReveal" subtitle="Fades children in on scroll via IntersectionObserver" />
+      <ScrollReveal>
+        <p class="text-[var(--color-text-secondary)]">This paragraph fades in with no delay.</p>
+      </ScrollReveal>
+      <ScrollReveal delay={150}>
+        <p class="text-[var(--color-text-secondary)]">This paragraph fades in with 150ms delay.</p>
+      </ScrollReveal>
+      <ScrollReveal delay={300}>
+        <p class="text-[var(--color-text-secondary)]">This paragraph fades in with 300ms delay.</p>
+      </ScrollReveal>
+    </section>
+
+    <!-- MetricCountUp -->
+    <section>
+      <SectionHeader title="MetricCountUp" subtitle="Animated counter on scroll" />
+      <div class="flex flex-wrap gap-8 text-2xl font-bold text-[var(--color-text)]">
+        <MetricCountUp value="200+" />
+        <MetricCountUp value="2.5x" />
+        <MetricCountUp value="10.5x" />
+        <MetricCountUp value="88" />
       </div>
     </section>
 

@@ -1,0 +1,50 @@
+---
+interface Props { value: string; suffix?: string }
+const { value, suffix = '' } = Astro.props;
+const numericValue = parseFloat(value.replace(/[^0-9.]/g, ''));
+---
+<span
+  class="metric-countup font-[var(--font-mono)] tabular-nums"
+  data-target={numericValue}
+  data-suffix={suffix}
+  data-display={value}
+>
+  {value}
+</span>
+
+<script>
+  const counters = document.querySelectorAll('.metric-countup');
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting || prefersReduced) return;
+      const el = entry.target as HTMLElement;
+      const target = parseFloat(el.dataset.target || '0');
+      const display = el.dataset.display || '';
+      const duration = 800;
+      const start = performance.now();
+
+      function update(now: number) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = target * eased;
+
+        if (display.includes('.')) {
+          el.textContent = current.toFixed(1) + display.replace(/[\d.]+/, '');
+        } else {
+          el.textContent = Math.round(current) + display.replace(/\d+/, '');
+        }
+
+        if (progress < 1) requestAnimationFrame(update);
+        else el.textContent = display;
+      }
+
+      requestAnimationFrame(update);
+      observer.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+
+  counters.forEach(el => observer.observe(el));
+</script>
