@@ -1,0 +1,57 @@
+---
+title: "Embedding Performance and Customization Strategy"
+summary: "Driving latency reduction, test coverage, and customization architecture for an embedded analytics product used by enterprise customers."
+role: "Senior Software Engineer"
+period: "2022-2024"
+featured: false
+order: 4
+tags: ["Performance", "Frontend Architecture", "Developer Experience"]
+metrics: ["28% latency reduction", "42% to 73% test coverage", "6 engineers directed"]
+seoTitle: "Embedding Performance and Customization | Jonathan Rinciari"
+seoDescription: "Reducing embedded analytics latency by 28% and increasing test coverage from 42% to 73% through systematic performance analysis and measurement frameworks."
+confidentiality: "generalized"
+status: "published"
+---
+
+## Executive Summary
+
+On an embedded analytics platform used by enterprise customers, I led initiatives to improve SDK performance, expand test coverage, and define the customization strategy. The work reduced embedding latency by 28%, increased automated test coverage from 42% to 73%, and established measurement frameworks that were later adopted by adjacent teams. The core challenge was improving a customer-facing product where performance directly affected enterprise adoption and retention.
+
+## Context
+
+The product let enterprise customers embed analytics dashboards and visualizations directly into their own applications. Performance of the embedding SDK was critical because slow load times in a customer's application reflected poorly on their product, not ours. Enterprise customers had contractual expectations around latency and reliability.
+
+The SDK served diverse embedding scenarios: full dashboards, individual charts, interactive filters, and custom themes. Each scenario had different performance characteristics and failure modes. Testing coverage was low relative to the product's complexity, creating risk during deployments across multiple regions.
+
+## Problem
+
+Three issues converged. First, embedding latency was higher than enterprise customers expected, particularly for complex dashboard configurations. The latency came from multiple sources: SDK initialization, asset loading, data fetching, and rendering. No systematic analysis had been done to identify the highest-impact optimization targets.
+
+Second, test coverage at 42% left significant gaps in deployment confidence. Engineers were cautious about changes because the test suite didn't reliably catch regressions. This slowed delivery velocity.
+
+Third, the customization API lacked a coherent strategy. Customer requests for theming, layout control, and branding options were being addressed ad hoc, creating an inconsistent and hard-to-maintain surface area.
+
+## My Role
+
+I led the embedding customization strategy, directing an initiative across 6 engineers. I identified 15 high-value customization opportunities through customer research and usage analysis, and influenced prioritization of the top 10 on the product roadmap. For performance, I introduced systematic analysis methods and measurement infrastructure. For testing, I drove the coverage strategy and established the testing patterns the team adopted.
+
+## Strategy and Decisions
+
+For performance, I prioritized measurement before optimization. I introduced sandbox-based performance testing that could isolate SDK latency from customer application overhead, and canary-based measurement frameworks that tracked real-world embedding performance across deployment stages. This data-driven approach replaced the previous pattern of optimizing based on customer complaints.
+
+For test coverage, I focused on the highest-risk paths first: embedding initialization, cross-origin communication, and theme application. Rather than pursuing blanket coverage increases, I identified the specific scenarios where test gaps created the most deployment risk and targeted those.
+
+For customization, I proposed a layered architecture: base theming through CSS custom properties, component-level customization through a props API, and layout control through configuration objects. This replaced the ad hoc approach with a composable system that reduced the maintenance burden of each new customization feature.
+
+## Results
+
+- Embedding SDK latency reduced by 28% through targeted optimization of initialization, asset loading, and rendering paths
+- Test coverage increased from 42% to 73%, significantly improving deployment confidence
+- Measurement frameworks adopted by adjacent teams for their own performance tracking
+- Customization strategy provided a coherent roadmap that reduced ad hoc customer-specific work
+
+## Tradeoffs and What I Would Do Differently
+
+The measurement-first approach delayed visible optimization work, which created initial friction with stakeholders who wanted faster results. In hindsight the investment paid off significantly, but I would communicate the measurement phase timeline more proactively upfront.
+
+The customization strategy scoped some requests out of the initial framework. Customers with highly specific needs required custom solutions that didn't fit the layered model. A more flexible escape hatch in the initial design would have reduced the one-off work.

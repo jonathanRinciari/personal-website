@@ -5,9 +5,12 @@ import WorkCard from '../../components/WorkCard.astro';
 import ScrollReveal from '../../components/ScrollReveal.astro';
 import { getCollection } from 'astro:content';
 
-const works = (await getCollection('work'))
+const allWorks = (await getCollection('work'))
   .filter(w => w.data.status === 'published')
   .sort((a, b) => a.data.order - b.data.order);
+
+const featured = allWorks.filter(w => w.data.featured);
+const additional = allWorks.filter(w => !w.data.featured);
 ---
 <PageLayout
   title="Selected Work | Jonathan Rinciari"
@@ -19,7 +22,7 @@ const works = (await getCollection('work'))
       subtitle="This is a focused set of work that best represents how I approach architecture, technical direction, platform leverage, and cross-org execution. Some details are intentionally generalized to respect confidentiality, but the underlying systems, constraints, and outcomes are real."
     />
     <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {works.map((work, i) => (
+      {featured.map((work, i) => (
         <ScrollReveal delay={i * 100} class="h-full">
           <WorkCard
             title={work.data.title}
@@ -30,5 +33,23 @@ const works = (await getCollection('work'))
         </ScrollReveal>
       ))}
     </div>
+
+    {additional.length > 0 && (
+      <ScrollReveal class="mt-16">
+        <h2 class="text-2xl font-bold">Additional Highlights</h2>
+        <div class="mt-6 grid gap-6 md:grid-cols-2">
+          {additional.map((work, i) => (
+            <ScrollReveal delay={i * 100} class="h-full">
+              <WorkCard
+                title={work.data.title}
+                summary={work.data.summary}
+                metrics={work.data.metrics.slice(0, 3)}
+                href={`/work/${work.id}`}
+              />
+            </ScrollReveal>
+          ))}
+        </div>
+      </ScrollReveal>
+    )}
   </section>
 </PageLayout>

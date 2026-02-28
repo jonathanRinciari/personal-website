@@ -1,0 +1,93 @@
+---
+title: "What a Physiology Degree Taught Me About Engineering Complex Systems"
+summary: "How studying biological systems built the mental models I use every day for distributed architecture, performance engineering, and debugging at scale."
+publishedAt: 2025-09-01
+tags: ["Career", "Systems Thinking"]
+seoTitle: "What a Physiology Degree Taught Me About Engineering | Jonathan Rinciari"
+seoDescription: "How a non-traditional path from physiology to staff-level engineering shaped a first-principles approach to distributed systems and performance."
+status: "published"
+featured: false
+---
+
+## The Question I Still Get
+
+"So... how did you go from physiology to software engineering?"
+
+I've been asked this in every interview, every 1:1 with a new manager, every introduction to a new team. After eleven years in software, including the last six at Amazon, people still find it surprising.
+
+Here's what I've learned: the unconventional path isn't a gap in my resume. It's the most valuable thing on it.
+
+## Physiology Is Systems Engineering
+
+In my physiology program, I studied how the human body maintains homeostasis: how dozens of interconnected systems (cardiovascular, respiratory, nervous, endocrine, immune) coordinate to keep a human alive under constantly changing conditions.
+
+Consider what happens when you stand up quickly. Your blood pressure drops because gravity pulls blood toward your legs. Within milliseconds, baroreceptors in your carotid arteries detect the pressure change and signal the brainstem. The brainstem increases sympathetic nervous system activity, which constricts blood vessels and increases heart rate. Simultaneously, the adrenal glands release small amounts of norepinephrine. Your blood pressure stabilizes. You don't faint.
+
+This is a distributed system with:
+
+- **Sensors** monitoring state (baroreceptors)
+- **Event-driven communication** (neural signals, hormones)
+- **Feedback loops** (negative feedback maintaining homeostasis)
+- **Graceful degradation** (multiple redundant mechanisms)
+- **Variable latency** (neural signals in milliseconds, hormonal signals in seconds)
+- **No central controller** (the brainstem coordinates but doesn't command)
+
+When I first encountered distributed systems architecture in software, the concepts felt familiar. Not because I'd studied them in a CS curriculum, but because I'd spent four years studying the most sophisticated distributed system in existence.
+
+## First Principles Over Pattern Matching
+
+The biggest advantage of not having a CS degree is that I never learned to pattern-match to textbook solutions.
+
+When a CS-trained engineer encounters a caching problem, they often reach for familiar patterns: LRU cache, write-through, write-behind, cache-aside. These are good patterns. But they're patterns: pre-packaged solutions that work when the problem fits and fail when it doesn't.
+
+When I encounter a caching problem, I start from the physics of the situation. What's the access pattern? What's the cost of a miss versus the cost of stale data? What's the mutation frequency? How does the answer change under load?
+
+This isn't better or worse than pattern matching. It's complementary. The best engineering happens when you can do both: recognize when a known pattern applies, and reason from first principles when it doesn't.
+
+## Observation Before Hypothesis
+
+In physiology research, you don't start with a theory and look for confirming evidence. You start by observing the system's behavior, forming hypotheses about mechanisms, designing experiments to test those hypotheses, and revising your understanding based on results.
+
+This methodology transfers directly to debugging and performance engineering.
+
+When I led a performance program for 200+ engineers, the first thing we built wasn't optimization tooling. It was measurement infrastructure. Before we could improve anything, we needed to observe the system's actual behavior under real conditions.
+
+The engineers who struggled most with performance work were the ones who jumped to solutions before understanding the problem. "We should add caching" before measuring whether cache hit rates would justify the complexity. "We should lazy-load this component" before confirming that component was actually on the critical path.
+
+The scientific method: observe, hypothesize, experiment, measure. It's the most reliable debugging methodology I know. And I learned it in a biology lab, not a computer science classroom.
+
+## Complex Systems Fail in Complex Ways
+
+One of the most important concepts in physiology is cascading failure. A heart attack doesn't just affect the heart. Reduced cardiac output leads to decreased kidney perfusion, which leads to fluid retention, which increases blood volume, which increases cardiac workload, which worsens the original problem. One failure creates a feedback loop that amplifies itself.
+
+Software systems fail the same way. A slow database query doesn't just make one page slow. It holds a connection from the pool, which means the next request waits for a connection, which increases latency, which causes the load balancer to send more requests to other instances, which overloads those instances.
+
+Understanding cascading failure, really understanding it, changes how you design systems. You think about circuit breakers not as a pattern to implement but as a mechanism to interrupt feedback loops. You think about timeouts not as configuration values but as boundaries that prevent local failures from becoming systemic.
+
+This intuition for how complex systems behave under stress is something I developed studying biological systems. It's one of the most valuable skills I bring to software architecture.
+
+## The Startup Years: Learning by Building
+
+I didn't go straight from physiology to Amazon. I spent four years at startups, building everything from mobile apps to fintech platforms to internal tooling.
+
+At a fintech startup, I grew from software engineer to technical lead in a year. I learned what it means to own a product's technical direction: not just writing code, but making decisions about architecture, hiring, code quality standards, and technical debt that affect the entire team's velocity.
+
+These startup years taught me something that's hard to learn at a large company: the connection between technical decisions and business outcomes. At a startup, a slow page load isn't a metric on a dashboard. It's a customer who didn't convert, revenue you didn't earn, runway you burned without return.
+
+## What I'd Tell Career Changers
+
+**Your previous expertise is an asset, not a liability.** Every field develops mental models for understanding complex systems. Biology, physics, economics, music, architecture: they all teach you to reason about structure, relationships, and behavior.
+
+**You will feel behind. You're not.** CS graduates have four years of algorithms and data structures. You don't. But they also don't have whatever you spent four years studying. The knowledge gap is real but narrower than it feels.
+
+**Start by building, not by studying.** I didn't learn software engineering from textbooks. I learned it by building products that needed to work, platforms that needed to handle money correctly, and tools that needed to solve real problems.
+
+**The career change narrative is a strength in interviews.** Every interviewer asks about it. That's an opportunity, not a threat. You get to tell a story about intellectual curiosity, adaptability, and the ability to learn complex domains quickly.
+
+## Eleven Years Later
+
+I started my software career building mobile apps in Connecticut. I'm now designing AI-powered automation systems and global-scale architectures at Amazon. Along the way, I've led teams, built performance programs for hundreds of engineers, and designed systems that serve customers across 88 countries.
+
+None of this required a computer science degree. All of it required the ability to reason about complex systems, learn new domains quickly, and make decisions under uncertainty: skills I first developed studying how the human body keeps itself alive.
+
+The path from physiology to staff-level engineering isn't conventional. But the best solutions rarely come from conventional thinking.
