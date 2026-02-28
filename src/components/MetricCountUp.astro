@@ -18,8 +18,10 @@ const numericValue = parseFloat(value.replace(/[^0-9.]/g, ''));
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (!entry.isIntersecting || prefersReduced) return;
+      if (!entry.isIntersecting) return;
       const el = entry.target as HTMLElement;
+      observer.unobserve(el);
+      if (prefersReduced) return;
       const target = parseFloat(el.dataset.target || '0');
       const display = el.dataset.display || '';
       const duration = 800;
@@ -42,7 +44,6 @@ const numericValue = parseFloat(value.replace(/[^0-9.]/g, ''));
       }
 
       requestAnimationFrame(update);
-      observer.unobserve(el);
     });
   }, { threshold: 0.5 });
 
