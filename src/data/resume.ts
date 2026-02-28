@@ -32,8 +32,8 @@ export const resume: ResumeData = {
   header: {
     name: 'Jonathan Rinciari',
     location: 'Seattle, WA',
-    email: '', // fill before launch
-    linkedin: 'https://linkedin.com/in/jonathanrinciari',
+    email: 'rinciarijoc@gmail.com',
+    linkedin: 'https://linkedin.com/in/jonrinciari',
     github: 'https://github.com/jonathanRinciari',
     site: 'https://jonrinciari.dev',
   },
