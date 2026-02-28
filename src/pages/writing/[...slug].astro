@@ -1,6 +1,8 @@
 ---
 import { getCollection, render } from 'astro:content';
 import PageLayout from '../../layouts/PageLayout.astro';
+import { articleSchema } from '../../lib/schema';
+import { site } from '../../data/site';
 
 export async function getStaticPaths() {
   const posts = await getCollection('writing');
@@ -13,8 +15,14 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const { title, summary, publishedAt, tags, seoTitle, seoDescription } = entry.data;
+const pageUrl = `${site.url}/writing/${entry.id}`;
 ---
 <PageLayout title={seoTitle} description={seoDescription}>
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema({
+    title,
+    description: summary,
+    url: pageUrl,
+  }))} />
   <article class="py-16 md:py-24">
     <header class="mx-auto max-w-[var(--reading-width)]">
       <div class="flex flex-wrap gap-2 mb-4">

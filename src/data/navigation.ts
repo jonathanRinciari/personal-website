@@ -4,6 +4,7 @@ export const primaryNav = [
   { label: 'Resume', href: '/resume' },
   { label: 'About', href: '/about' },
   { label: 'Contact', href: '/contact' },
+  { label: 'Writing', href: '/writing' },
 ] as const;
 
 export const footerExternalLinks = [

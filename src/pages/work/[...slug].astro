@@ -1,6 +1,8 @@
 ---
 import { getCollection, render } from 'astro:content';
 import WorkLayout from '../../layouts/WorkLayout.astro';
+import { articleSchema, breadcrumbSchema } from '../../lib/schema';
+import { site } from '../../data/site';
 
 export async function getStaticPaths() {
   const works = await getCollection('work');
@@ -12,7 +14,18 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+const pageUrl = `${site.url}/work/${entry.id}`;
 ---
 <WorkLayout entry={entry}>
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema({
+    title: entry.data.title,
+    description: entry.data.summary,
+    url: pageUrl,
+  }))} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema([
+    { name: 'Home', url: site.url },
+    { name: 'Work', url: `${site.url}/work` },
+    { name: entry.data.title, url: pageUrl },
+  ]))} />
   <Content />
 </WorkLayout>

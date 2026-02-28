@@ -15,7 +15,7 @@ const { title, summary, metrics, href } = Astro.props;
   <p class="mt-2 flex-1 text-[var(--color-text-secondary)] text-sm leading-relaxed">{summary}</p>
   <div class="mt-4 flex flex-wrap gap-2">
     {metrics.map(m => (
-      <span class="rounded-full bg-[var(--color-accent-soft)] px-2.5 py-0.5 text-xs font-medium text-[var(--color-accent)] font-[var(--font-mono)]">{m}</span>
+      <span class="rounded-full bg-[var(--color-accent-soft)] px-2.5 py-0.5 text-xs font-medium text-[#1e40af] dark:text-[var(--color-accent)] font-[var(--font-mono)]">{m}</span>
     ))}
   </div>
   <span class="mt-4 inline-block text-sm font-medium text-[var(--color-accent)]">Read case study &rarr;</span>

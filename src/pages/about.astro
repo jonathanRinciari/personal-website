@@ -1,11 +1,13 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
+import { personSchema } from '../lib/schema';
 ---
 <PageLayout
   title="About | Jonathan Rinciari"
   description="Operating model, leadership philosophy, and what problems I solve."
 >
+  <script type="application/ld+json" set:html={JSON.stringify(personSchema())} />
   <article class="mx-auto max-w-[var(--reading-width)] py-16 md:py-24">
     <!-- Section 1: Intro -->
     <section>

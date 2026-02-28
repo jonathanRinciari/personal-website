@@ -99,8 +99,8 @@ const timelineEntries = [
           src="/images/headshot.webp"
           alt="Jonathan Rinciari"
           width="400"
-          height="400"
-          class="rounded-2xl aspect-square object-cover"
+          height="500"
+          class="rounded-2xl w-full max-w-[400px] object-cover"
         />
       </div>
     </div>
@@ -109,6 +109,7 @@ const timelineEntries = [
   {/* ───────── Section 2: Signature proof row ───────── */}
   <ScrollReveal>
     <section class="py-16 md:py-24">
+      <h2 class="sr-only">Key contributions</h2>
       <div class="grid gap-6 sm:grid-cols-2">
         {signatureCards.map(card => (
           <div class="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
