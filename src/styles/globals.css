@@ -1,4 +1,5 @@
 @import "./tokens.css";
+@import "./prose.css";
 @import "tailwindcss";
 
 /* ---------- Register fonts with Tailwind v4 ---------- */
