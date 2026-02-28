@@ -1,0 +1,69 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import ScrollReveal from '../components/ScrollReveal.astro';
+---
+<PageLayout
+  title="About — Jonathan Rinciari"
+  description="Operating model, leadership philosophy, and what problems I solve."
+>
+  <article class="mx-auto max-w-[var(--reading-width)] py-16 md:py-24">
+    <!-- Section 1: Intro -->
+    <section>
+      <h1 class="text-4xl font-bold">About</h1>
+      <p class="mt-4 text-xl text-[var(--color-text-secondary)]">
+        I work best on ambiguous technical problems that sit across product, platform, and organizational boundaries.
+      </p>
+      <p class="mt-4 text-[var(--color-text-secondary)]">
+        Over time I've gravitated toward the kinds of problems that don't have a clean handoff line: global customer-facing architecture, performance work that spans many teams, platform decisions that shape how organizations build, and AI systems that need to be useful under real production constraints.
+      </p>
+    </section>
+
+    <!-- Section 2: What I do best -->
+    <ScrollReveal class="mt-16">
+      <section>
+        <h2 class="text-2xl font-bold">What I do best</h2>
+        <ul class="mt-4 list-disc pl-5 space-y-2 text-[var(--color-text-secondary)]">
+          <li>Define technical direction for customer-facing systems</li>
+          <li>Improve org-level leverage through platform and performance mechanisms</li>
+          <li>Build architecture that survives scale and delegation</li>
+          <li>Align multiple teams without direct authority</li>
+          <li>Turn high-ambiguity spaces into executable technical strategy</li>
+        </ul>
+      </section>
+    </ScrollReveal>
+
+    <!-- Section 3: Operating principles -->
+    <ScrollReveal class="mt-16">
+      <section>
+        <h2 class="text-2xl font-bold">Operating principles</h2>
+        <ol class="mt-4 list-decimal pl-5 space-y-2 text-[var(--color-text-secondary)]">
+          <li><strong>Start with constraints, not solution fashion</strong></li>
+          <li><strong>Build mechanisms that survive delegation</strong></li>
+          <li><strong>Instrument before optimizing</strong></li>
+          <li><strong>Reduce complexity across boundaries, not just inside one team</strong></li>
+          <li><strong>Treat AI as a systems problem, not a demo</strong></li>
+        </ol>
+      </section>
+    </ScrollReveal>
+
+    <!-- Section 4: Background -->
+    <ScrollReveal class="mt-16">
+      <section>
+        <h2 class="text-2xl font-bold">Background</h2>
+        <p class="mt-4 text-[var(--color-text-secondary)]">
+          My path into engineering didn't start in computer science. I studied physiology, moved into startups, and eventually into organizational-scale engineering at Amazon. That trajectory shaped how I work: I tend to reason from constraints and first principles, especially in systems that don't fit an existing template.
+        </p>
+      </section>
+    </ScrollReveal>
+
+    <!-- Section 5: What I'm looking for -->
+    <ScrollReveal class="mt-16">
+      <section>
+        <h2 class="text-2xl font-bold">What I'm looking for</h2>
+        <p class="mt-4 text-[var(--color-text-secondary)]">
+          I'm most interested in Staff, Principal, and Senior Staff roles where the core challenge is not just building software, but defining how complex software gets built across teams.
+        </p>
+      </section>
+    </ScrollReveal>
+  </article>
+</PageLayout>
