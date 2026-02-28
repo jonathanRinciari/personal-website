@@ -5,7 +5,7 @@ import MobileMenu from '../components/MobileMenu.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import type { SeoProps } from '../lib/seo';
 
-interface Props extends SeoProps {}
+type Props = SeoProps;
 ---
 <BaseLayout {...Astro.props}>
   <div id="header-sentinel" class="h-0" />

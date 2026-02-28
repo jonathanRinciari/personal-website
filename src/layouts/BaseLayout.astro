@@ -2,10 +2,9 @@
 import '../styles/globals.css';
 import SkipToContent from '../components/SkipToContent.astro';
 import { buildMeta, type SeoProps } from '../lib/seo';
-import { site } from '../data/site';
 import { websiteSchema } from '../lib/schema';
 
-interface Props extends SeoProps {}
+type Props = SeoProps;
 
 const meta = buildMeta(Astro.props);
 ---

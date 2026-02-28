@@ -47,7 +47,7 @@ import { primaryNav } from '../data/navigation';
     function openMenu() {
       menu!.classList.remove('hidden');
       // Force a reflow so the opacity transition fires
-      menu!.offsetHeight;
+      void menu!.offsetHeight;
       menu!.classList.remove('opacity-0');
       menu!.classList.add('opacity-100');
       document.body.style.overflow = 'hidden';
