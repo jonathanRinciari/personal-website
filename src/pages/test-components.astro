@@ -1,0 +1,92 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import PrimaryButton from '../components/PrimaryButton.astro';
+import SecondaryButton from '../components/SecondaryButton.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import ProofChip from '../components/ProofChip.astro';
+import MetricRow from '../components/MetricRow.astro';
+import WorkCard from '../components/WorkCard.astro';
+import TimelineItem from '../components/TimelineItem.astro';
+---
+<PageLayout title="Component Test Page" description="Visual test for all core UI components">
+  <div class="py-16 space-y-16">
+
+    <!-- PrimaryButton -->
+    <section>
+      <SectionHeader title="PrimaryButton" subtitle="Accent-colored call-to-action button" />
+      <PrimaryButton href="#" label="Get in touch" />
+      <PrimaryButton href="#" label="With custom class" class="ml-4" />
+    </section>
+
+    <!-- SecondaryButton -->
+    <section>
+      <SectionHeader title="SecondaryButton" subtitle="Bordered secondary action button" />
+      <SecondaryButton href="#" label="View resume" />
+      <SecondaryButton href="#" label="Another action" class="ml-4" />
+    </section>
+
+    <!-- SectionHeader -->
+    <section>
+      <SectionHeader title="SectionHeader" subtitle="Used to introduce each page section" />
+      <SectionHeader title="Title Only (no subtitle)" />
+    </section>
+
+    <!-- ProofChip -->
+    <section>
+      <SectionHeader title="ProofChip" subtitle="Small metric/proof labels" />
+      <div class="flex flex-wrap gap-2">
+        <ProofChip label="88 countries" />
+        <ProofChip label="23 marketplaces" />
+        <ProofChip label="2.5x checkout" />
+        <ProofChip label="99.9% uptime" />
+      </div>
+    </section>
+
+    <!-- MetricRow -->
+    <section>
+      <SectionHeader title="MetricRow" subtitle="A flex row of ProofChips" />
+      <MetricRow metrics={["88 countries", "23 marketplaces", "2.5× checkout"]} />
+    </section>
+
+    <!-- WorkCard -->
+    <section>
+      <SectionHeader title="WorkCard" subtitle="Project/case study card with hover lift" />
+      <div class="grid gap-6 md:grid-cols-2">
+        <WorkCard
+          title="Global Commerce Architecture"
+          summary="Defining commerce architecture across global markets."
+          metrics={["88 countries", "23 marketplaces", "2.5× checkout"]}
+          href="/work/global-commerce-performance"
+        />
+        <WorkCard
+          title="Design System at Scale"
+          summary="Building and scaling a cross-platform design system."
+          metrics={["12 teams", "400+ components", "60% faster dev"]}
+          href="/work/design-system"
+        />
+      </div>
+    </section>
+
+    <!-- TimelineItem -->
+    <section>
+      <SectionHeader title="TimelineItem" subtitle="Timeline entries for career history" />
+      <div>
+        <TimelineItem
+          company="Amazon"
+          description="Led front-end architecture for global commerce platform."
+          period="2021 – Present"
+        />
+        <TimelineItem
+          company="Startup Co"
+          description="Built the initial product from zero to launch."
+          period="2018 – 2021"
+        />
+        <TimelineItem
+          company="Agency XYZ"
+          description="Delivered client projects across e-commerce and fintech."
+        />
+      </div>
+    </section>
+
+  </div>
+</PageLayout>

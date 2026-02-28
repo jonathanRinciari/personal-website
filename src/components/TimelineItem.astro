@@ -1,0 +1,10 @@
+---
+interface Props { company: string; description: string; period?: string }
+const { company, description, period } = Astro.props;
+---
+<div class="relative pl-6 border-l-2 border-[var(--color-border)] pb-8 last:pb-0">
+  <div class="absolute -left-[5px] top-1.5 h-2 w-2 rounded-full bg-[var(--color-accent)]" />
+  <p class="font-semibold">{company}</p>
+  {period && <p class="text-xs text-[var(--color-text-secondary)] font-[var(--font-mono)]">{period}</p>}
+  <p class="mt-1 text-sm text-[var(--color-text-secondary)]">{description}</p>
+</div>

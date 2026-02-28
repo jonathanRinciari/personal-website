@@ -1,0 +1,7 @@
+---
+interface Props { href: string; label: string; class?: string }
+const { href, label, class: className } = Astro.props;
+---
+<a href={href} class:list={["inline-flex items-center justify-center rounded-xl border border-[var(--color-border)] px-6 py-3 text-sm font-medium text-[var(--color-text)] hover:border-[var(--color-text-secondary)] transition-colors duration-150 cursor-pointer min-h-[44px]", className]}>
+  {label}
+</a>
