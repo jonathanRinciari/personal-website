@@ -1,0 +1,54 @@
+---
+import { site } from '../data/site';
+import { primaryNav, footerExternalLinks } from '../data/navigation';
+---
+<footer class="mt-24 border-t border-[var(--color-border)]">
+  <div class="mx-auto grid max-w-[var(--max-width)] grid-cols-1 gap-8 px-4 py-12 sm:grid-cols-2 md:px-6 lg:grid-cols-4 lg:px-8">
+    <!-- Column 1: Identity -->
+    <div>
+      <p class="font-semibold text-[var(--color-text)]">{site.name}</p>
+      <p class="mt-1 text-sm text-[var(--color-text-secondary)]">Staff+ Full-Stack Engineer</p>
+    </div>
+
+    <!-- Column 2: Pages -->
+    <div>
+      <p class="font-semibold text-[var(--color-text)]">Pages</p>
+      <ul class="mt-3 space-y-2">
+        {primaryNav.map(item => (
+          <li>
+            <a
+              href={item.href}
+              class="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors duration-150"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <!-- Column 3: Elsewhere -->
+    <div>
+      <p class="font-semibold text-[var(--color-text)]">Elsewhere</p>
+      <ul class="mt-3 space-y-2">
+        {footerExternalLinks.map(item => (
+          <li>
+            <a
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors duration-150"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <!-- Column 4: Colophon -->
+    <div>
+      <p class="text-xs text-[var(--color-text-secondary)]">Built with Astro. Fast by default.</p>
+    </div>
+  </div>
+</footer>

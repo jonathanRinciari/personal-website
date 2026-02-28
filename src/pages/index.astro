@@ -1,10 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
+import MobileMenu from '../components/MobileMenu.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 ---
 <BaseLayout>
   <SiteHeader />
+  <MobileMenu />
   <main id="main" class="mx-auto max-w-[var(--max-width)] px-4 py-16 md:px-6 lg:px-8">
-    <h1 class="text-4xl font-bold">Header works</h1>
+    <h1 class="text-4xl font-bold">Full layout works</h1>
   </main>
+  <SiteFooter />
 </BaseLayout>
