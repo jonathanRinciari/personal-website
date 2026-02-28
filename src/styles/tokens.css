@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Design Tokens — fonts, colors, typography, layout
+   Design Tokens - fonts, colors, typography, layout
    ========================================================================== */
 
 /* ---------- @font-face declarations ---------- */
@@ -59,7 +59,7 @@
     U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-/* ---------- Custom properties (light mode — default) ---------- */
+/* ---------- Custom properties (light mode - default) ---------- */
 
 :root {
   /* Colors */

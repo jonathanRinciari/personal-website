@@ -5,7 +5,7 @@ import ScrollReveal from '../components/ScrollReveal.astro';
 import { resume } from '../data/resume';
 ---
 <PageLayout
-  title="Resume — Jonathan Rinciari"
+  title="Resume | Jonathan Rinciari"
   description="Staff-level software engineer leading customer-facing architecture, platform enablement, performance governance, and applied AI systems at Amazon."
 >
   <article class="mx-auto max-w-[var(--reading-width)] py-16 md:py-24">
@@ -118,7 +118,7 @@ import { resume } from '../data/resume';
         <h2 class="text-lg font-bold uppercase tracking-wider text-[var(--color-text)]">Education</h2>
         <div class="mt-4">
           {resume.education.map(edu => (
-            <p class="text-sm text-[var(--color-text-secondary)]">{edu.degree}{edu.school ? ` — ${edu.school}` : ''}</p>
+            <p class="text-sm text-[var(--color-text-secondary)]">{edu.degree}{edu.school ? `, ${edu.school}` : ''}</p>
           ))}
         </div>
       </section>

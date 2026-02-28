@@ -3,7 +3,7 @@ title: "From Manual Testing to Multi-Agent Automation: Building AI Systems That 
 summary: "Why separating compilation from execution, enforcing context boundaries, and treating AI as a systems problem produces reliable automation at scale."
 publishedAt: 2025-08-01
 tags: ["AI Systems", "Distributed Systems"]
-seoTitle: "Building AI Systems That Actually Work in Production — Jonathan Rinciari"
+seoTitle: "Building AI Systems That Actually Work in Production | Jonathan Rinciari"
 seoDescription: "How to build production AI automation: compilation vs orchestration, context boundaries, specialized agents, and knowledge graphs with provenance."
 status: "published"
 featured: true
@@ -15,7 +15,7 @@ Imagine you have a thousand test cases. Each one validates a business workflow s
 
 Now imagine you need to run these tests before every release. And the test suite is growing faster than you can hire.
 
-Over 80 engineers were dedicated to manual test execution. The resource model was unsustainable. The question wasn't whether to automate — it was how to automate something that seemed to require human judgment at every step.
+Over 80 engineers were dedicated to manual test execution. The resource model was unsustainable. The question wasn't whether to automate; it was how to automate something that seemed to require human judgment at every step.
 
 ## Why Traditional Test Automation Doesn't Work Here
 
@@ -31,13 +31,13 @@ Traditional automation works for deterministic scenarios. Click this button, ver
 
 The core insight: **separate the intelligence from the execution.**
 
-Most AI automation tries to be intelligent at runtime — an agent that reasons about what to do while interacting with live systems. This is fragile. LLMs hallucinate. Network calls fail. System state changes between reasoning steps.
+Most AI automation tries to be intelligent at runtime: an agent that reasons about what to do while interacting with live systems. This is fragile. LLMs hallucinate. Network calls fail. System state changes between reasoning steps.
 
 Instead, we split into two phases:
 
 **Compilation (heavy reasoning, offline):** Transform natural language test specifications into complete, executable plans. All ambiguity resolution happens here, before any live system is touched.
 
-**Orchestration (minimal reasoning, online):** Execute the compiled plan step by step. The orchestrator is deliberately mechanical — it doesn't need to reason because the compiler already did.
+**Orchestration (minimal reasoning, online):** Execute the compiled plan step by step. The orchestrator is deliberately mechanical; it doesn't need to reason because the compiler already did.
 
 This separation has a profound benefit: **you can review and correct the compilation output before execution.** Compile-time errors are cheap. Runtime AI errors are expensive.
 
@@ -63,7 +63,7 @@ Stage 11 performs quality validation with a repair loop that re-runs low-confide
 
 ## System Agents: Domain Experts
 
-Each backend system has a dedicated agent — an expert in that system and nothing else. A financial ledger agent knows how to navigate the ledger, what fields to extract, what account codes mean. It knows nothing about order management.
+Each backend system has a dedicated agent, an expert in that system and nothing else. A financial ledger agent knows how to navigate the ledger, what fields to extract, what account codes mean. It knows nothing about order management.
 
 The architecture follows a principle: **agents extract, platform evaluates.** Agents get data out of systems. They never decide whether that data is correct. Assertion evaluation happens in the orchestrator, ensuring consistent behavior across all system types.
 
@@ -71,9 +71,9 @@ The architecture follows a principle: **agents extract, platform evaluates.** Ag
 
 **Layer 1: Registry** (exact lookup, rarely changes). Catalog of available systems and agents.
 
-**Layer 2: Capability Metadata** (semantic search, changes with features). What each agent can do — use cases, schemas, relationships.
+**Layer 2: Capability Metadata** (semantic search, changes with features). What each agent can do: use cases, schemas, relationships.
 
-**Layer 3: Execution Knowledge** (runtime reference, changes with systems). How-to documentation for each system — navigation, endpoints, extraction procedures.
+**Layer 3: Execution Knowledge** (runtime reference, changes with systems). How-to documentation for each system: navigation, endpoints, extraction procedures.
 
 This separation means a system UI change (Layer 3) doesn't affect compilation (Layer 2). Teams update agent navigation without recompiling test specs.
 
@@ -87,7 +87,7 @@ The extraction is deterministic: same inputs, same outputs. It processes multipl
 
 ## The Hard Lessons
 
-**Determinism is more valuable than intelligence.** The most reliable parts are the most boring — eligibility checks, assertion evaluation, evidence capture. We minimized non-deterministic surface area.
+**Determinism is more valuable than intelligence.** The most reliable parts are the most boring: eligibility checks, assertion evaluation, evidence capture. We minimized non-deterministic surface area.
 
 **Context boundaries prevent more bugs than any other technique.** The biggest quality improvement came from limiting what each stage could see. Not better prompts. Not better models.
 
@@ -95,11 +95,11 @@ The extraction is deterministic: same inputs, same outputs. It processes multipl
 
 **The feedback loop matters more than initial accuracy.** First pipeline: ~70% accuracy. Correcting a compiled spec is still faster than writing from scratch. Every correction feeds back, improving future compilations.
 
-**Evidence capture is first-class.** In regulated contexts, it's not enough to verify a value is correct — you need to prove it. Every agent interaction produces evidence artifacts linked to supporting assertions.
+**Evidence capture is first-class.** In regulated contexts, it's not enough to verify a value is correct; you need to prove it. Every agent interaction produces evidence artifacts linked to supporting assertions.
 
 ## The Takeaway
 
-AI in production isn't about building the smartest possible agent. It's about building systems where AI handles what it's uniquely good at — language understanding, ambiguity resolution, pattern recognition — while deterministic infrastructure handles everything else.
+AI in production isn't about building the smartest possible agent. It's about building systems where AI handles what it's uniquely good at (language understanding, ambiguity resolution, pattern recognition) while deterministic infrastructure handles everything else.
 
 Separate compilation from execution. Enforce context boundaries. Specialize your agents. Build feedback loops. And always make AI output reviewable before it touches a live system.
 

@@ -3,7 +3,7 @@ title: "Building a Performance Culture Across 200+ Engineers"
 summary: "How we transformed performance from a reactive firefighting activity into an organizational capability with measurement, standards, and delegation."
 publishedAt: 2025-06-15
 tags: ["Performance", "Platform"]
-seoTitle: "Building a Performance Culture Across 200+ Engineers — Jonathan Rinciari"
+seoTitle: "Building a Performance Culture Across 200+ Engineers | Jonathan Rinciari"
 seoDescription: "How to build a performance program that scales beyond one team: measurement frameworks, optimization playbooks, enforcement mechanisms, and delegation."
 status: "published"
 featured: true
@@ -41,7 +41,7 @@ Miss any one of these and the program fails.
 
 Our first problem was fundamental: we couldn't measure performance in a way that reflected customer experience. We had server-side latency metrics, but those don't capture what customers actually feel.
 
-We built a measurement framework around **Perceived Performance Time** — a weighted composite of three signals:
+We built a measurement framework around **Perceived Performance Time**, a weighted composite of three signals:
 
 - Load time of critical content
 - Interactivity (time until the customer can click, type, or scroll)
@@ -55,13 +55,13 @@ We instrumented at three levels: **page-level metrics** told us which experience
 
 With measurement in place, we could see exactly where the problems were. Instead of diving in, we built a systematic approach.
 
-We established a **Performance Working Group** — representatives from each service team in the critical path. This wasn't a committee. It was an operational group with a specific cadence:
+We established a **Performance Working Group**, representatives from each service team in the critical path. This wasn't a committee. It was an operational group with a specific cadence:
 
 - Bi-weekly working sessions to review metrics, identify opportunities, assign owners
 - Weekly office hours for any engineer with performance questions
 - Monthly leadership reports with quantified progress
 
-The working group's first task was building an **optimization playbook** — a catalog of proven techniques with expected impact ranges from our own codebase. This turned performance optimization from a specialized skill into an accessible practice.
+The working group's first task was building an **optimization playbook**, a catalog of proven techniques with expected impact ranges from our own codebase. This turned performance optimization from a specialized skill into an accessible practice.
 
 The results:
 
@@ -73,15 +73,15 @@ These weren't achieved through heroic individual effort. They came from the work
 
 ### Pillar 3: Enforcement
 
-Optimization without enforcement is temporary. We defined performance standards for every page — specific latency thresholds at the TM99 level (trimmed mean 99th percentile).
+Optimization without enforcement is temporary. We defined performance standards for every page, specific latency thresholds at the TM99 level (trimmed mean 99th percentile).
 
 We chose TM99 over P50 or P90 deliberately. P50 tells you about the median customer, but half your customers have a worse experience. TM99 ensures that 99% of customers meet the standard while trimming the extreme 1% outside our control.
 
 Enforcement operated at three levels:
 
-1. **Automated alarms** — when a metric crossed its threshold, a ticket was automatically created with the degradation data and likely contributing change
-2. **Deployment gates** — canary tests blocked deployments that degraded performance beyond bounds
-3. **Exception process** — formal justification, remediation plan, and leadership sign-off for intentional performance tradeoffs
+1. **Automated alarms:** when a metric crossed its threshold, a ticket was automatically created with the degradation data and likely contributing change
+2. **Deployment gates:** canary tests blocked deployments that degraded performance beyond bounds
+3. **Exception process:** formal justification, remediation plan, and leadership sign-off for intentional performance tradeoffs
 
 ## The Delegation Model
 
@@ -93,7 +93,7 @@ Starting in week 18, I began systematically transferring ownership. I identified
 
 Today, that engineer drives the program independently. The program is stronger now than when I was running it, because it's embedded in the organization rather than dependent on one person.
 
-**The lesson: a senior engineer's highest-leverage work isn't solving the hardest problem yourself. It's building systems — technical and organizational — that make everyone around you more effective.**
+**The lesson: a senior engineer's highest-leverage work isn't solving the hardest problem yourself. It's building systems, technical and organizational, that make everyone around you more effective.**
 
 ## What I'd Do Differently
 
@@ -103,4 +103,4 @@ Today, that engineer drives the program independently. The program is stronger n
 
 **Build the business case from day one.** Having data showing "every 100ms improvement correlates with X% conversion improvement" would have made resource conversations with leadership dramatically easier.
 
-**Don't underestimate the cultural shift.** Changing how 200+ engineers think about performance — from "something we fix when it's broken" to "a feature we ship with every release" — required consistent messaging, visible leadership support, and celebrating proactive improvement.
+**Don't underestimate the cultural shift.** Changing how 200+ engineers think about performance, from "something we fix when it's broken" to "a feature we ship with every release," required consistent messaging, visible leadership support, and celebrating proactive improvement.

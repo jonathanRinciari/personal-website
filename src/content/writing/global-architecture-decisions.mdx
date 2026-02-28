@@ -3,7 +3,7 @@ title: "One Domain, 88 Countries: Architecture Decisions That Scale Internationa
 summary: "How path-based routing, configuration-driven expansion, and explicit tradeoffs enabled a global commerce experience without per-country engineering effort."
 publishedAt: 2025-07-01
 tags: ["Global Architecture", "Distributed Systems"]
-seoTitle: "One Domain, 88 Countries: Architecture Decisions That Scale — Jonathan Rinciari"
+seoTitle: "One Domain, 88 Countries: Architecture Decisions That Scale | Jonathan Rinciari"
 seoDescription: "Architecture decisions for global expansion: path-based routing, country detection, configuration-driven launches, and cross-domain authentication."
 status: "published"
 featured: true
@@ -15,7 +15,7 @@ We were building a global consumer service that needed to launch across 88 count
 
 This sounds simple until you start pulling the thread.
 
-Authentication systems are typically scoped to specific domains. Payment processing varies by jurisdiction. Content must be localized — not just translated, but culturally adapted. Legal requirements differ by country, sometimes by region within a country. And the service needed to work in countries where the parent company had no existing retail presence.
+Authentication systems are typically scoped to specific domains. Payment processing varies by jurisdiction. Content must be localized, not just translated, but culturally adapted. Legal requirements differ by country, sometimes by region within a country. And the service needed to work in countries where the parent company had no existing retail presence.
 
 The fundamental tension: **the business needed a single global experience, but the underlying infrastructure was built for marketplace-specific boundaries.** Every technical decision was shaped by this mismatch.
 
@@ -35,7 +35,7 @@ The first architectural decision was how to represent country context in the URL
 
 We chose **path-based routing**. The country-domain approach would have fragmented the customer journey and couldn't serve countries without an existing marketplace domain. With path-based routing, a new country is a configuration change. With country domains, it's DNS delegation, certificate provisioning, CDN configuration, and security review.
 
-**The tradeoff we accepted:** We couldn't rely on domain-scoped cookies for authentication. We needed a cross-domain authentication solution — significant complexity, but complexity we could solve once rather than per-country.
+**The tradeoff we accepted:** We couldn't rely on domain-scoped cookies for authentication. We needed a cross-domain authentication solution. Significant complexity, but complexity we could solve once rather than per-country.
 
 ## Decision 2: Country Detection
 
@@ -45,7 +45,7 @@ How do you know which country a customer wants? We implemented a three-tier stra
 
 **Tier 2: Stored preference.** If no country is in the path, check for a previously stored preference.
 
-**Tier 3: Geolocation inference.** First-time visitor, no path, no preference — infer from IP.
+**Tier 3: Geolocation inference.** First-time visitor, no path, no preference; infer from IP.
 
 The priority ordering matters. We deliberately made **explicit customer choice** the strongest signal, not geolocation. A German customer traveling in Spain still wants German-language content. Geolocation tells you where someone is, not where they want to be served.
 
@@ -55,11 +55,11 @@ For geolocation, we chose CDN-level headers over a dedicated geolocation service
 
 The most impactful decision wasn't about any single country. It was about how we'd add the 87th and 88th.
 
-Traditional approach: each country launch requires engineering work — locale files, configuration, feature flags, testing, deployment.
+Traditional approach: each country launch requires engineering work: locale files, configuration, feature flags, testing, deployment.
 
 Our approach: **a centralized metadata service that makes country launches a configuration change.** It stores everything that varies by country: default locale, currency formatting, date conventions, address templates, phone formatting, marketplace association, feature availability flags.
 
-We also built shared localization utilities consuming this service — format a currency, format a date, format an address — shared across web, mobile, and console.
+We also built shared localization utilities consuming this service (format a currency, format a date, format an address) shared across web, mobile, and console.
 
 **The tradeoff we accepted:** Centralized configuration creates a single point of failure. We mitigated with aggressive caching. Applications can operate on stale data for hours if the service is temporarily unavailable. Configuration changes infrequently enough that stale data is almost always correct data.
 
@@ -71,7 +71,7 @@ We needed **silent authentication**: click from a marketplace to our service, ar
 
 We evaluated three approaches: wait for native cross-domain SSO (timeline too long), build custom token exchange (too much security surface area), or leverage existing cross-domain patterns used by other services.
 
-We chose the third option — a proxy-based approach that accesses marketplace authentication context, establishes a session on our domain, and redirects transparently. The tradeoff: dependency on proxy infrastructure. Fallback is showing a sign-in page — degraded but not broken.
+We chose the third option, a proxy-based approach that accesses marketplace authentication context, establishes a session on our domain, and redirects transparently. The tradeoff: dependency on proxy infrastructure. Fallback is showing a sign-in page, degraded but not broken.
 
 ## What I'd Tell Someone Starting This
 
@@ -87,7 +87,7 @@ We chose the third option — a proxy-based approach that accesses marketplace a
 
 ## The Result
 
-We launched a single global store serving customers across 88 countries with localized content, currency, formatting, and legal compliance — all driven by configuration. New country launches went from "a sprint of engineering work" to "a configuration entry and a QA pass."
+We launched a single global store serving customers across 88 countries with localized content, currency, formatting, and legal compliance, all driven by configuration. New country launches went from "a sprint of engineering work" to "a configuration entry and a QA pass."
 
 The architecture isn't perfect. Cross-domain authentication adds latency. The metadata service is a dependency we monitor carefully. Some countries have edge cases that don't fit cleanly.
 

@@ -51,7 +51,7 @@ export const resume: ResumeData = {
     site: 'jonrinciari.dev',
   },
   positioningLine:
-    'STAFF SOFTWARE ENGINEER — CUSTOMER-FACING ARCHITECTURE | PLATFORM ENABLEMENT | PERFORMANCE | GLOBAL SYSTEMS',
+    'STAFF SOFTWARE ENGINEER | CUSTOMER-FACING ARCHITECTURE | PLATFORM ENABLEMENT | PERFORMANCE | GLOBAL SYSTEMS',
   summary:
     'Staff-level software engineer at Amazon leading customer-facing architecture across web, mobile, and AWS Console experiences. Builds the platforms, standards, and operating mechanisms that let teams ship faster, safer, and at global scale. Strongest work includes org-wide performance governance, microfrontend platform enablement, global rollout architecture, secure identity and payments, and production AI systems designed for reliability.',
   selectedImpact: [
