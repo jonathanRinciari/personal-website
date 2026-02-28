@@ -1,0 +1,23 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  caption?: string;
+  wide?: boolean;
+}
+const { src, alt, caption, wide = false } = Astro.props;
+---
+<figure class:list={["my-8", wide && "max-w-[var(--wide-width)] -mx-[calc((var(--wide-width)-var(--reading-width))/2)]"]}>
+  <img
+    src={src}
+    alt={alt}
+    loading="lazy"
+    decoding="async"
+    class="w-full rounded-xl"
+  />
+  {caption && (
+    <figcaption class="mt-3 text-center text-sm text-[var(--color-text-secondary)]">
+      {caption}
+    </figcaption>
+  )}
+</figure>

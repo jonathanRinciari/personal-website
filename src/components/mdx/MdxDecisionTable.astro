@@ -1,0 +1,38 @@
+---
+interface Option {
+  name: string;
+  pros: string;
+  cons: string;
+  chosen?: boolean;
+}
+interface Props {
+  options: Option[];
+}
+const { options } = Astro.props;
+---
+<div class="my-6 overflow-x-auto">
+  <table class="w-full text-sm border-collapse">
+    <thead>
+      <tr class="border-b-2 border-[var(--color-border)]">
+        <th class="text-left p-3 font-semibold">Option</th>
+        <th class="text-left p-3 font-semibold">Pros</th>
+        <th class="text-left p-3 font-semibold">Cons</th>
+      </tr>
+    </thead>
+    <tbody>
+      {options.map(opt => (
+        <tr class:list={[
+          "border-b border-[var(--color-border)]",
+          opt.chosen && "bg-[var(--color-accent-soft)]"
+        ]}>
+          <td class="p-3 font-medium">
+            {opt.name}
+            {opt.chosen && <span class="ml-2 text-xs text-[var(--color-accent)] font-[var(--font-mono)]">chosen</span>}
+          </td>
+          <td class="p-3 text-[var(--color-text-secondary)]">{opt.pros}</td>
+          <td class="p-3 text-[var(--color-text-secondary)]">{opt.cons}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

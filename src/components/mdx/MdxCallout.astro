@@ -1,0 +1,15 @@
+---
+interface Props {
+  type?: 'info' | 'warning' | 'note';
+}
+const { type = 'note' } = Astro.props;
+
+const styles = {
+  info: 'border-[var(--color-accent)] bg-[var(--color-accent-soft)]',
+  warning: 'border-amber-500 bg-amber-50 dark:bg-amber-950/30',
+  note: 'border-[var(--color-border)] bg-[var(--color-surface)]',
+};
+---
+<aside role="note" class:list={["rounded-xl border-l-4 p-5 my-6 text-sm", styles[type]]}>
+  <slot />
+</aside>
