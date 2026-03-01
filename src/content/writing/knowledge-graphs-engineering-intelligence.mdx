@@ -1,0 +1,104 @@
+---
+title: "Knowledge Graphs for Engineering Intelligence"
+summary: "How deterministic extraction from code, documents, and API contracts builds a queryable knowledge graph that powers AI systems, impact analysis, and onboarding."
+publishedAt: 2025-12-01
+tags: ["AI Systems", "Distributed Systems"]
+seoTitle: "Knowledge Graphs for Engineering Intelligence | Jonathan Rinciari"
+seoDescription: "Building knowledge graphs from heterogeneous source artifacts with deterministic extraction, provenance tracking, and multi-hop dependency queries."
+status: "published"
+featured: false
+---
+
+## Why Semantic Search Is Not Enough
+
+When engineers ask questions about a complex system, they rarely want a single fact. They want to understand relationships. "What services depend on the customer identity service?" is not a retrieval question. It is a graph traversal question. The answer requires following dependency edges across multiple systems, each documented in different formats (code, API contracts, configuration files, architecture documents), and synthesizing a complete picture.
+
+Semantic search, the technique of embedding documents and queries into vector space and finding nearest neighbors, handles the retrieval part well. Given a question, it can find relevant documents. But it cannot follow multi-hop dependency chains. It cannot answer "if the customer identity service changes its API contract, which downstream services break?" because the answer requires traversing a dependency graph, not finding similar text.
+
+Retrieval-augmented generation (RAG) improves on pure semantic search by feeding retrieved documents to a language model for synthesis. But RAG inherits semantic search's limitations: it can only reason over the documents it retrieves. If the dependency chain spans five services documented across fifteen files, and the retrieval step only returns three of those files, the model's answer will be incomplete. Worse, it will be confidently incomplete, because the model has no way to know what it did not retrieve.
+
+A knowledge graph addresses this by making relationships explicit and traversable. Instead of searching for documents that mention dependencies, you query a graph where dependency edges connect service nodes, API contract nodes reference the services they belong to, and configuration entries link to the systems they configure. Multi-hop queries are graph traversals with guaranteed completeness (within the graph's coverage) rather than probabilistic retrieval with unknown recall.
+
+## What Gets Extracted
+
+The knowledge graph extraction system I built processes five artifact types into a unified graph.
+
+**Source code via AST parsing.** The extractor parses source code into abstract syntax trees and extracts structural facts: function signatures, class hierarchies, import relationships, configuration references, and API client instantiations. AST parsing (rather than regex or text matching) means the extraction understands language structure. It correctly handles aliased imports, conditional dependencies, and framework-specific patterns like dependency injection.
+
+**Business documents.** Specifications, design documents, and operational runbooks contain relationship information that does not exist in code. A design document might state that "Service A publishes events to the shared event bus that Service B and Service C consume." This relationship is real and important, but it will not appear in Service A's code (which only knows about the event bus, not the consumers). The extractor processes structured documents to extract stated relationships, ownership declarations, and dependency assertions.
+
+**API contracts.** OpenAPI specifications, gRPC proto files, and GraphQL schemas define the formal interface between services. The extractor processes these contracts to identify endpoints, request/response schemas, authentication requirements, and versioning information. API contracts are particularly valuable because they represent agreed-upon interfaces, not implementation details that might change without notice.
+
+**Agent metadata.** In the context of the AI automation system the graph supports, each system agent has metadata describing its capabilities, the systems it interacts with, and the data it can extract. This metadata is itself a source of relationship information: an agent that knows how to extract data from the order management system implies a dependency between the automation platform and the order management system.
+
+**System configurations.** Infrastructure-as-code templates, environment configurations, and deployment manifests contain dependency information that code alone does not capture. A configuration file that specifies a database connection string reveals a runtime dependency between the application and the database. A deployment manifest that references a shared service mesh reveals infrastructure-level dependencies.
+
+## The Three-Phase Pipeline
+
+Extraction follows a three-phase pipeline designed for determinism and composability.
+
+### Phase 1: Normalize and extract structural facts
+
+Each artifact type has a dedicated normalizer that converts the raw source into a canonical intermediate representation. Source code is parsed into ASTs. Documents are parsed into structured sections. API contracts are parsed into their native schema representations. Configuration files are parsed into key-value hierarchies.
+
+From these normalized representations, extractors emit structural facts: "file X defines function Y," "service A imports client for service B," "API contract C defines endpoint D with schema E." Each fact is a triple (subject, predicate, object) with provenance metadata: which source file, which version, which line numbers, and which extraction rule produced the fact.
+
+The extractors also emit pending edges: references that cannot be resolved within the current artifact. When source code imports a client for "service-identity" but the service-identity API contract has not been processed yet, the extractor emits a pending edge: "this file depends on an entity named service-identity that has not been resolved." Pending edges are first-class objects in the pipeline, not error conditions.
+
+### Phase 2: Resolve cross-references
+
+After all artifacts have been processed, the resolver phase attempts to connect pending edges to their targets. The resolver uses framework-aware strategies to match references. A code import of `service-identity-client` maps to the API contract for the service named `service-identity` using naming conventions specific to the organization's service framework. A configuration reference to a database named `orders-db-primary` maps to the infrastructure definition for that database using the cloud platform's resource naming conventions.
+
+Resolution strategies are ordered by confidence. Exact name matches are highest confidence. Convention-based matches (where the resolver applies known naming patterns) are medium confidence. Fuzzy matches (where the resolver uses similarity metrics) are lowest confidence and flagged for human review. Unresolved edges remain in the graph as explicit unknowns rather than being silently dropped.
+
+### Phase 3: Validate and publish
+
+The validation phase checks the graph for internal consistency. Circular dependencies are flagged (they may be valid but warrant attention). Nodes with no incoming or outgoing edges are flagged as potential extraction failures. Facts from different sources that contradict each other (for example, two API contracts claiming to define the same endpoint with different schemas) are flagged as conflicts.
+
+After validation, the graph is published to the query layer. The publication is atomic: consumers see either the old graph or the new graph, never an intermediate state. This is important because the graph is consumed by AI systems that make decisions based on its contents. An incomplete graph could lead to incorrect dependency analysis.
+
+## Why Determinism Matters
+
+The extraction pipeline is deterministic: given the same input artifacts, it produces byte-identical output. This property enables three capabilities that probabilistic extraction (using language models to extract relationships) does not.
+
+**CI/CD validation.** Because the extraction is deterministic, you can run it in a continuous integration pipeline and diff the output against the previous version. If a code change adds a new dependency, the graph diff shows exactly which new edge was introduced. If a code change breaks an existing relationship, the diff shows which edge disappeared. This makes the knowledge graph a testable artifact, not a best-effort approximation.
+
+**Reproducibility.** When a downstream consumer reports an issue with the graph (for example, a missing dependency that caused an AI system to generate an incorrect plan), you can reproduce the graph state exactly by re-running the pipeline against the same input versions. There is no randomness in the extraction process, so the same inputs always produce the same output.
+
+**Incremental updates.** Determinism enables efficient incremental processing. When a single source file changes, the pipeline re-extracts facts from that file and diffs them against the previous extraction. Only changed facts are updated in the graph. This is dramatically more efficient than re-extracting the entire graph, and it is only possible because the extraction for a given input is guaranteed to be the same regardless of when it runs.
+
+Non-deterministic extraction (using LLMs to identify relationships, for example) trades these properties for flexibility. An LLM-based extractor might identify relationships that rule-based extraction misses, especially in natural language documents. But it cannot guarantee that running twice on the same input produces the same output, which breaks CI/CD validation, reproducibility, and incremental updates. In our system, we use deterministic extraction for the core graph and reserve LLM-based extraction for a supplementary "suggested relationships" layer that is explicitly marked as non-deterministic and excluded from automated decision-making.
+
+## Provenance Tracking
+
+Every fact in the graph carries provenance metadata: which source artifact it was extracted from, which version of that artifact, which extraction rule produced it, and when the extraction ran. This provenance serves three purposes.
+
+**Trust calibration.** Facts extracted from code (high confidence, mechanically verified) are treated differently from facts extracted from documents (medium confidence, potentially outdated). Downstream consumers can filter or weight facts based on their provenance.
+
+**Staleness detection.** When a source artifact is updated, the facts extracted from its previous version are marked as potentially stale. If re-extraction produces different facts, the old facts are superseded. If the artifact is deleted, the facts are marked as unsupported (their source evidence no longer exists).
+
+**Audit trail.** When an AI system makes a decision based on graph data (for example, determining which services are affected by an API change), the decision can be traced back through the graph to the specific source artifacts that informed it. This traceability is essential for trust: engineers can verify that the system's dependency analysis is based on real evidence, not hallucinated relationships.
+
+## Beyond the Original Use Case
+
+The knowledge graph was originally built to support the AI automation platform, specifically to give system agents accurate dependency information for test plan compilation. But the graph has proven valuable for six additional use cases.
+
+**Impact analysis.** When a team proposes changing an API contract, the graph can answer "which services consume this API, and which of those services have tests that exercise the affected endpoints?" This query, which previously required manually consulting multiple teams, now runs in seconds.
+
+**Onboarding.** New engineers exploring an unfamiliar service can query the graph for its dependencies, consumers, API surface, and ownership. The graph provides a structured entry point that is more navigable than searching through documentation.
+
+**Incident response.** When a service degrades, the graph can identify upstream and downstream dependencies, helping responders understand the blast radius and prioritize mitigation.
+
+**Architecture review.** The graph provides an always-current system dependency map that architecture reviews can reference. This replaces manually maintained architecture diagrams that are perpetually outdated.
+
+**Deprecation planning.** When a team wants to deprecate a service or API, the graph identifies all consumers, their usage patterns, and the migration effort required. This replaces the common pattern of announcing a deprecation and waiting for consumers to self-identify.
+
+**Compliance reporting.** For regulatory requirements that demand documentation of data flows and system dependencies, the graph provides an auditable, automatically maintained inventory with provenance tracking.
+
+## What I Would Do Differently
+
+The document extraction phase is the weakest link. Unlike code and API contracts, which have formal structure that parsers can exploit, business documents vary widely in format and quality. The current approach uses section headers, bullet point patterns, and keyword matching to extract relationships from documents. This works for well-structured documents but misses relationships stated in prose paragraphs. Investing in more sophisticated document parsing (potentially using language models for extraction with human validation) would improve coverage.
+
+The resolution strategies are currently hard-coded to the organization's naming conventions. When those conventions change (as they do when teams adopt new frameworks or reorganize), the resolver needs manual updates. A more data-driven approach that learns naming patterns from confirmed resolutions would be more maintainable.
+
+The graph's query layer currently supports only programmatic access via an API. A visual exploration interface that lets engineers browse the graph interactively, following edges and exploring neighborhoods, would significantly improve the onboarding and architecture review use cases. The data model supports it; the interface just has not been built yet.

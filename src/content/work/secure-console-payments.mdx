@@ -1,0 +1,94 @@
+---
+title: "Secure Console Payment Architecture"
+summary: "Designing hardened payment flows for a cloud console experience under unusual legal-entity and authentication constraints."
+role: "Lead Engineer, Payment Architecture"
+period: "2024-2025"
+featured: false
+order: 5
+tags: ["Security", "Frontend Architecture"]
+metrics: ["5-country launch", "3 auth options evaluated", "JWT + CSRF protection"]
+seoTitle: "Secure Console Payment Architecture | Jonathan Rinciari"
+seoDescription: "Designing secure payment integration for cloud console experiences with cross-entity authentication and hardened session handling."
+confidentiality: "generalized"
+status: "published"
+---
+
+## Executive Summary
+
+I designed a secure payment proxy service for a cloud console that could not use the parent company's standard payment platform directly. The console operated as a separate legal entity, meaning its authentication model was incompatible with the payment platform's assumptions about session cookies and domain-scoped credentials. After evaluating three integration options, I chose a proxy architecture that authenticates requests using cloud-native identity, maps account identifiers to customer records, issues scoped JWTs for specific payment operations, and forwards requests to the payment platform with CSRF protection via HttpOnly cookies. The system launched across five countries with a security posture that explicitly tracked residual risks rather than assuming they were eliminated.
+
+## Context
+
+The cloud console was a customer-facing application for managing cloud infrastructure services. It needed payment capabilities for subscription management, billing updates, and payment method registration. The parent company operated a mature payment platform used across dozens of products, but that platform was designed around a set of assumptions that did not hold in this environment.
+
+The payment platform expected consumers to operate under the parent company's domain and authentication system. Consumers embedded payment widgets (iframe-based components for credit card entry, address forms, and payment method management) that relied on domain-scoped session cookies for authentication. These cookies were set by the parent company's authentication service and were available to any application running on the parent domain.
+
+The cloud console operated as a separate legal entity. It ran on a different domain. It used cloud-native identity and access management for authentication, not the parent company's retail authentication system. This meant the console had no access to the session cookies that the payment widgets expected, and no straightforward way to obtain them.
+
+## Problem
+
+Without the expected session cookies, the payment widgets would operate in a degraded authentication mode. The widgets would still render and function, but requests to the payment platform would carry weaker identity verification. This created three specific security risks.
+
+First, the weakened authentication made it easier for an attacker who compromised the client-side JavaScript to exfiltrate payment information. With full session authentication, the payment platform could verify that requests originated from an authenticated session tied to a specific customer. Without it, the platform had to trust that the embedding application had performed adequate authentication upstream.
+
+Second, the weak-auth mode was vulnerable to confused deputy attacks. An attacker could potentially craft requests that appeared to come from the payment widget but were actually initiated by malicious code running in the same browser context. Without strong session binding, the payment platform could not distinguish legitimate widget requests from forged ones.
+
+Third, the cross-domain embedding created XSS exposure. If an attacker injected script into the console application, they could potentially interact with the payment widget's iframe in ways that full same-domain cookie authentication would prevent.
+
+## Options Evaluated
+
+I evaluated three approaches with the security team.
+
+**Option 1: Accept the weak authentication model.** Use the payment widgets as-is, relying on the console's own authentication to gate access to pages containing payment components. This was the fastest path to launch but carried the highest security risk. The payment platform's security team flagged this as unacceptable for a service handling payment instruments across multiple countries.
+
+**Option 2: Build a custom token exchange.** Implement a server-side flow that exchanges cloud-native credentials for the parent company's session cookies, effectively bridging the two identity systems. This would give the widgets full authentication but required building and maintaining a cross-entity credential exchange. The security surface area was large: the exchange service would need to handle credential validation, token issuance, session management, and revocation across two identity systems. The risk of implementation errors in a credential bridge was higher than the risk it was trying to mitigate.
+
+**Option 3: Build a proxy service with JWT-based authentication.** Instead of making the widgets authenticate directly, route all payment API calls through a proxy service that handles authentication independently. The proxy authenticates the incoming request using cloud-native identity, maps the cloud account to the corresponding customer record in the payment platform, generates a scoped JWT authorizing specific payment operations, and forwards the request to the payment platform with proper credentials. This was the chosen approach.
+
+## Architecture
+
+The proxy service sits between the console frontend and the payment platform backend. It performs four functions.
+
+**Authentication.** Every request to the proxy must include valid cloud-native credentials. The proxy validates these credentials against the cloud identity service before processing any request. This means every payment operation is tied to an authenticated cloud session with full audit trail.
+
+**Account mapping.** The proxy maintains a mapping between cloud account identifiers and payment platform customer identifiers. When a request arrives, the proxy looks up the corresponding customer record and ensures the requesting account is authorized to perform payment operations for that customer.
+
+**JWT issuance.** For each authorized request, the proxy generates a signed JWT with claims scoped to the specific operation. A JWT issued for "list payment methods" cannot be used to "add a payment method." The tokens have short expiration windows (minutes, not hours) and are bound to the specific customer and operation type. The signing keys are managed through the cloud platform's key management service with automatic rotation.
+
+**CSRF protection.** The proxy issues a CSRF token as an HttpOnly cookie on the initial authentication handshake. Subsequent requests must include this token in a custom header. Because the cookie is HttpOnly, JavaScript running in the browser cannot read it, which prevents XSS attacks from extracting the CSRF token. The browser automatically includes the cookie on requests to the proxy domain, and the proxy validates that the header value matches the cookie value.
+
+## Security Tradeoffs
+
+The proxy architecture introduced its own tradeoffs that I documented explicitly.
+
+The proxy becomes a high-value target. Because it bridges two authentication systems, compromising the proxy would give an attacker access to payment operations for any mapped account. We mitigated this by running the proxy with minimal permissions, logging every request for anomaly detection, and implementing rate limiting per account.
+
+The account mapping is a sensitive data store. The mapping between cloud accounts and payment customers is itself valuable information. We stored it encrypted at rest, restricted access to the mapping service to the proxy's execution role only, and implemented audit logging for all mapping queries.
+
+JWT scope granularity requires careful design. Too coarse and a token authorizes more than intended. Too fine and the system becomes brittle with dozens of token types. We settled on operation-category scoping (read operations, write operations, delete operations) with per-customer binding.
+
+## Residual Risks
+
+Rather than claiming the architecture eliminated all risks, I maintained an explicit residual risk register.
+
+The proxy's availability becomes a dependency for all payment operations. If the proxy is unavailable, customers cannot manage payment methods. We accepted this risk because the alternative (direct widget integration with weak auth) carried higher security risk than the availability risk.
+
+The JWT signing key rotation creates a window where both old and new keys are valid. During rotation, an attacker who obtained an old key could potentially issue valid tokens. We minimized this window to 60 seconds and monitored for tokens signed with non-current keys.
+
+The account mapping could become stale if customer records change in the payment platform without corresponding updates in the mapping service. We implemented a reconciliation job that validates mappings daily and flags discrepancies for manual review.
+
+## Validation Approach
+
+Before committing to the proxy architecture, I built a proof-of-concept that validated three critical assumptions.
+
+First, that the cloud identity service could authenticate requests with latency low enough for interactive payment flows. We measured P99 latency at under 200ms, well within the acceptable range for payment widget interactions.
+
+Second, that the JWT-scoped approach would be accepted by the payment platform's API. We worked with the payment platform team to validate that their API could consume our JWT format and enforce the scope claims we defined.
+
+Third, that the HttpOnly cookie CSRF pattern would work across the specific browser configurations our customers used. We tested across major browsers and confirmed that the cookie-plus-header validation worked correctly in all supported environments.
+
+## Results
+
+The payment proxy launched across five countries with no security incidents in the first six months of operation. The security team approved the architecture after a focused review that was significantly shorter than the estimated timeline for Option 2's credential bridge. The explicit residual risk register became a template that other teams adopted for their own security reviews, replacing the common pattern of claiming zero residual risk and then being surprised when issues emerged.
+
+The architecture also proved extensible. When new payment operations were added to the platform, the proxy required only new JWT scope definitions and updated routing rules, not architectural changes. The separation of authentication from payment logic meant each concern could evolve independently.

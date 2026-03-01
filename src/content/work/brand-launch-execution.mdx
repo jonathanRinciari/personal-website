@@ -1,0 +1,108 @@
+---
+title: "Brand Launch Technical Execution"
+summary: "Delivering a high-visibility brand launch under a 10-day compressed timeline with parallel security and infrastructure workstreams."
+role: "Technical Lead, Launch Execution"
+period: "2025"
+featured: false
+order: 7
+tags: ["Operational Excellence", "Security"]
+metrics: ["10-day timeline", "parallel security workstreams", "automated launch execution"]
+seoTitle: "Brand Launch Technical Execution | Jonathan Rinciari"
+seoDescription: "Executing a brand launch under extreme timeline compression with parallel security reviews, DNS architecture, and automated deployment."
+confidentiality: "generalized"
+status: "published"
+---
+
+## Executive Summary
+
+I led the technical execution of a brand launch where a 5-day timeline compression (from 28 days to 23) created convergence between implementation, security validation, DNS delegation, and the public announcement date. The brand domain was a subdomain of a major e-commerce platform, which triggered elevated security classification requiring 30+ days of security review. We had 10 days. I designed parallel workstreams that ran security review and penetration testing alongside DNS acquisition and infrastructure setup, established a T-3 go/no-go decision gate with clear criteria, and automated launch-day actions via scheduled events. The launch executed on schedule with all security requirements satisfied.
+
+## Context
+
+The organization was launching a new customer-facing brand. The brand would be the public identity for a suite of cloud services previously accessible only through internal tooling. The launch included a marketing website, updated console branding, and a public announcement coordinated with the parent company's communications team.
+
+The brand domain needed to be a subdomain of the parent company's primary e-commerce domain. This was a business requirement driven by brand association and customer trust. Using a subdomain of a well-known domain signals legitimacy and leverages existing brand recognition. However, this choice had significant technical implications that were not apparent when the decision was made.
+
+The original timeline allocated 28 days from "brand name confirmed" to "public launch." Five days into planning, the announcement date was moved forward by five days to align with an external event. This compressed the remaining work from 23 days into 18. But the real constraint was tighter: the first 8 days had already been consumed by trademark clearance and brand design, leaving 10 working days for all technical execution.
+
+## Problem
+
+Four constraints collided within those 10 days.
+
+**Security classification.** Any new subdomain on the parent company's primary domain required security review. The security team's standard review process took 30+ days, including automated scanning, manual code review, and penetration testing. The review was non-negotiable: no subdomain could resolve to live content without security clearance. We had 10 days.
+
+**DNS delegation.** The parent company's DNS infrastructure was managed by a central platform team. Requesting a new subdomain delegation required a formal request, approval from the domain owner, and configuration changes in a system with change windows measured in days, not hours. The delegation also required configuring cross-account DNS records since the brand's infrastructure ran in a separate cloud account from the parent domain's DNS.
+
+**Infrastructure readiness.** The marketing website, CDN configuration, TLS certificates, and console branding changes all needed to be deployed and validated before the domain went live. The CDN needed to be configured with the new domain as an alternate name, which required the TLS certificate to be issued first, which required DNS validation, which required the subdomain to be delegated. This dependency chain was inherently sequential.
+
+**Announcement coordination.** The public announcement was scheduled for a specific date and time, coordinated with press briefings, social media campaigns, and partner communications. Missing the date was not an option; it would require rescheduling dozens of external commitments.
+
+## Strategy: Parallel Workstreams with Decision Gates
+
+The only way to fit 30+ days of sequential work into 10 days was to make it parallel. I designed three workstreams that ran simultaneously with explicit synchronization points.
+
+**Workstream 1: Security review and penetration testing.** I engaged the security team on day 1 with a pre-populated review package: architecture diagrams, threat model, data flow documentation, and a list of all external dependencies. Rather than waiting for the security team to request information iteratively, we provided everything upfront. This eliminated the typical back-and-forth that adds days to the review process. Simultaneously, I engaged an internal penetration testing team to begin testing the staging environment. Their findings would feed into the security review, and we could remediate issues in parallel with the review rather than sequentially.
+
+**Workstream 2: DNS acquisition and configuration.** I submitted the subdomain delegation request on day 1 and escalated it through the domain owner's approval chain. While waiting for delegation, I pre-configured the cross-account DNS architecture: the hosted zone in our account, the record sets for CDN and certificate validation, and the IAM roles with condition-based access controls that would allow our account to manage records under the delegated subdomain without granting broader access to the parent domain's DNS.
+
+**Workstream 3: Infrastructure and content.** The marketing website, console branding, CDN configuration, and TLS certificates were built and validated against a temporary domain. This allowed full end-to-end testing without waiting for the production subdomain. When the DNS delegation completed, switching to the production domain required only updating the CDN alternate domain name and the DNS records.
+
+## T-3 Decision Gate
+
+I established a go/no-go decision point three days before the announcement date. At T-3, leadership would evaluate three criteria:
+
+1. **Security review status.** Either the review was complete with no blocking findings, or the security team had provided a written assessment of residual risk with a recommendation.
+
+2. **DNS delegation status.** Either the delegation was complete and validated, or we had a confirmed timeline from the platform team with a commitment to complete before launch.
+
+3. **Infrastructure readiness.** The full stack was deployed and passing health checks on the production domain, or a specific and bounded list of remaining tasks could be completed in three days.
+
+If any criterion was not met, the decision was not "delay indefinitely" but rather "delay to a specific alternative date" with a pre-planned communication strategy. This framing was important: it gave leadership a concrete alternative rather than an open-ended slip, making the go/no-go decision actionable.
+
+## DNS Architecture
+
+The cross-account DNS pattern required careful IAM design. The parent company's DNS was managed in Account A. The brand's infrastructure ran in Account B. The delegation created a hosted zone in Account B for the subdomain, with NS records in Account A pointing to Account B's name servers.
+
+The IAM roles used condition-based policies that restricted Account B's permissions to records within the delegated subdomain only. The conditions checked the DNS record name prefix, ensuring that even if the role's permissions were misconfigured, it could not modify records outside its subdomain. This defense-in-depth approach satisfied the parent company's DNS security requirements.
+
+I implemented the delegation pattern as a CDK construct that could be reused for future subdomain delegations. The construct handled hosted zone creation, NS record registration (via a custom resource that called the parent account's API), TLS certificate creation with DNS validation, and CDN alternate domain configuration. Packaging this as a reusable construct meant future brand launches would not require re-engineering the DNS architecture.
+
+## Automated Launch Execution
+
+The launch itself needed to happen at a precise time, coordinated with the public announcement. Manual execution was risky: a person running commands under time pressure, possibly across time zones, with communications teams waiting for confirmation.
+
+I designed the launch as a set of automated actions triggered by scheduled events. At the designated time, the scheduled event triggered a state machine that executed the launch steps in order:
+
+1. Update DNS records to point the subdomain to the CDN distribution.
+2. Validate that the domain resolves correctly from multiple geographic locations.
+3. Enable the CDN distribution's alternate domain name.
+4. Run health checks against the live domain.
+5. Send a confirmation notification to the launch coordination channel.
+
+Each step had a rollback action. If health checks failed after DNS update, the state machine would revert the DNS records and notify the team. The entire sequence was tested three times against the staging environment before the live launch.
+
+The scheduled trigger approach meant the launch could happen at any time, including outside business hours, without requiring someone to be actively running commands. The team monitored the execution but did not need to drive it.
+
+## Risk Management
+
+I maintained a risk register that tracked five categories: security review timeline, DNS delegation timeline, infrastructure readiness, announcement coordination, and rollback capability. Each risk had an owner, a mitigation strategy, and a trigger condition for escalation.
+
+The most significant risk was the security review timeline. The mitigation strategy was the parallel approach: providing comprehensive documentation upfront, running penetration testing concurrently, and having the T-3 decision gate as a formal checkpoint. If the security review was not complete at T-3, leadership would make an explicit risk acceptance decision based on the evidence gathered so far (penetration testing results, partial review findings) rather than an uninformed gamble.
+
+The second-most significant risk was DNS delegation timing. The mitigation was pre-configuration: having all DNS records, IAM roles, and CDN settings ready so that when delegation completed, the remaining work was configuration updates measured in minutes, not days.
+
+## Results
+
+The launch executed on the scheduled date and time. The security review completed at T-2 with no blocking findings. The penetration testing identified three low-severity issues that were remediated before launch. The DNS delegation completed at T-5, giving the infrastructure team adequate time to configure and validate the production domain.
+
+The automated launch sequence executed without intervention. DNS propagation completed within 15 minutes. Health checks passed on the first attempt. The confirmation notification reached the coordination channel 18 minutes after the scheduled trigger time.
+
+The CDK-based subdomain delegation construct was subsequently reused for two additional subdomain launches, each completing in under a day of engineering effort compared to the 10 days required for the first.
+
+## Tradeoffs
+
+Running security review in parallel with implementation means remediation work might require changes to infrastructure that is already being built. We accepted this risk because the alternative (sequential execution) was impossible within the timeline. In practice, the penetration testing findings required only configuration changes, not architectural modifications.
+
+The T-3 decision gate created a commitment point that limited late-stage changes. Any significant scope addition after T-3 would push past the launch date. This was a deliberate constraint: it forced prioritization decisions early and prevented scope creep in the final days.
+
+The automated launch sequence adds complexity compared to manual execution. For a one-time event, the automation investment might not pay for itself. The justification was risk reduction (automated execution is more reliable than manual execution under pressure) and reuse (the pattern has been used for subsequent launches).

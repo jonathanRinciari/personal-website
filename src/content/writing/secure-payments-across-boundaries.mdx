@@ -1,0 +1,94 @@
+---
+title: "Building Secure Payments Across Entity Boundaries"
+summary: "What happens when standard payment integration patterns don't fit your security model, and how to design around legal-entity and authentication constraints."
+publishedAt: 2025-11-01
+tags: ["Security", "Frontend Architecture"]
+seoTitle: "Secure Payments Across Entity Boundaries | Jonathan Rinciari"
+seoDescription: "Designing secure payment flows when standard platform integrations don't fit: JWT authentication, CSRF protection, and proxy architectures."
+status: "published"
+featured: false
+---
+
+## The Assumption That Breaks
+
+Most payment platform integrations work because of an invisible assumption: the application embedding the payment widget and the payment platform share an authentication domain. When a customer visits an e-commerce site and enters their credit card, the payment widget running in an iframe can access the same session cookies as the parent application. The payment platform trusts the session because the cookie was set by a shared authentication service, the domain is the same (or a trusted subdomain), and the browser's same-origin policy ensures that only legitimate code on that domain can read the cookie.
+
+This assumption holds for most consumer applications. It breaks completely when the application embedding the payment widget operates as a separate legal entity, runs on a different domain, or uses a fundamentally different authentication system.
+
+I encountered this exact scenario while building payment capabilities for a cloud console. The console needed to let customers manage payment methods, update billing information, and complete subscription transactions. The parent company had a mature payment platform with battle-tested widgets for exactly these operations. But the console operated as a separate legal entity, ran on its own domain, and used cloud-native identity and access management for authentication. None of the payment platform's authentication assumptions held.
+
+## Why Weak Authentication in Payment Contexts Is Dangerous
+
+When the payment widgets cannot access their expected authentication cookies, they fall back to a degraded mode. The widgets still render. Customers can still enter credit card numbers and billing addresses. But the requests flowing from the widget to the payment platform carry weaker identity verification.
+
+This matters because payment operations handle some of the most sensitive data in any application: credit card numbers, billing addresses, bank account details. Weak authentication in this context creates three specific attack vectors.
+
+**PII exfiltration via session hijacking.** With full session authentication, the payment platform binds every request to a specific authenticated session. An attacker who injects JavaScript into the page cannot easily impersonate the session because the authentication cookies are HttpOnly (not accessible to JavaScript) and scoped to the payment platform's domain. In weak-auth mode, the binding between user identity and payment operations is looser. An attacker who compromises the client-side JavaScript has a wider window to intercept or redirect payment data before it reaches the platform.
+
+**Confused deputy attacks.** A confused deputy attack occurs when a trusted component (the payment widget) is tricked into performing actions on behalf of an attacker. With strong session authentication, the payment platform can verify that the request chain (user to widget to platform) is intact and unmodified. Without strong session binding, the platform must trust the embedding application's claim about who the user is. An attacker who can modify the embedding application's requests can potentially perform payment operations as a different user.
+
+**XSS exposure in cross-domain contexts.** Cross-domain embedding inherently increases the attack surface for cross-site scripting. The payment widget runs in an iframe on a different domain than the host application. If an attacker injects script into the host application, they cannot directly access the iframe's content (the browser's same-origin policy prevents this). But they can manipulate the host page's DOM, intercept postMessage communications between the host and the iframe, and potentially modify the iframe's URL or attributes. Strong session authentication limits the damage of these attacks because the payment platform validates every request independently. Weak authentication means the platform relies more heavily on the host application's security posture, which is now compromised.
+
+## The Proxy Architecture Pattern
+
+The solution I designed routes all payment API calls through a proxy service that handles authentication independently of the payment widget's built-in mechanisms. The proxy does not modify the payment widgets themselves. It intercepts the API calls those widgets make and replaces the weak authentication with strong, verified credentials.
+
+### Step 1: Authenticate with cloud-native identity
+
+Every request to the proxy must include valid cloud-native credentials. The console application includes these credentials automatically because users are already authenticated through the cloud platform's identity service. The proxy validates the credentials against the identity service before processing any request.
+
+This step establishes who the user is with the same level of assurance as any other cloud platform operation. The user's identity is not derived from a cookie that might be absent or weak. It comes from the cloud platform's authentication system, which the proxy trusts completely.
+
+### Step 2: Map cloud accounts to payment customers
+
+The proxy maintains a secure mapping between cloud account identifiers and payment platform customer identifiers. When a request arrives from a cloud account, the proxy looks up the corresponding payment customer and verifies that the account is authorized to perform payment operations for that customer.
+
+This mapping is a sensitive data store. It is encrypted at rest, accessible only to the proxy's execution role, and every query is logged for audit purposes. The mapping is populated during the customer's initial registration flow and reconciled daily against the payment platform's records to catch drift.
+
+### Step 3: Issue scoped JWTs
+
+For each authenticated and authorized request, the proxy generates a JSON Web Token (JWT) with claims that scope the token to specific payment operations. The JWT includes the customer identifier, the permitted operation category (read, write, delete), an expiration timestamp (measured in minutes), and a unique token identifier for audit logging.
+
+The scoping is important. A JWT issued for listing payment methods cannot be used to add a payment method. A JWT issued for customer A cannot be used for customer B. This means that even if a token is intercepted, the damage is bounded to the specific operation and customer it was issued for, and it expires quickly.
+
+The signing keys are managed through the cloud platform's key management service. Keys rotate automatically, and the proxy always signs with the current key while accepting tokens signed with the previous key during a short overlap window. The rotation window is 60 seconds. Tokens signed with keys older than the previous rotation are rejected.
+
+### Step 4: CSRF protection via HttpOnly cookies
+
+On the initial authentication handshake, the proxy issues a CSRF token as an HttpOnly cookie. The HttpOnly flag is critical: it tells the browser that this cookie cannot be accessed by JavaScript. The cookie is sent automatically by the browser on subsequent requests to the proxy's domain, but no script running on the page (including injected malicious script) can read its value.
+
+For each subsequent request, the proxy expects a custom header (for example, `X-CSRF-Token`) whose value matches the HttpOnly cookie. The proxy validates that the header and cookie values match. This double-submit pattern ensures that only code running in the legitimate application context (which received the CSRF token value from the server during the initial handshake and stored it in application state, not in a cookie) can include the correct header value.
+
+An XSS attacker who injects script into the page can trigger requests to the proxy (the browser will include the HttpOnly cookie automatically), but they cannot set the correct header value because they cannot read the cookie. The request fails CSRF validation and is rejected.
+
+## Residual Risks: What You Track Instead of Ignore
+
+No architecture eliminates all risk. The proxy pattern introduces its own risks that I tracked explicitly rather than ignoring.
+
+**The proxy is a high-value target.** It bridges two authentication systems and has access to the account mapping. Compromising the proxy would give an attacker the ability to perform payment operations for any mapped account. Mitigation: the proxy runs with minimal permissions, all requests are logged, rate limiting is enforced per account, and anomaly detection monitors for unusual patterns (for example, a single account making an atypical number of payment method changes).
+
+**JWT key compromise.** If the signing key is compromised, an attacker could issue valid-looking JWTs. Mitigation: keys are stored in hardware-backed key management, rotated automatically, and the short expiration window (minutes) limits the useful lifetime of any compromised token.
+
+**Stale account mappings.** If a customer's payment platform record changes (for example, due to account merger or legal entity restructuring) without a corresponding update to the proxy's mapping, payment operations could target the wrong customer record. Mitigation: daily reconciliation with alerting on discrepancies, and the mapping service rejects operations when the mapping's last-validated timestamp is older than a configurable threshold.
+
+**Availability dependency.** The proxy's availability directly affects payment operations. If the proxy is down, customers cannot manage payment methods. Mitigation: the proxy runs across multiple availability zones with health checks and automatic failover. The availability risk was accepted because the alternative (weak authentication) carried higher security risk.
+
+## The General Pattern
+
+The proxy architecture is not specific to payment systems. It applies whenever you need to integrate a service that expects domain-scoped authentication into an application with a different authentication model. The pattern has three components:
+
+1. **Authenticate at the boundary.** The proxy validates the caller's identity using the application's native authentication, not the downstream service's expected authentication. This means the proxy is the trust translation layer between two identity systems.
+
+2. **Issue scoped, short-lived credentials.** The proxy generates credentials (JWTs, signed tokens, short-lived API keys) that are scoped to specific operations and expire quickly. This limits the blast radius of any credential compromise.
+
+3. **Protect against client-side attacks.** HttpOnly cookies for CSRF protection, strict Content Security Policy headers, and defense-in-depth measures ensure that even if the client-side JavaScript is compromised, the proxy rejects unauthorized requests.
+
+The key insight is that you do not need to make two different authentication systems interoperate. You need a trusted intermediary that speaks both languages and translates between them with appropriate scoping and logging.
+
+## What I Would Do Differently
+
+The account mapping service was initially designed as a simple key-value store. As the system evolved, we needed richer mapping metadata (when the mapping was created, who created it, what verification was performed). Designing the mapping as a richer entity from the start would have avoided a migration later.
+
+The JWT scope categories (read, write, delete) were too coarse for some operations. "Write" includes both "add a new payment method" and "update the default payment method," which have different risk profiles. Finer-grained scopes would allow more precise authorization, but they also increase the number of scope definitions to maintain. I would invest more time in scope taxonomy design upfront, informed by the payment platform's actual operation catalog rather than abstract categories.
+
+The CSRF token rotation strategy should have been documented more explicitly. The token rotates when the session refreshes, but the exact rotation semantics (how long old tokens remain valid, what happens during concurrent requests) were implemented before being fully specified. Writing the specification first would have caught an edge case where rapid page navigation could invalidate the CSRF token before the next request completed.

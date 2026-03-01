@@ -1,0 +1,98 @@
+---
+title: "Cross-Platform Clickstream Analytics"
+summary: "Architecting unified customer analytics across four applications with different instrumentation technologies and a standardized event schema."
+role: "Technical Lead, Analytics Architecture"
+period: "2025"
+featured: false
+order: 6
+tags: ["Distributed Systems", "Operational Excellence"]
+metrics: ["4 applications", "3 instrumentation technologies", "standardized schema"]
+seoTitle: "Cross-Platform Clickstream Analytics | Jonathan Rinciari"
+seoDescription: "Designing unified clickstream analytics across four applications with standardized schemas and automated attribution tracking."
+confidentiality: "generalized"
+status: "published"
+---
+
+## Executive Summary
+
+I designed a unified clickstream analytics platform spanning four applications (marketing website, cloud console, mobile app, internal dashboard) that used three different instrumentation technologies. Rather than forcing all applications onto a single analytics SDK, the architecture standardized event schemas and field naming conventions while allowing each application to use its native instrumentation tooling. The system included an automated attribution tracking mechanism that flags invalid campaign tracking codes at ingestion time rather than discovering data quality issues weeks later in downstream reports. The platform processes events through a normalization pipeline that produces a consistent, queryable dataset regardless of which application or instrumentation technology generated the original event.
+
+## Context
+
+The organization operated four customer-facing applications, each built by different teams at different times with different technology choices. The marketing website was a static site with a third-party analytics tag. The cloud console was a single-page application instrumented with OpenTelemetry for both performance monitoring and user analytics. The mobile app used a vendor-provided mobile analytics SDK. The internal dashboard used the cloud platform's native monitoring service for usage tracking.
+
+Each application captured user behavior data, but the data was siloed. The marketing team could see website engagement but not whether those visitors converted to console signups. The product team could see console usage patterns but not which marketing campaigns drove the most valuable users. The mobile team had its own engagement metrics that used different definitions for the same concepts. Leadership received four separate dashboards with four different methodologies, making cross-application analysis effectively impossible.
+
+## Problem
+
+Three specific problems drove the need for a unified analytics platform.
+
+First, cross-application journey analysis was manual and unreliable. Answering questions like "which marketing campaigns drive users who activate the most cloud resources in their first 30 days" required analysts to manually export data from multiple systems, attempt to join on imprecise identifiers, and reconcile different event definitions. The process took days and the results were approximate at best.
+
+Second, attribution data quality was poor. Marketing campaigns used tracking codes (UTM parameters and custom identifiers) to attribute traffic to specific campaigns, but there was no validation. Misspelled campaign codes, outdated tracking parameters, and inconsistent formatting meant that 15-20% of attributed traffic could not be reliably linked to a campaign. These errors were only discovered when someone ran a report and noticed unrecognized codes, often weeks after the campaign launched.
+
+Third, the absence of a shared event vocabulary meant every cross-team analysis started with a definitional debate. What counts as an "active user" in the console versus the mobile app? What is a "session" when users switch between the marketing site and the console in the same browser? Without agreed-upon definitions encoded in a shared schema, every analysis required re-negotiation.
+
+## Strategy: Standardize Methodology, Not Tooling
+
+The foundational decision was to standardize the event schema and naming conventions rather than force all applications onto a single instrumentation SDK. This was a deliberate choice with clear tradeoffs.
+
+Forcing uniform tooling would have required rewriting instrumentation in three of the four applications. The marketing website's tag management system, the mobile app's vendor SDK, and the internal dashboard's cloud-native monitoring each provided capabilities beyond basic clickstream capture (performance monitoring, crash reporting, infrastructure metrics) that would need replacement or parallel instrumentation. The migration cost was high and the risk of instrumentation gaps during transition was significant.
+
+Standardizing the schema instead meant each application could continue using its native tooling but needed to emit events conforming to a shared contract. The normalization cost shifted from the application layer (rewrite instrumentation) to the data layer (normalize at ingestion). This was a better tradeoff because normalization logic is centralized, testable, and changeable without deploying application updates.
+
+## Schema Design
+
+The schema design followed three principles.
+
+**Consistent field naming.** Every event, regardless of source application, uses the same field names for common concepts. A page view on the marketing website and a screen view in the mobile app both produce events with the same core fields: `event_type`, `timestamp`, `session_id`, `user_id` (when authenticated), `anonymous_id` (always), `platform`, `page_or_screen`, and `referrer`. Application-specific fields are namespaced under an `extensions` object to prevent collision.
+
+**Base event types with semantic clarity.** Rather than allowing free-form event names, the schema defines a controlled vocabulary of base event types: `page_view`, `interaction`, `conversion`, `error`, `performance`, and `system`. Each type has required and optional fields. An `interaction` event must include `target_element` and `interaction_type`. A `conversion` event must include `conversion_name` and `conversion_value`. This structure means downstream consumers can build queries against known schemas rather than discovering event shapes empirically.
+
+**Versioned schema evolution.** Every event carries a `schema_version` field. The normalization pipeline uses this field to apply the correct transformation rules. When the schema evolves, old events remain valid and interpretable. New required fields are populated with explicit defaults during normalization rather than breaking existing instrumentation.
+
+## Attribution Tracking System
+
+The attribution system was designed to catch data quality problems at the point of ingestion rather than in downstream reports.
+
+When a user arrives at any application with campaign tracking parameters, the application emits an `attribution` event containing the raw tracking codes. The normalization pipeline validates these codes against a registry of known campaigns, sources, and mediums. Valid codes are normalized to canonical forms (fixing case inconsistencies, mapping aliases). Invalid codes are flagged with a `validation_status` field set to `invalid` and a `validation_reason` explaining what failed.
+
+The registry is maintained as a configuration file that marketing teams update when launching new campaigns. A CI pipeline validates the registry on every change, checking for duplicate codes, formatting violations, and conflicts with existing entries.
+
+Invalid attribution events are not discarded. They flow through the pipeline with their invalid status preserved, which means analysts can see and investigate them. A daily report surfaces newly detected invalid codes, allowing the marketing team to fix tracking parameters on active campaigns rather than discovering the problem after the campaign ends.
+
+The attribution system also handles multi-touch attribution by preserving the full chain of touchpoints. When a user visits the marketing site, then returns directly to the console a week later, the system maintains the attribution chain with timestamps, allowing analysts to apply different attribution models (first-touch, last-touch, linear, time-decay) in their queries without requiring the data layer to pre-compute a single model.
+
+## Data Pipeline
+
+Events flow through a three-stage pipeline.
+
+**Ingestion.** Each application sends events to an ingestion endpoint appropriate for its instrumentation technology. The marketing website's tag manager sends events via a pixel endpoint. The console's OpenTelemetry instrumentation sends events via an OTLP collector. The mobile SDK sends batched events via a REST API. The internal dashboard's monitoring service exports events via a streaming integration. Each ingestion path is optimized for its source but writes to a common event bus.
+
+**Normalization.** A stream processing service consumes events from the bus and applies source-specific transformation rules. Events are validated against the schema, fields are renamed to canonical forms, timestamps are normalized to UTC, and attribution codes are validated. Events that fail schema validation are routed to a dead-letter queue for investigation rather than silently dropped.
+
+**Storage and query.** Normalized events are written to a columnar storage format partitioned by date and event type. The storage layer supports both real-time queries (for dashboards with refresh intervals under a minute) and batch queries (for complex analytical workloads that scan weeks or months of data). The partitioning strategy was chosen to optimize for the two most common query patterns: "all events for a specific user across all platforms" and "all events of a specific type across all users for a time range."
+
+## Execution
+
+The rollout followed a phased approach. The console was instrumented first because it had the most mature instrumentation (OpenTelemetry was already in place) and the team was most familiar with the data model. This allowed us to validate the schema design and normalization pipeline with a single source before adding complexity.
+
+The marketing website came second because it had the highest volume and the most attribution data. Integrating it immediately surfaced data quality issues in campaign tracking that the attribution validation system caught.
+
+The mobile app and internal dashboard were instrumented in parallel during the third phase. By this point, the schema was stable and the normalization pipeline had been tested with two high-volume sources.
+
+## Results
+
+Cross-application journey analysis went from a multi-day manual process to a query that returns in seconds. The standard schema means analysts write queries once against known field names rather than maintaining source-specific translation logic.
+
+Attribution data quality improved measurably. The automated validation system catches invalid tracking codes within minutes of first appearance rather than weeks. The percentage of traffic with valid attribution improved from approximately 80% to over 95% in the first quarter after launch.
+
+The shared event vocabulary eliminated definitional debates. "Active user" has one definition, encoded in the schema documentation and enforced by the normalization pipeline. Cross-team analyses start with data exploration rather than terminology negotiation.
+
+## Tradeoffs
+
+The normalization pipeline is a single point of transformation logic. Bugs in normalization rules affect all downstream consumers simultaneously. We mitigate this with extensive testing (every transformation rule has unit tests with real event samples) and canary deployments (new normalization rules process a sample of traffic before full rollout).
+
+Allowing multiple instrumentation technologies means maintaining multiple ingestion paths. When the mobile SDK vendor changes their event format, we need to update the mobile-specific normalization rules. This maintenance cost is real but lower than the cost of maintaining custom instrumentation in four applications.
+
+The controlled event vocabulary trades flexibility for consistency. Teams occasionally want to emit event types that do not fit the base taxonomy. The `extensions` object provides an escape hatch, but extension fields do not benefit from cross-application standardization. We review extension usage quarterly and promote frequently used extensions into the base schema when patterns emerge.
